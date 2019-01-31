@@ -2,7 +2,7 @@
 
 This repository is ONLY for tracking/merging source files. It should NOT be used inside of your workspace.
 
-Begin by cloning the reposity OUTSIDE of your workspace.
+Begin by cloning the reposity to a location OUTSIDE of your workspace.
 
 Create your own branch! This allows for proper merging of your files!
 
