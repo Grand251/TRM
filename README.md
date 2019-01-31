@@ -8,7 +8,7 @@ Create your own branch! This allows for proper merging of your files!
 
 COPY the files into your project. Maintaining Eclipse and Tomcat configuration is up to you.
 
-When you are done editing your files, put the updated files into the local reposity, commit to your LOCAL repo and MERGE into the Master branch. 
+When you are done editing your files, put the updated files into the local repository, commit to your LOCAL repo and MERGE into the Master branch. 
 
 # Steps
 
