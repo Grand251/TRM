@@ -26,6 +26,8 @@ git commit -m "Some Message About What I Did."
 
 git checkout master
 
+git pull
+
 git merge some_new_branch_name
 
 git push
