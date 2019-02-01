@@ -1,4 +1,4 @@
-package TRM.DAO.TrainingRequest;
+package trm.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
