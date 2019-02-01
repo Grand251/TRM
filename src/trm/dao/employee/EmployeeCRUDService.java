@@ -1,13 +1,9 @@
 package trm.dao.employee;
 
-import java.sql.Date;
 import java.util.List;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
+import trm.dao.DAOJDBCTemplate;
 
-import trm.dao.employee.mapper.EmployeeMapper;
 /**
  * CRUD Service for employee
  * @author Kei Ng
@@ -15,22 +11,14 @@ import trm.dao.employee.mapper.EmployeeMapper;
 public class EmployeeCRUDService {
 	private JdbcTemplate jtemp;
 	
-	/**
-	 * Get the Spring config file
-	 * @return JdbcTemplate
-	 */
-	public JdbcTemplate getJdbcTemplate(){
-		ApplicationContext context = new ClassPathXmlApplicationContext("SpringConfigJDBC.xml");
-		JdbcTemplate temp = (JdbcTemplate)context.getBean("jtemp");
-		return temp;
-	}
-	
+
+
 	/**
 	 * Query: get all employee 
 	 * @return List<Employee>
 	 */
 	public List<Employee> getAllEmployee(){
-		jtemp = getJdbcTemplate();
+		jtemp = DAOJDBCTemplate.getJdbcTemplate();
 		List<Employee> custlist = jtemp.query("Select * from employee order by 1", new EmployeeMapper());
 		return custlist;
 	}
@@ -40,7 +28,7 @@ public class EmployeeCRUDService {
 	 * @return int(bollean)
 	 */
 	public int deleteEmployee(int empid) {
-		jtemp = getJdbcTemplate();
+		jtemp = DAOJDBCTemplate.getJdbcTemplate();
 		int ret = jtemp.update("delete from employee where employee_id = ?", 
 				new Object[] {empid});
 		return ret;
@@ -52,7 +40,7 @@ public class EmployeeCRUDService {
 	 * @return Employee
 	 */
 	public Employee getEmployeeById(int employee_id) {
-		jtemp = getJdbcTemplate();
+		jtemp = DAOJDBCTemplate.getJdbcTemplate();
 		Employee employee = jtemp.queryForObject("Select * from employee where employee_id = ?",
 									new Object[]{employee_id},
 									new EmployeeMapper());
@@ -94,7 +82,7 @@ public class EmployeeCRUDService {
 			 String vertical,
 			 String project,
 			 int pid){
-		jtemp = getJdbcTemplate();
+		jtemp = DAOJDBCTemplate.getJdbcTemplate();
 		int ret = jtemp.update("UPDATE employee SET last_name = ?, first_name = ?, user_name = ?, password = ?, phone_number = ?, email = ?, street = ?, city = ?, state = ?, country = ?, job_title = ?, vertical = ?, project = ?, pid = ? where employee_id = ?",
 							new Object[] {last_name, first_name, user_name, password, 
 									  	  phone_number, email, street, city, state, 
@@ -109,7 +97,7 @@ public class EmployeeCRUDService {
 	 * @return int(boolean)
 	 */
 	public int insertCustomer(Employee employee) {
-		jtemp = getJdbcTemplate();
+		jtemp = DAOJDBCTemplate.getJdbcTemplate();
 		int ret = jtemp.update("insert into employee values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 								new Object[] {employee.getEmployee_id(),
 										employee.getLast_name(),

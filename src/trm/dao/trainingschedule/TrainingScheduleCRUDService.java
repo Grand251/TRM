@@ -2,12 +2,9 @@ package trm.dao.trainingschedule;
 
 import java.sql.Date;
 import java.util.List;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
+import trm.dao.DAOJDBCTemplate;
 
-import trm.dao.trainingschedule.mapper.TrainingScheduleMapper;
 
 /**
  * CRUD Service for Training Schedule
@@ -27,22 +24,13 @@ public class TrainingScheduleCRUDService {
 		System.out.println(i);
 	}
 	
-	/**
-	 * Get the Spring config file
-	 * @return JdbcTemplate
-	 */
-	public JdbcTemplate getJdbcTemplate(){
-		ApplicationContext context = new ClassPathXmlApplicationContext("SpringConfigJDBC.xml");
-		JdbcTemplate temp = (JdbcTemplate)context.getBean("jtemp");
-		return temp;
-	}
 	
 	/**
 	 * Query: get all training schedule
 	 * @return List<TrainingSchedule>
 	 */
 	public List<TrainingSchedule> getAllTrainingSchedule(){
-		jtemp = getJdbcTemplate();
+		jtemp = DAOJDBCTemplate.getJdbcTemplate();
 		List<TrainingSchedule> scheduleList = jtemp.query("Select * from TRAINING_SCHEDULE", new TrainingScheduleMapper());
 		return scheduleList;
 	}
@@ -53,7 +41,7 @@ public class TrainingScheduleCRUDService {
 	 * @return int(bollean)
 	 */
 	public int deleteTrainingSchedule(String training_schedule_id) {
-		jtemp = getJdbcTemplate();
+		jtemp = DAOJDBCTemplate.getJdbcTemplate();
 		int ret = jtemp.update("delete from TRAINING_SCHEDULE where training_schedule_id = ?", 
 				new Object[] {training_schedule_id});
 		return ret;
@@ -65,7 +53,7 @@ public class TrainingScheduleCRUDService {
 	 * @return TrainingSchedule
 	 */
 	public TrainingSchedule getTrainingScheduleById(String training_schedule_id) {
-		jtemp = getJdbcTemplate();
+		jtemp = DAOJDBCTemplate.getJdbcTemplate();
 		TrainingSchedule schedule = jtemp.queryForObject("Select * from TRAINING_SCHEDULE where training_schedule_id = ?",
 									new Object[]{training_schedule_id},
 									new TrainingScheduleMapper());
@@ -89,7 +77,7 @@ public class TrainingScheduleCRUDService {
 	public int updateTrainingSchedule(String training_schedule_id, String training_city, String training_state,
 			String training_country, String training_zipcode, String training_time_zone, String training_location,
 			String training_room_number, Date training_start_date, Date training_end_date) {
-		jtemp = getJdbcTemplate();
+		jtemp = DAOJDBCTemplate.getJdbcTemplate();
 		int ret = jtemp.update("UPDATE TRAINING_SCHEDULE SET training_city = ?, training_state = ?, training_country = ?, training_zipcode = ?, training_time_zone = ?, training_location = ?, training_room_number = ?, training_start_date = ?, training_end_date = ? where training_schedule_id = ?",
 							new Object[] {
 									training_city,
@@ -112,7 +100,7 @@ public class TrainingScheduleCRUDService {
 	 * @return int(boolean)
 	 */
 	public int insertTrainingSchedule(TrainingSchedule schedule) {
-		jtemp = getJdbcTemplate();
+		jtemp = DAOJDBCTemplate.getJdbcTemplate();
 		int ret = jtemp.update("insert into TRAINING_SCHEDULE values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 								new Object[] {
 										schedule.getTraining_schedule_id(),

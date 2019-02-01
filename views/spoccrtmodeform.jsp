@@ -11,6 +11,13 @@
 <body>
 <h1>Classroom Training Mode</h1>
 <hr size="4" color="black"/>
+<br>
+<f:form action="confirmcrtmode">
+	<f:input path="internal_training_id" cssStyle="background-color: #D3D3D3" readonly="true"/>
+	<f:input path=""/>
+	<f:input path=""/>
+	<f:button>Save Updates</f:button>
+</f:form>
 
 <br>
 <br>
