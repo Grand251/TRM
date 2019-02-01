@@ -389,7 +389,7 @@ class Internal_trainer {
 }
 
 class TrainingSchedule {
-	private int training_schedule_id;
+	private String training_schedule_id;
 	private String training_city;
 	private String training_state;
 	private String training_country;
@@ -472,7 +472,7 @@ class TrainingSchedule {
 		this.training_end_date=training_end_date;
 	}
 
-	public int getTraining_schedule_id() {
+	public String getTraining_schedule_id() {
 		return training_schedule_id;
 	}
 

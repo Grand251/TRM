@@ -30,8 +30,8 @@ public class InternalTrainingRequest {
 	public int getItrId() {
 		return itrId;
 	}
-	public void setItrId(int itrId) {
-		this.itrId = itrId;
+	public void setItrId(String string) {
+		this.itrId = string;
 	}
 	public int getItrStatus() {
 		return itrStatus;
