@@ -1,4 +1,4 @@
-package trm.dao;
+package trm.dao.trainingrequest;
 
 import java.sql.Timestamp;
 
