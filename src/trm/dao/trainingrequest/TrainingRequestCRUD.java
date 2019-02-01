@@ -1,12 +1,11 @@
-package trm.dao;
+package trm.dao.trainingrequest;
 
 import java.util.List;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
-
-import DAOJDBCTemplate.DAOJDBCTemplate;
+import trm.dao.DAOJDBCTemplate;
 
 public class TrainingRequestCRUD 
 {
@@ -89,7 +88,7 @@ public class TrainingRequestCRUD
 	{
 		jTemp = DAOJDBCTemplate.getJdbcTemplate();
 		TrainingRequest trainingRequest = jTemp.queryForObject("Select * from training_request where training_request_id = ?",
-												   				new Object[]{trainingRequestId}, new TRM.DAO.TrainingRequest.TrainingRequestMapper());
+												   				new Object[]{trainingRequestId}, new TrainingRequestMapper());
 		return trainingRequest;
 	}
 	
@@ -104,7 +103,7 @@ public class TrainingRequestCRUD
 	public List<TrainingRequest> getAllTrainingRequest()
 	{
 		jTemp = DAOJDBCTemplate.getJdbcTemplate();
-		List<TrainingRequest> custList = jTemp.query("Select * from training_request" , new TRM.DAO.TrainingRequest.TrainingRequestMapper());
+		List<TrainingRequest> custList = jTemp.query("Select * from training_request" , new TrainingRequestMapper());
 		return custList;
 	}
 }

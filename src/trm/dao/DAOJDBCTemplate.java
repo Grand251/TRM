@@ -1,4 +1,4 @@
-package DAOJDBCTemplate;
+package trm.dao;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
