@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
+
 import trm.dao.DAOJDBCTemplate;
 
 public class TrainingRequestCRUD 
@@ -103,6 +104,7 @@ public class TrainingRequestCRUD
 	public List<TrainingRequest> getAllTrainingRequest()
 	{
 		jTemp = DAOJDBCTemplate.getJdbcTemplate();
+
 		List<TrainingRequest> custList = jTemp.query("Select * from training_request" , new TrainingRequestMapper());
 		return custList;
 	}
