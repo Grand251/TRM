@@ -8,8 +8,8 @@
 </head>
 <body>
 <h1>Request Overview</h1>
-<a href="daniel">Training Details</a><br>
-<a href="CRT">CRT</a><a href="WT">WT</a><br>
+<a href="spocfirststep">Training Details</a><br>
+<a href="crtmodeform">CRT</a><a href="wtmodeform">WT</a><br>
 <a href="pmastatus">PMA Status</a><br>
 <a href="confirmtrainingform">Confirm</a><br>
 </body>

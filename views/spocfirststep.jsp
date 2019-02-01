@@ -11,7 +11,7 @@
 </head>
 <body>
 <h1>SPOC Input Data</h1>
-	<form action="SPOCInputData">
+	<form action="spocinputdata">
 		Training Type: 
 		<select name="type">
 			<option>IT</option>
