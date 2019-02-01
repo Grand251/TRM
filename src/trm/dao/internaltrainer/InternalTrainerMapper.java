@@ -5,9 +5,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
-
 import trm.dao.employee.Employee;
 import trm.dao.employee.EmployeeCRUDService;
+import trm.dao.employee.EmployeeCRUDService;
+import trm.dao.employee.Employee;
+
 
 public class InternalTrainerMapper implements RowMapper<InternalTrainer>{
 

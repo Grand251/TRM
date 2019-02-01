@@ -1,9 +1,11 @@
 package trm.dao.internaltrainingrequest;
 
-
 import trm.dao.trainingrequest.TrainingRequest;
 import trm.dao.trainingschedule.TrainingSchedule;
 import trm.dao.employee.Employee;
+import trm.dao.trainingschedule.TrainingSchedule;
+import trm.dao.employee.Employee;
+import trm.dao.trainingrequest.TrainingRequest;
 
 public class InternalTrainingRequest {
 	/*CREATE TABLE INTERNAL_TRAINING_REQUEST
@@ -30,8 +32,8 @@ public class InternalTrainingRequest {
 	public int getItrId() {
 		return itrId;
 	}
-	public void setItrId(String string) {
-		this.itrId = string;
+	public void setItrId(int itrId) {
+		this.itrId = itrId;
 	}
 	public int getItrStatus() {
 		return itrStatus;

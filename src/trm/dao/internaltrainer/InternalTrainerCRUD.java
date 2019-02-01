@@ -3,7 +3,9 @@ package trm.dao.internaltrainer;
 
 import java.util.List;
 import trm.dao.DAOJDBCTemplate;
-
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /*
  * CREATE TABLE INTERNAL_TRAINER
@@ -20,7 +22,7 @@ public class InternalTrainerCRUD {
 	 * Get List (ArrayList) of an InternalTrainer object for all internal trainers in database.
 	 */
 	public List<InternalTrainer> getAllInternalTrainers(){
-		return trm.dao.DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM internal_trainer", new InternalTrainerMapper());
+		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM internal_trainer", new InternalTrainerMapper());
 	}
 	
 	/*
@@ -29,7 +31,7 @@ public class InternalTrainerCRUD {
 	 *  @param trainerId Target trainer's employee id.
 	 */
 	public InternalTrainer getInternalTrainerById(int trainerId){
-		return trm.dao.DAOJDBCTemplate.getJdbcTemplate().queryForObject("SELECT * FROM internal_trainer "
+		return DAOJDBCTemplate.getJdbcTemplate().queryForObject("SELECT * FROM internal_trainer "
 				+ "WHERE it_trainer_id=?", new Object[] {trainerId}, new InternalTrainerMapper());
 	}
 	
@@ -41,7 +43,7 @@ public class InternalTrainerCRUD {
 	 * @param trainer Trainer object containing details to be updated. 
 	 */
 	public int insertInternalTrainer(InternalTrainer trainer) {
-		return trm.dao.DAOJDBCTemplate.getJdbcTemplate().update("INSERT INTO internal_trainer VALUES(?, ?, ?)",
+		return DAOJDBCTemplate.getJdbcTemplate().update("INSERT INTO internal_trainer VALUES(?, ?, ?)",
 				new Object[]{trainer.getTrainer().getEmployee_id(), trainer.getProfileFilePath(),
 						  trainer.getTrainerLocation()});
 	}
@@ -54,7 +56,7 @@ public class InternalTrainerCRUD {
 	 * @param trainer Trainer object which must contain Employee with 
 	 */
 	public int updateInternalTrainer(InternalTrainer trainer) {
-		return trm.dao.DAOJDBCTemplate.getJdbcTemplate().update("UPDATE internal_trainer SET profile_file_path=?, "
+		return DAOJDBCTemplate.getJdbcTemplate().update("UPDATE internal_trainer SET profile_file_path=?, "
 										+ "trainer_location=? WHERE it_trainer_id= ?",
 				new Object[]{trainer.getProfileFilePath(),
 						  trainer.getTrainerLocation(), trainer.getTrainer().getEmployee_id()});
