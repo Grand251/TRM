@@ -1,11 +1,9 @@
-package dao.employee.mapper;
+package trm.dao.employee;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
-
-import dao.employee.*;
 /**
  * This is Employee mapper class
  * @author kei Ng

@@ -1,4 +1,4 @@
-package dao.employee;
+package trm.dao.employee;
 /**
  * This is Employee class
  * @author Kei Ng
