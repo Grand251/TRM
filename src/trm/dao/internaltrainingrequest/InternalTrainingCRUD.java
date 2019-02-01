@@ -1,12 +1,13 @@
-package dao.internaltrainingrequest;
+package trm.dao.internaltrainingrequest;
 
 
 import java.util.List;
 
-import dao.DAOJDBCTemplate;
-import dao.trainingrequest.TrainingRequest;
-import dao.trainingschedule.TrainingSchedule;
-import trm.employee.Employee;
+import trm.dao.employee.Employee;
+import trm.dao.DAOJDBCTemplate;
+import trm.dao.trainingrequest.TrainingRequest;
+import trm.dao.trainingschedule.TrainingSchedule;
+
 
 /*CREATE TABLE INTERNAL_TRAINING_REQUEST
 (
