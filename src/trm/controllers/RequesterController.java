@@ -238,18 +238,4 @@ public class RequesterController
 
 
 
-
-	@RequestMapping(value = "saveUpdateData")
-	public String saveUpdatedCustomerDetails(/*@ModelAttribute("request") TrainingRequest request, */ModelMap map) {
-		//int ret = new TrainingRequestCRUD().updateTrainingRequest(request);
-		int ret = 1;
-		if (ret > 0)
-			return "testMainMenu";
-		else
-			return "error";
-	}
-
-
-
-
 }
