@@ -3,7 +3,7 @@ package trm.dao.trainingrequestlog;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import DAOJDBCTemplate.DAOJDBCTemplate;
+import trm.dao.DAOJDBCTemplate;
 
 public class TrainingRequestLogCRUD 
 {
@@ -75,7 +75,7 @@ public class TrainingRequestLogCRUD
 	{
 		jTemp = DAOJDBCTemplate.getJdbcTemplate();
 		TrainingRequestLog trainingRequestLog = jTemp.queryForObject("Select * from training_request_log where request_log_id = ?",
-												   				new Object[]{trainingRequestLogId}, new TRM.DAO.TrainingRequestLog.TrainingRequestLogMapper());
+												   				new Object[]{trainingRequestLogId}, new TrainingRequestLogMapper());
 		return trainingRequestLog;
 	}
 	
@@ -90,7 +90,7 @@ public class TrainingRequestLogCRUD
 	public List<TrainingRequestLog> getAllTrainingRequestLog()
 	{
 		jTemp = DAOJDBCTemplate.getJdbcTemplate();
-		List<TrainingRequestLog> custList = jTemp.query("Select * from training_request_log" , new TRM.DAO.TrainingRequestLog.TrainingRequestLogMapper());
+		List<TrainingRequestLog> custList = jTemp.query("Select * from training_request_log" , new TrainingRequestLogMapper());
 		return custList;
 	}
 }

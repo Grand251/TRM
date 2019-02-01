@@ -1,4 +1,4 @@
-package trm.dao.trainingrequestLog;
+package trm.dao.trainingrequestlog;
 
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;

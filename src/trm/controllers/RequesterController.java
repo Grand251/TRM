@@ -20,6 +20,7 @@ public class RequesterController
 	@RequestMapping(value = "/pmdashboard")
 	public String openMainView(ModelMap map) 
 	{
+		DataStore.loadData();
 		List<TrainingRequest> newReqs = new RequestCRUDService().getITNewRequests();
 		List<TrainingRequest> inProgressReqs = new RequestCRUDService().getITInProgressRequests();
 		List<TrainingRequest> doneReqs = new RequestCRUDService().getITDoneRequests();
@@ -28,7 +29,7 @@ public class RequesterController
 		map.addAttribute("inProgressReqs", inProgressReqs);
 		map.addAttribute("doneReqs", doneReqs);
 		
-		return "PMDashboard";
+		return "pmdashboard";
 	}
 	
 	@RequestMapping(value = "createrequest")
@@ -65,7 +66,7 @@ public class RequesterController
 //			return "error";
 	}
 	
-	@RequestMapping(value="requester/requests/{id}", method=RequestMethod.DELETE)
+	@RequestMapping(value="requests/{id}/delete")
 	public String deleteRequest(@PathVariable("id") int reqId)
 	{
 		int ret = new RequestCRUDService().deleteTrainingRequest(reqId);
@@ -90,31 +91,38 @@ public class RequesterController
 	static class DataStore
 	{
 		static List<TrainingRequest> requests = new ArrayList<TrainingRequest>();
+		
+		static void loadData()
+		{
+			List<TrainingRequest> reqs = new ArrayList<TrainingRequest>();
+			
+			TrainingRequest req = new TrainingRequest();
+			Random rand = new Random();
+			
+			req.setTrainingRequestId(rand.nextInt());
+			reqs.add(req);
+			
+			req = new TrainingRequest();
+			req.setTrainingRequestId(rand.nextInt());
+			reqs.add(req);
+			
+			req = new TrainingRequest();
+			req.setTrainingRequestId(rand.nextInt());
+			reqs.add(req);
+			
+			req = new TrainingRequest();
+			req.setTrainingRequestId(rand.nextInt());
+			reqs.add(req);
+			
+			requests = reqs;
+		}
 	}
 	
 	class RequestCRUDService extends TrainingRequestCRUD
 	{		
 		public List<TrainingRequest> getITNewRequests()
 		{
-			List<TrainingRequest> reqs = new ArrayList<TrainingRequest>();
-			
-			TrainingRequest req = new TrainingRequest();
-			req.setRequesterId(new Random().nextInt());
-			reqs.add(req);
-			
-			req = new TrainingRequest();
-			req.setRequesterId(new Random().nextInt());
-			reqs.add(req);
-			
-			req = new TrainingRequest();
-			req.setRequesterId(new Random().nextInt());
-			reqs.add(req);
-			
-			req = new TrainingRequest();
-			req.setRequesterId(new Random().nextInt());
-			reqs.add(req);
-			
-			return reqs;
+			return DataStore.requests;
 		}
 		
 		public List<TrainingRequest> getITInProgressRequests()
@@ -129,6 +137,20 @@ public class RequesterController
 			List<TrainingRequest> reqs = new ArrayList<TrainingRequest>();
 			
 			return reqs;
+		}
+		
+		public int deleteTrainingRequest(int id)
+		{
+			for (int i = 0; i < DataStore.requests.size(); ++i)
+			{
+				if (DataStore.requests.get(i).getTrainingRequestId() == id)
+				{
+					DataStore.requests.remove(i);
+					return 1;
+				}
+			}
+			
+			return 0;
 		}
 		
 		public int confirmSchedule(int id)
