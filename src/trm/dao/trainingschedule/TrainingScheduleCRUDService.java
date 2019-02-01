@@ -1,4 +1,5 @@
-package dao.trainingschedule;
+package trm.dao.trainingschedule;
+
 
 import java.sql.Date;
 import java.util.List;
@@ -7,8 +8,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import dao.trainingschedule.mapper.TrainingScheduleMapper;
-
+import trm.dao.trainingschedule.mapper.TrainingScheduleMapper;
+import trm.dao.trainingschedule.mapper.*;
+import trm.dao.trainingschedule.*;
+import trm.dao.DAOJDBCTemplate;
 /**
  * CRUD Service for Training Schedule
  * @author Kei Ng

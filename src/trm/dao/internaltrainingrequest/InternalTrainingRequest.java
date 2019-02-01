@@ -1,8 +1,8 @@
-package dao.internaltrainingrequest;
+package trm.dao.internaltrainingrequest;
 
 
-import dao.trainingrequest.TrainingRequest;
-import dao.trainingschedule.TrainingSchedule;
+import trm.dao.trainingrequest.TrainingRequest;
+import trm.dao.trainingschedule.TrainingSchedule;
 import trm.employee.Employee;
 
 public class InternalTrainingRequest {
