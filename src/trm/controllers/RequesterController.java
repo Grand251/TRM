@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import trm.dao.employee.Employee;
+
 import trm.dao.trainingrequest.*;
 
 @Controller
@@ -234,17 +235,21 @@ public class RequesterController
 			return emp; 
 		}
 	}
-}
 
-//dummy class
-class Request{
-	private Timestamp requestTimeStamp;
 
-	public Timestamp getRequestTimeStamp() {
-		return requestTimeStamp;
+
+
+	@RequestMapping(value = "saveUpdateData")
+	public String saveUpdatedCustomerDetails(/*@ModelAttribute("request") TrainingRequest request, */ModelMap map) {
+		//int ret = new TrainingRequestCRUD().updateTrainingRequest(request);
+		int ret = 1;
+		if (ret > 0)
+			return "testMainMenu";
+		else
+			return "error";
 	}
 
-	public void setRequestTimeStamp(Timestamp timestamp) {
-		this.requestTimeStamp = timestamp;
-	}
+
+
+
 }

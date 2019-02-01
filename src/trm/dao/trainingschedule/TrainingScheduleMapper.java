@@ -1,8 +1,16 @@
+<<<<<<< HEAD:src/trm/dao/trainingschedule/TrainingScheduleMapper.java
 package trm.dao.trainingschedule;
+=======
+package trm.dao.trainingschedule.mapper;
+>>>>>>> ITModeUpdate:src/trm/dao/trainingschedule/mapper/TrainingScheduleMapper.java
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
+<<<<<<< HEAD:src/trm/dao/trainingschedule/TrainingScheduleMapper.java
+=======
+
+>>>>>>> ITModeUpdate:src/trm/dao/trainingschedule/mapper/TrainingScheduleMapper.java
 import trm.dao.trainingschedule.TrainingSchedule;
 
 public class TrainingScheduleMapper implements RowMapper<TrainingSchedule>{

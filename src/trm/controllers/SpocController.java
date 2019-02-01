@@ -42,7 +42,7 @@ public class SpocController {
 	public String SelectedCRTMode(ModelMap map, @ModelAttribute("ITRequest") InternalTrainingRequest ITRequest)
 	{
 		TrainingSchedule schedule = new TrainingSchedule();
-		ITRequest.setInternal_training_mode("CRT");
+		ITRequest.setItrMode("CRT");
 		map.addAttribute("command", ITRequest);
 		map.addAttribute("command", schedule);
 		return "crtmodeform";
@@ -65,7 +65,7 @@ public class SpocController {
 	public String SelectedWTMode(ModelMap map, @ModelAttribute("ITRequest") InternalTrainingRequest ITRequest)
 	{
 		TrainingSchedule schedule = new TrainingSchedule();
-		ITRequest.setInternal_training_mode("WT");
+		ITRequest.setItrMode("WT");
 		map.addAttribute("command", ITRequest);
 		map.addAttribute("command", schedule);
 		return "crtmodeform";
