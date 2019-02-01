@@ -52,7 +52,7 @@ public class SpocController {
 	public String ConfirmCRTMode(ModelMap map, @ModelAttribute("schedule") TrainingSchedule schedule, 
 			@ModelAttribute("ITRequest") trm.dao.internaltrainingrequest.InternalTrainingRequest ITRequest)
 	{
-		ITRequest.setItrId(schedule.getTraining_schedule_id());
+		ITRequest.setItrSchedule(schedule);
 		int ret = new InternalTrainingCRUD().updateItr(ITRequest);
 		if (ret > 0)
 			return "spocdashboard";
@@ -75,7 +75,7 @@ public class SpocController {
 	public String ConfirmWTMode(ModelMap map, @ModelAttribute("schedule") TrainingSchedule schedule, 
 			@ModelAttribute("ITRequest") trm.dao.internaltrainingrequest.InternalTrainingRequest ITRequest)
 	{
-		ITRequest.setItrId(schedule.getTraining_schedule_id());
+		ITRequest.setItrSchedule(schedule);
 		int ret = new InternalTrainingCRUD().updateItr(ITRequest);
 		if (ret > 0)
 			return "spocdashboard";
