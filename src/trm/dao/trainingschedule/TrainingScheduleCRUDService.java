@@ -3,7 +3,9 @@ package trm.dao.trainingschedule;
 import java.sql.Date;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
+
 import trm.dao.DAOJDBCTemplate;
+import trm.dao.trainingschedule.mapper.TrainingScheduleMapper;
 
 
 /**
