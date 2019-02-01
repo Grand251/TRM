@@ -1,7 +1,6 @@
-package dao.internaltrainer;
+package trm.dao.internaltrainer;
 
-
-import trm.employee.Employee;
+import trm.controllers.*;
 
 /*
  * CREATE TABLE INTERNAL_TRAINER

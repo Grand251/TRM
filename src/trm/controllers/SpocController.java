@@ -6,7 +6,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import trm.dao.*;
+import trm.dao.internaltrainingrequest.InternalTrainingCRUD;
+import trm.dao.internaltrainingrequest.*;
 import trm.dao.trainingrequest.*;
 
 @Controller
@@ -36,22 +37,22 @@ public class SpocController {
 		return "spocdashboard";
 	}
 	// Controllers for ClassroomTrainingMode
-	@RequestMapping(value="CRTMode")
-	public String SelectedCRTMode(ModelMap map, @ModelAttribute("trainingRequest") TrainingRequest training_request)
+	@RequestMapping(value="crtmode")
+	public String SelectedCRTMode(ModelMap map, @ModelAttribute("ITRequest") InternalTrainingRequest ITRequest)
 	{
-		//Get updated internal_training_request
-		//map training_request to command to be passed 
-		map.addAttribute("command", training_request);
+		TrainingSchedule schedule = new TrainingSchedule();
+		ITRequest.setInternal_training_mode("CRT");
+		map.addAttribute("command", ITRequest);
+		map.addAttribute("command", schedule);
 		return "crtmodeform";
 	}
 	
-	@RequestMapping(value="ConfirmCRTMode")
-	public String ConfirmCRTMode(ModelMap map, @ModelAttribute("trainingRequest") TrainingRequest trainingRequest)
+	@RequestMapping(value="confirmcrtMode")
+	public String ConfirmCRTMode(ModelMap map, @ModelAttribute("schedule") TrainingSchedule schedule, 
+			@ModelAttribute("ITRequest") trm.dao.internaltrainingrequest.InternalTrainingRequest ITRequest)
 	{
-		//Save updated request model from spring form
-		int ret = new TrainingRequestCRUD().updateTrainingRequest(trainingRequest);
-		//if updated, redirect to viewAllRequests
-		//else go to error
+		ITRequest.setItrId(schedule.getTraining_schedule_id());
+		int ret = new InternalTrainingCRUD().updateItr(ITRequest);
 		if (ret > 0)
 			return "spocdashboard";
 		else
@@ -59,23 +60,22 @@ public class SpocController {
 	}
 	
 	//Controllers for WebTrainingMode
-	@RequestMapping(value="WTMode")
-	public String SelectedWTMode(ModelMap map, @ModelAttribute("trainingRequest") TrainingRequest trainingRequest)
+	@RequestMapping(value="wtmode")
+	public String SelectedWTMode(ModelMap map, @ModelAttribute("ITRequest") InternalTrainingRequest ITRequest)
 	{
-		//Get updated internal_training_request
-		//map training_request to command to be passed 
-		map.addAttribute("command", trainingRequest);
-
-		return "wtmodeform";
+		TrainingSchedule schedule = new TrainingSchedule();
+		ITRequest.setInternal_training_mode("WT");
+		map.addAttribute("command", ITRequest);
+		map.addAttribute("command", schedule);
+		return "crtmodeform";
 	}
 	
-	@RequestMapping(value="ConfirmWTMode")
-	public String ConfirmWTMode(ModelMap map, @ModelAttribute("trainingRequest") TrainingRequest trainingRequest)
+	@RequestMapping(value="confirmwtMode")
+	public String ConfirmWTMode(ModelMap map, @ModelAttribute("schedule") TrainingSchedule schedule, 
+			@ModelAttribute("ITRequest") trm.dao.internaltrainingrequest.InternalTrainingRequest ITRequest)
 	{
-		//Save updated request model from spring form
-		int ret = new TrainingRequestCRUD().updateTrainingRequest(trainingRequest);
-		//if updated, redirect to viewAllRequests
-		//else go to error
+		ITRequest.setItrId(schedule.getTraining_schedule_id());
+		int ret = new InternalTrainingCRUD().updateItr(ITRequest);
 		if (ret > 0)
 			return "spocdashboard";
 		else
