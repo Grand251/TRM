@@ -1,5 +1,6 @@
 package trm.dao.trainingrequest;
 
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
@@ -23,6 +24,7 @@ public class TrainingRequestMapper implements RowMapper<TrainingRequest>
 			trainingRequest.setRequestProjectSpoc(result.getInt(12));
 			trainingRequest.setExecutiveId(result.getInt(13));
 			trainingRequest.setTimeRequested(result.getTimestamp(14));
+			trainingRequest.setStatus(result.getInt(15));
 			
 			return trainingRequest;
 		}

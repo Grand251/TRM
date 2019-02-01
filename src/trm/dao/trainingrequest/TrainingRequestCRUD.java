@@ -1,7 +1,7 @@
 package trm.dao.trainingrequest;
 
-import java.util.List;
 
+import java.util.List;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,14 +23,14 @@ public class TrainingRequestCRUD
 	public int insertTrainingRequest(TrainingRequest trainingRequest)
 	{
 		jTemp = DAOJDBCTemplate.getJdbcTemplate();
-		int ret = jTemp.update("Insert into training_Request values(training_id_request_seq.nextval,?,?,?,?,?,?,?,?,?,?,?,?,?)" , 
+		int ret = jTemp.update("Insert into training_Request values(training_id_request_seq.nextval,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" , 
 												  new Object[] {trainingRequest.getRequesterId(), trainingRequest.getRequestTrainingType(),
 														  		trainingRequest.getRequestTrainingModule(), trainingRequest.getRequestTrainingModuleScope(),
 														  		trainingRequest.getRequestTrainingMode(), trainingRequest.getRequestStartTime(),
 														  		trainingRequest.getRequestEndTime(), trainingRequest.getRequestLocation(),
 														  		trainingRequest.getRequestTimeZone(), trainingRequest.getApproxNumberOfParticipants(),
 														  		trainingRequest.getRequestProjectSpoc(), trainingRequest.getExecutiveId(),
-														  		trainingRequest.getTimeRequested()});
+														  		trainingRequest.getTimeRequested(), trainingRequest.getStatus()});
 		return ret;
 	}
 	
@@ -65,14 +65,14 @@ public class TrainingRequestCRUD
 		jTemp = DAOJDBCTemplate.getJdbcTemplate();
 		int ret = jTemp.update("Update training_request set requester_id = ?, request_training_type = ?, request_training_module = ?, request_training_module_scope = ?,"
 							 + " request_training_mode = ?, request_start_time = ?, request_end_time = ?, request_location = ?, request_time_zone = ?, request_approx_participant = ?, request_project_spoc = ?,"
-				             + " executive_id = ?, time_requested = ? where training_request_id = ?",
+				             + " executive_id = ?, time_requested = ?, status = ? where training_request_id = ?",
 												  new Object[] {trainingRequest.getRequesterId(), trainingRequest.getRequestTrainingType(),
 														  		trainingRequest.getRequestTrainingModule(), trainingRequest.getRequestTrainingModuleScope(),
 														  		trainingRequest.getRequestTrainingMode(), trainingRequest.getRequestStartTime(),
 														  		trainingRequest.getRequestEndTime(), trainingRequest.getRequestLocation(),
 														  		trainingRequest.getRequestTimeZone(), trainingRequest.getApproxNumberOfParticipants(),
 														  		trainingRequest.getRequestProjectSpoc(), trainingRequest.getExecutiveId(),
-														  		trainingRequest.getTimeRequested(), trainingRequest.getTrainingRequestId()});
+														  		trainingRequest.getTimeRequested(), trainingRequest.getTrainingRequestId(), trainingRequest.getStatus()});
 		return ret;
 	}
 	
