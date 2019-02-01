@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,10 +22,11 @@ public class RequesterController
 	@RequestMapping(value = "/pmdashboard")
 	public String openMainView(ModelMap map) 
 	{
+		RequestCRUDService svc = new RequestCRUDService();
 		DataStore.loadData();
-		List<TrainingRequest> newReqs = new RequestCRUDService().getITNewRequests();
-		List<TrainingRequest> inProgressReqs = new RequestCRUDService().getITInProgressRequests();
-		List<TrainingRequest> doneReqs = new RequestCRUDService().getITDoneRequests();
+		List<TrainingRequest> newReqs = svc.getITNewRequests();
+		List<TrainingRequest> inProgressReqs = svc.getITInProgressRequests();
+		List<TrainingRequest> doneReqs = svc.getITDoneRequests();
 		
 		map.addAttribute("newReq", newReqs);
 		map.addAttribute("inProgressReqs", inProgressReqs);
@@ -69,10 +72,11 @@ public class RequesterController
 	@RequestMapping(value="requests/{id}/delete")
 	public String deleteRequest(@PathVariable("id") int reqId)
 	{
+		JOptionPane.showMessageDialog(null, reqId);
 		int ret = new RequestCRUDService().deleteTrainingRequest(reqId);
 		
 		if(ret > 0)
-			return "redirect:/requester/dashboard";
+			return "redirect:/pmdashboard";
 		else
 			return "error";
 	}
@@ -91,30 +95,35 @@ public class RequesterController
 	static class DataStore
 	{
 		static List<TrainingRequest> requests = new ArrayList<TrainingRequest>();
+		static boolean hasLoaded = false;
 		
 		static void loadData()
 		{
-			List<TrainingRequest> reqs = new ArrayList<TrainingRequest>();
-			
-			TrainingRequest req = new TrainingRequest();
-			Random rand = new Random();
-			
-			req.setTrainingRequestId(rand.nextInt());
-			reqs.add(req);
-			
-			req = new TrainingRequest();
-			req.setTrainingRequestId(rand.nextInt());
-			reqs.add(req);
-			
-			req = new TrainingRequest();
-			req.setTrainingRequestId(rand.nextInt());
-			reqs.add(req);
-			
-			req = new TrainingRequest();
-			req.setTrainingRequestId(rand.nextInt());
-			reqs.add(req);
-			
-			requests = reqs;
+			if (!hasLoaded)
+			{
+				List<TrainingRequest> reqs = new ArrayList<TrainingRequest>();
+				
+				TrainingRequest req = new TrainingRequest();
+				Random rand = new Random();
+				
+				req.setTrainingRequestId(rand.nextInt());
+				reqs.add(req);
+				
+				req = new TrainingRequest();
+				req.setTrainingRequestId(rand.nextInt());
+				reqs.add(req);
+				
+				req = new TrainingRequest();
+				req.setTrainingRequestId(rand.nextInt());
+				reqs.add(req);
+				
+				req = new TrainingRequest();
+				req.setTrainingRequestId(rand.nextInt());
+				reqs.add(req);
+				
+				requests = reqs;
+				hasLoaded = true;
+			}
 		}
 	}
 	
@@ -156,6 +165,22 @@ public class RequesterController
 		public int confirmSchedule(int id)
 		{
 			return 0;
+		}
+		
+		public Employee getExecutiveById(int execId)
+		{
+			Employee emp = new Employee();
+			emp.setFirst_name("Sammy");
+			
+			return emp; 
+		}
+		
+		public Employee getSPOCById(int spocId)
+		{
+			Employee emp = new Employee();
+			emp.setFirst_name("Sammy");
+			
+			return emp; 
 		}
 	}
 }
