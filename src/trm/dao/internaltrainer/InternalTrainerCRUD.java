@@ -1,4 +1,4 @@
-package dao.internaltrainer;
+package trm.dao.internaltrainer;
 
 
 import java.util.List;
@@ -7,8 +7,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import dao.DAOJDBCTemplate;
-import trm.employee.Employee;
+import trm.dao.DAOJDBCTemplate;
+import trm.dao.employee.Employee;
 
 /*
  * CREATE TABLE INTERNAL_TRAINER

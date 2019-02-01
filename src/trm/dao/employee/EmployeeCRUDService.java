@@ -1,4 +1,4 @@
-package dao.employee;
+package trm.dao.employee;
 
 import java.sql.Date;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import dao.employee.mapper.EmployeeMapper;
+import trm.dao.employee.mapper.EmployeeMapper;
 /**
  * CRUD Service for employee
  * @author Kei Ng

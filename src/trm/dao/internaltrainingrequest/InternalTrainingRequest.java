@@ -1,9 +1,9 @@
-package dao.internaltrainingrequest;
+package trm.dao.internaltrainingrequest;
 
 
-import dao.trainingrequest.TrainingRequest;
-import dao.trainingschedule.TrainingSchedule;
-import trm.employee.Employee;
+import trm.dao.trainingrequest.TrainingRequest;
+import trm.dao.trainingschedule.TrainingSchedule;
+import trm.dao.employee.Employee;
 
 public class InternalTrainingRequest {
 	/*CREATE TABLE INTERNAL_TRAINING_REQUEST
