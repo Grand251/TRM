@@ -1,4 +1,5 @@
-package trm.dao;
+package trm.dao.trainingrequest;
+
 
 import java.sql.Timestamp;
 
@@ -18,6 +19,7 @@ public class TrainingRequest
 	private int requestProjectSpoc;
 	private int executiveId;
 	private Timestamp timeRequested;
+	private int status;
 	
 	public int getTrainingRequestId() 
 	{
@@ -157,6 +159,16 @@ public class TrainingRequest
 	public void setRequestTrainingType(String requestTrainingType) 
 	{
 		this.requestTrainingType = requestTrainingType;
+	}
+
+	public int getStatus() 
+	{
+		return status;
+	}
+
+	public void setStatus(int status) 
+	{
+		this.status = status;
 	}
 	
 	

@@ -4,13 +4,23 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Edit</title>
+<title>Login</title>
 </head>
 <body>
-<h1>Request Overview</h1>
-<a href="daniel">Training Details</a><br>
-<a href="CRT">CRT</a><a href="WT">WT</a><br>
-<a href="pmastatus">PMA Status</a><br>
-<a href="confirmtrainingform">Confirm</a><br>
+
+<form action="login">
+	ID
+	<input type="text" name="id"> <br />
+	<select name="jobTitle">
+		<option>PM</option>
+		<option>SPOC</option>
+		<option>EX</option>
+	</select>
+	
+	
+<input type="submit" value="login">
+
+</form>
+
 </body>
 </html>
