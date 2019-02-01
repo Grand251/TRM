@@ -28,10 +28,10 @@ public class SpocController {
 		return "requestoverview";
 	}
 	
-	@RequestMapping(value="allrequests")
+	@RequestMapping(value="spocdashboard")
 	public String showAllRequests(ModelMap model) {
 		
-		return "allrequests";
+		return "spocdashboard";
 	}
 	// Controllers for ClassroomTrainingMode
 	@RequestMapping(value="CRTMode")

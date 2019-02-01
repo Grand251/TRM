@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class RequesterController 
 {
-	@RequestMapping(value = "/")
+	@RequestMapping(value = "pmdashboard")
 	public String openMainView() 
 	{
-		
-		
-		return "dashboard";
+		return "pmdashboard";
 	}
 	
 	@RequestMapping(value = "createrequest")
