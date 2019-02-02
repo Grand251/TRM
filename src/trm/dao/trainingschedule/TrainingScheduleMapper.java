@@ -1,11 +1,9 @@
-
 package trm.dao.trainingschedule;
-
-
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
+
 import trm.dao.trainingschedule.TrainingSchedule;
 
 public class TrainingScheduleMapper implements RowMapper<TrainingSchedule>{
