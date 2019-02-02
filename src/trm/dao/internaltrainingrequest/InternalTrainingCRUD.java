@@ -191,10 +191,7 @@ public class InternalTrainingCRUD {
 				
 	}
 	
-	/*
-	 * 
-	 * TEST SCRIPT
-	 * public static void main(String[] args) {
+	public static void main(String[] args) {
 	 
 		InternalTrainingCRUD itCRUD = new InternalTrainingCRUD();
 		Employee spoc = new Employee();
@@ -233,5 +230,5 @@ public class InternalTrainingCRUD {
 		itr.setItrStatus(2);
 		itr.setItrStatusDescription("great status");
 		System.out.println(itCRUD.updateItr(itr));
-	}*/
+	}
 }
