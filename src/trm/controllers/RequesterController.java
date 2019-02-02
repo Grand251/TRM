@@ -34,7 +34,7 @@ public class RequesterController
 		map.addAttribute("inProgressReqs", inProgressReqs);
 		map.addAttribute("doneReqs", doneReqs);
 		
-		return "pmdashboard";
+		return "PMDashboard";
 	}
 
 	@RequestMapping(value = "createrequest")
