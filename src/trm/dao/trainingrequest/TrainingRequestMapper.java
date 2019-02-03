@@ -1,4 +1,4 @@
-	package trm.dao.trainingrequest;
+package trm.dao.trainingrequest;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +14,8 @@ public class TrainingRequestMapper implements RowMapper<TrainingRequest>
 	 * Maps the columns of the result set to a Training Request object.
 	 * This mapper is used for queries where the query selects all
 	 * columns of the training_request table. 
+	 * This mapper is used for queries where the query selects all or
+	 * only one of the columns of the training_request table. 
 	 *
 	 * @param  Result set of the query.
 	 * @return Training request object that was mapped.

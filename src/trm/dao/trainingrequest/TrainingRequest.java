@@ -11,20 +11,52 @@ public class TrainingRequest
 	//Training request instance variables. 
 	//They refer to the attributes in the 
 	//training_request table
+
+    	//Unique ID for each request. For RDBMS purposes only.
 	private int trainingRequestId;
+	
+	//The employee id of the project manager who made the request.
 	private int requesterId;
+	
+	//Internal training, development team training, or vendor training.
 	private String requestTrainingType;
+	
+	//The subject. Java, .NET, etc.
 	private String requestTrainingModule;
+	
+	//What specifics the training could cover. Spring, Spring MVC etc.
 	private String requestTrainingModuleScope;
+	
+	//Class room or web based.
 	private String requestTrainingMode;
+	
+	//The time the PM wishes the training to start.
 	private Timestamp requestStartTime;
+	
+	//The time the PM wished the training to end.
 	private Timestamp requestEndTime;
+	
+	//The location the PM wishes the training to take place.
 	private String requestLocation;
+	
+	//Time zone of the location.
 	private String requestTimeZone;
+	
+	//Number of trainees that may attend.
 	private int approxNumberOfParticipants;
+	
+	//If the PM has a team member in mind for a SPOC they can specify them here.
 	private int requestProjectSpoc;
+	
+	//If the PM has an executive in mind they can specify them here.
 	private int executiveId;
+	
+	//The time the request was made. Not when the training takes place.
 	private Timestamp timeRequested;
+	
+	//The status of the request. 
+	//Possible values: Request made, request being processed, 
+	//type(IT or VT) being decided, type decided.
 	private int status;
 	
 	/*
