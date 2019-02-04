@@ -25,7 +25,7 @@
             </div>
             <!-- Right-aligned links -->
             <div id="right-header">
-                <a href="about.html" class="about">About</a>
+                <a href="#" class="about">About</a>
                 <a href="#" class="logolink" title="Home">
                     <img class="logoimage2" src="resources/img/as-logo.png" alt="Home">
                 </a>
