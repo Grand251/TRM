@@ -31,7 +31,7 @@
 </script>
 </head>
 <body>
-	<h1>Dashboard</h1>
+	<h1>${name}'s Dashboard</h1>
 	<br>
 	<br>
 	<a href="createrequest">Create Request</a>
