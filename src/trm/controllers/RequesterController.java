@@ -6,11 +6,16 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import trm.dao.employee.Employee;
 import trm.dao.internaltrainingrequest.InternalTrainingCRUD;
 import trm.dao.internaltrainingrequest.InternalTrainingRequest;
 import trm.dao.trainingrequest.*;
@@ -20,38 +25,50 @@ import trm.requestor.PMRequestInfo;
 public class RequesterController 
 {
 	@RequestMapping(value = "/pmdashboard")
-	public String openMainView(ModelMap map) 
+	public String openMainView(HttpServletRequest request, ModelMap map) 
 	{
+		if (request.getSession(false) == null || request.getSession().getAttribute("user") == null)
+			return "redirect:/loginform";
+		
 		InternalTrainingCRUD trainingSvc = new InternalTrainingCRUD();
 		
 		List<PMRequestInfo> requests = new ArrayList<PMRequestInfo>();
+		Employee pm = (Employee) request.getSession().getAttribute("user");
 		
-		for (TrainingRequest req : new TrainingRequestCRUD().getAllTrainingRequestForPM(1000034))
+		for (TrainingRequest req : new TrainingRequestCRUD().getAllTrainingRequestForPM(pm.getEmployee_id()))
 		{			
-			try
+			if (req.getStatus() >= 0)
 			{
-				InternalTrainingRequest itr = trainingSvc.getItrByTrainingRequest(req.getTrainingRequestId());
-				requests.add(new PMRequestInfo(req, itr, itr.getItrSchedule(), itr.getItrTrainer(), itr.getItrSpoc()));
-			}
-			catch (Exception e)
-			{
-				System.out.println(req.getTrainingRequestId() + " : " + e.getMessage());
-				requests.add(new PMRequestInfo(req, null, null, null, null));
+				try
+				{
+					InternalTrainingRequest itr = trainingSvc.getItrByTrainingRequest(req.getTrainingRequestId());
+					requests.add(new PMRequestInfo(req, itr, itr.getItrSchedule(), itr.getItrTrainer(), itr.getItrSpoc()));
+				}
+				catch (Exception e)
+				{
+					System.out.println(req.getTrainingRequestId() + " : " + e.getMessage());
+					requests.add(new PMRequestInfo(req, null, null, null, null));
+				}
 			}
 		}
 		
 		map.addAttribute("requests", requests);
+		map.addAttribute("name", pm.getFirst_name() + " " + pm.getLast_name());
 		
 		return "pmdashboard";
 	}
 	
 	@RequestMapping(value = "createrequest")
-	public String createNewRequests(ModelMap map) {
+	public String createNewRequests(HttpServletRequest request, ModelMap map) {
+		if (request.getSession(false) == null || request.getSession().getAttribute("user") == null)
+			return "redirect:/loginform";
+		
 		return "testNewRequest";
 	}
 
 	@RequestMapping(value = "addnewrequest")
-	public String addNewRequest(@ModelAttribute("requestTrainingType") String requestTrainingType, 
+	public String addNewRequest(HttpServletRequest request,
+	@ModelAttribute("requestTrainingType") String requestTrainingType, 
 	@ModelAttribute("requestTrainingModule") String requestTrainingModule, 
 	@ModelAttribute("requestTrainingModuleScope") String requestTrainingModuleScope, 
 	@ModelAttribute("requestTrainingMode") String requestTrainingMode, 
@@ -63,21 +80,24 @@ public class RequesterController
 	@ModelAttribute("requestTimeZone") String requestTimeZone, 
 	@ModelAttribute("approxNumberOfParticipants") int approxNumberOfParticipants) 
 	{
-		TrainingRequest request = new TrainingRequest();
-		request.setRequesterId(1000019);//Change to session Employee ID
-		request.setRequestTrainingType(requestTrainingType);
-		request.setRequestTrainingModule(requestTrainingModule);
-		request.setRequestTrainingModuleScope(requestTrainingModuleScope);
-		request.setRequestTrainingMode(requestTrainingMode);
-		request.setRequestStartTime(stringToTimestamp(requestStartDate, requestStartTime));
-		request.setRequestEndTime(stringToTimestamp(requestEndDate, requestEndTime));
-		request.setRequestLocation(requestLocation);
-		request.setRequestTimeZone(requestTimeZone);
-		request.setApproxNumberOfParticipants(approxNumberOfParticipants);
+		if (request.getSession(false) == null || request.getSession().getAttribute("user") == null)
+			return "redirect:/loginform";
+		
+		TrainingRequest trainingReq = new TrainingRequest();
+		trainingReq.setRequesterId(((Employee)request.getSession().getAttribute("user")).getEmployee_id());//Change to session Employee ID
+		trainingReq.setRequestTrainingType(requestTrainingType);
+		trainingReq.setRequestTrainingModule(requestTrainingModule);
+		trainingReq.setRequestTrainingModuleScope(requestTrainingModuleScope);
+		trainingReq.setRequestTrainingMode(requestTrainingMode);
+		trainingReq.setRequestStartTime(stringToTimestamp(requestStartDate, requestStartTime));
+		trainingReq.setRequestEndTime(stringToTimestamp(requestEndDate, requestEndTime));
+		trainingReq.setRequestLocation(requestLocation);
+		trainingReq.setRequestTimeZone(requestTimeZone);
+		trainingReq.setApproxNumberOfParticipants(approxNumberOfParticipants);
 		Timestamp requestTime = new Timestamp(System.currentTimeMillis());
-		request.setTimeRequested(requestTime);
-		request.setStatus(0);
-		int ref = new TrainingRequestCRUD().insertTrainingRequest(request);
+		trainingReq.setTimeRequested(requestTime);
+		trainingReq.setStatus(0);
+		int ref = new TrainingRequestCRUD().insertTrainingRequest(trainingReq);
 		if(ref > 0)
 		return "redirect:/pmdashboard";
 		else
@@ -85,15 +105,19 @@ public class RequesterController
 	}
 	
 	@RequestMapping(value = "editrequest/{trainingRequestId}")
-	public String editRequest(@PathVariable("trainingRequestId") int trainingRequestId, ModelMap map) {
-		TrainingRequest request = new TrainingRequestCRUD().getTrainingRequestById(trainingRequestId);
-		map.addAttribute("command", request);
+	public String editRequest(HttpServletRequest request, @PathVariable("trainingRequestId") int trainingRequestId, ModelMap map) 
+	{
+		if (request.getSession(false) == null || request.getSession().getAttribute("user") == null)
+			return "redirect:/loginform";
+		
+		TrainingRequest trainingReq = new TrainingRequestCRUD().getTrainingRequestById(trainingRequestId);
+		map.addAttribute("command", trainingReq);
 		return "testEditRequest";
 	}
 	
 
 	@RequestMapping(value = "saveUpdateData")
-	public String saveUpdatedDetails(@ModelAttribute("trainingRequestId") int trainingRequestId,
+	public String saveUpdatedDetails(HttpServletRequest request, @ModelAttribute("trainingRequestId") int trainingRequestId,
 			@ModelAttribute("requestTrainingType") String requestTrainingType, 
 			@ModelAttribute("requestTrainingModule") String requestTrainingModule, 
 			@ModelAttribute("requestTrainingModuleScope") String requestTrainingModuleScope, 
@@ -103,7 +127,10 @@ public class RequesterController
 			@ModelAttribute("requestEndTime") String requestEndTime,
 			@ModelAttribute("requestTimeZone") String requestTimeZone, 
 			@ModelAttribute("approxNumberOfParticipants") int approxNumberOfParticipants, ModelMap map) {
-
+		
+		if (request.getSession(false) == null || request.getSession().getAttribute("user") == null)
+			return "redirect:/loginform";
+		
 		int ret;
 		ret = new TrainingRequestCRUD().updateTrainingRequestByAttribute(trainingRequestId, "request_Training_Type", requestTrainingType);
 		ret += new TrainingRequestCRUD().updateTrainingRequestByAttribute(trainingRequestId, "request_Training_module", requestTrainingModule);
@@ -122,19 +149,39 @@ public class RequesterController
 	
 	
 	@RequestMapping(value="requests/{id}/delete")
-	public String deleteRequest(@PathVariable("id") int reqId)
+	public String deleteRequest(HttpServletRequest request, @PathVariable("id") int reqId)
 	{
-		int ret = new TrainingRequestCRUD().deleteTrainingRequest(reqId);
+		if (request.getSession(false) == null || request.getSession().getAttribute("user") == null)
+			return "redirect:/loginform";
+		
+		int ret = new TrainingRequestCRUD().updateTrainingRequestByAttribute(reqId, "status", -1);
 		
 		if(ret > 0)
-			return "redirect:/pmdashboard";
-		else
-			return "error";
+		{
+			InternalTrainingCRUD svc = new InternalTrainingCRUD();
+			InternalTrainingRequest itr = svc.getItrByTrainingRequest(reqId);
+			
+			if (itr != null)
+			{
+				itr.setItrStatus(-1);
+				ret = svc.updateItr(itr);
+				
+				if (ret > 0)
+				{
+					return "redirect:/pmdashboard";
+				}
+			}
+		}
+		
+		return "error";
 	}
 	
 	@RequestMapping(value="approve/{id}")
-	public String approveSchedule(@PathVariable("id") int reqId, ModelMap map)
+	public String approveSchedule(HttpServletRequest request, @PathVariable("id") int reqId, ModelMap map)
 	{
+		if (request.getSession(false) == null || request.getSession().getAttribute("user") == null)
+			return "redirect:/loginform";
+		
 		try
 		{
 			InternalTrainingCRUD svc = new InternalTrainingCRUD();
