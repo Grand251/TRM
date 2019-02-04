@@ -7,11 +7,7 @@ import trm.dao.DAOJDBCTemplate;
 import trm.dao.employee.Employee;
 import trm.dao.trainingrequest.TrainingRequest;
 import trm.dao.trainingschedule.TrainingSchedule;
-<<<<<<< HEAD
-=======
 
-
->>>>>>> htemp
 
 
 /*CREATE TABLE INTERNAL_TRAINING_REQUEST
