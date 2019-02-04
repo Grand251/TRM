@@ -6,9 +6,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-import javax.swing.JOptionPane;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,11 +18,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import trm.dao.employee.Employee;
 import trm.dao.employee.EmployeeCRUDService;
-import trm.dao.internaltrainer.InternalTrainer;
 import trm.dao.internaltrainer.InternalTrainerCRUD;
 import trm.dao.internaltrainingrequest.InternalTrainingCRUD;
 import trm.dao.internaltrainingrequest.InternalTrainingRequest;
 import trm.dao.trainingrequest.*;
+import trm.dao.trainingschedule.TrainingScheduleCRUDService;
 import trm.requestor.PMRequestInfo;
 
 @Controller
@@ -32,43 +31,44 @@ public class RequesterController
 	@RequestMapping(value = "/pmdashboard")
 	public String openMainView(ModelMap map) 
 	{
-		TrainingRequestCRUD reqSvc = new TrainingRequestCRUD();
 		InternalTrainingCRUD trainingSvc = new InternalTrainingCRUD();
-		InternalTrainerCRUD trainerSvc = new InternalTrainerCRUD();
-		EmployeeCRUDService empSvc = new EmployeeCRUDService();
 		
 		List<PMRequestInfo> requests = new ArrayList<PMRequestInfo>();
 		
-		for (TrainingRequest req : reqSvc.getAllTrainingRequest())
-		{
+		for (TrainingRequest req : getAllTrainingRequestByEmpId(1000034))
+		{			
 			try
 			{
-				
 				InternalTrainingRequest itr = trainingSvc.getItrByTrainingRequest(req.getTrainingRequestId());
-				Employee trainer = trainerSvc.getInternalTrainerById(itr.getItrId()).getTrainer();
-				Employee spoc = empSvc.getEmployeeById(req.getRequestProjectSpoc());
-				requests.add(new PMRequestInfo(
-						req,
-						spoc.getFirst_name() + " " + spoc.getLast_name(),
-						spoc.getEmail(),
-						itr.getItrStatus(), 
-						trainer.getFirst_name() + " " + trainer.getLast_name(), 
-						trainer.getEmail()));
+				requests.add(new PMRequestInfo(req, itr, itr.getItrSchedule(), itr.getItrTrainer(), itr.getItrSpoc()));
 			}
 			catch (Exception e)
 			{
 				System.out.println(req.getTrainingRequestId() + " : " + e.getMessage());
+				requests.add(new PMRequestInfo(req, null, null, null, null));
 			}
-			
 		}
-		
-		//requests.add(new PMRequestInfo(createRequest(), "Rie Kumar", "rk@gmail.com", 1, "miley", "ml@gmail.com"));
 		
 		map.addAttribute("requests", requests);
 		
-		return "PMDashboard";
+		return "pmdashboard";
 	}
-
+	
+	private List<TrainingRequest> getAllTrainingRequestByEmpId(int id)
+	{
+		List<TrainingRequest> requests = new ArrayList<TrainingRequest>();
+		
+		for (TrainingRequest req : new TrainingRequestCRUD().getAllTrainingRequest())
+		{
+			if (req.getRequesterId() == id)
+			{
+				requests.add(req);
+			}
+		}
+		
+		return requests;
+	}
+	
 	@RequestMapping(value = "createrequest")
 	public String createNewRequests(ModelMap map) {
 		return "testNewRequest";
@@ -112,30 +112,9 @@ public class RequesterController
 	@RequestMapping(value = "editrequest")
 	public String editRequest(/*@PathVariable("trainingRequestId") int trainingRequestId,*/ ModelMap map) {
 		//TrainingRequest request = new TrainingRequestCRUD().getTrainingRequestById(trainingRequestId);
-		TrainingRequest request = createRequest();
-		map.addAttribute("command", request);
+//		TrainingRequest request = createRequest();
+//		map.addAttribute("command", request);
 		return "testEditRequest";
-	}
-	
-//-------------HELPER METHOD FOR TESTING---------
-	public TrainingRequest createRequest() {
-		TrainingRequest r = new TrainingRequest();
-		r.setTrainingRequestId(121212);
-		r.setRequesterId(5056970);
-		r.setRequestTrainingType("Internal Training");
-		r.setRequestTrainingModule("Java");
-		r.setRequestTrainingModuleScope("OOP, AOP, Spring");
-		r.setRequestTrainingMode("Classroom");
-		r.setRequestStartTime(new Timestamp(System.currentTimeMillis()+50000000));
-		r.setRequestEndTime(new Timestamp(System.currentTimeMillis()+1000000000));
-		r.setRequestLocation("Boston, MA");
-		r.setRequestTimeZone("EST");
-		r.setApproxNumberOfParticipants(12);
-		r.setRequestProjectSpoc(5025649);
-		r.setExecutiveId(5046879);
-		r.setTimeRequested(new Timestamp(System.currentTimeMillis()-100000));
-		return r;
-		
 	}
 
 	@RequestMapping(value = "saveUpdateData")
@@ -160,26 +139,32 @@ public class RequesterController
 			return "error";
 	}
 	
-	@RequestMapping(value="requester/schedules/{id}/confirm", method=RequestMethod.PUT)
-	public String confirmSchedule(@PathVariable("id") int scheduleId, ModelMap map)
+	@RequestMapping(value="approve/{id}")
+	public String approveSchedule(@PathVariable("id") int reqId, ModelMap map)
 	{
-		TrainingRequestCRUD svc = new TrainingRequestCRUD();
-		
-		int ret = 0;
-		
-		if(ret>0)
-			return "redirect:/pmdashboard";
-		else
+		try
+		{
+			InternalTrainingCRUD svc = new InternalTrainingCRUD();
+			InternalTrainingRequest itr = svc.getItrByTrainingRequest(reqId);
+			itr.setItrStatus(itr.getItrStatus() + 1);
+			svc.updateItr(itr);
+		}
+		catch (Exception e)
+		{
 			return "error";
+		}
+		
+		return "redirect:/pmdashboard";
 	}
 	
-	private Timestamp stringToTimestamp(String date, String time) {
+	private Timestamp stringToTimestamp(String date, String time) 
+	{
 		LocalDate datePart = LocalDate.parse(date);
-		    LocalTime timePart = LocalTime.parse(time+":00");
-		    LocalDateTime dt = LocalDateTime.of(datePart, timePart);
+		LocalTime timePart = LocalTime.parse(time+":00");
+		LocalDateTime dt = LocalDateTime.of(datePart, timePart);
 
 		Timestamp timestamp = Timestamp.valueOf(dt);
 
 		return timestamp;
-		}
+	}
 }
