@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import trm.dao.DAOJDBCTemplate;
 
+import trm.dao.DAOJDBCTemplate;
+
 /**
  * CRUD Service for employee
  * @author Kei Ng

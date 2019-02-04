@@ -39,9 +39,8 @@
 		<thead>
 			<tr>
 				<th scope="col">ID</th>
-				<th scope="col">Type</th>
-				<th scope="col">Start</th>
-				<th scope="col">End</th>
+				<th scope="col">Trainer Name</th>
+				<th scope="col">Trainer Email</th>
 				<th scope="col">Actions</th>
 			</tr>
 		</thead>
@@ -51,7 +50,7 @@
 					<th scope="row">
 						<button type="button" class="btn btn-info btn-expand">Expand</button>
 						<span style="margin-left: 15px">
-							${request.request.trainingRequestId}
+							${request.id}
 						</span>
 						<div style="margin-top: 15px; display: none;" >
 							<table class="table" style="background-color: transparent;">
@@ -62,6 +61,10 @@
 									</tr>
 								</thead>
 								<tbody>
+									<tr>
+										<td>Status</td>
+										<td>${request.status}</td>
+									</tr>
 									<tr>
 										<td>SPOC Name</td>
 										<td>${request.spocName}</td>
@@ -80,44 +83,57 @@
 									</tr>
 									<tr>
 										<td>Mode</td>
-										<td>${request.request.requestStartTime}</td>
+										<td>${request.mode}</td>
 									</tr>
 									<tr>
 										<td>Training Type</td>
-										<td>${request.request.requestEndTime}</td>
+										<td>${request.type}</td>
 									</tr>
 									<tr>
 										<td>Training Subject</td>
-										<td>${request.request.requestLocation}</td>
+										<td>${request.scope}</td>
 									</tr>
 									<tr>
 										<td># of Participants</td>
-										<td>${request.request.approxNumberOfParticipants}</td>
+										<td>${request.participants}</td>
 									</tr>
 									<tr>
-										<td>Start Time</td>
-										<td>${request.request.timeRequested}</td>
+										<td>Requested Start Time</td>
+										<td>${request.requestedTimeZone} ${request.requestedStartTime}</td>
 									</tr>
 									<tr>
-										<td>End Time</td>
-										<td>${request.request.timeRequested}</td>
+										<td>Requested End Time</td>
+										<td>${request.requestedTimeZone} ${request.requestedEndTime}</td>
 									</tr>
+									<c:if test="${request.isItr}">
+											<tr>
+												<td>Start Time</td>
+												<td>${request.timeZone} ${request.startTime}</td>
+											</tr>
+											<tr>
+												<td>End Time</td>
+												<td>${request.timeZone} ${endTime}</td>
+											</tr>
+									</c:if>
 									<tr>
 										<td>Location</td>
-										<td>${request.request.timeRequested}</td>
+										<td>${request.location}</td>
 									</tr>
 								</tbody>
 							</table>
 						</div>
 					</th>
 					<td>${request.trainerName}</td>
-					<td>${request.trainerEmail}</td>
-					
+					<td>${request.trainerEmail}</td>		
 					<td>
 						<div class="container">
-							<a href='requests/${request.request.trainingRequestId}/delete'>Delete</a>
+							<a href='requests/${request.id}/delete'>Delete</a>
 							|
-							<a href='editrequest/${request.request.trainingRequestId}'>Edit</a>
+							<a href='editrequest/${request.id}'>Edit</a>
+							<c:if test="${request.status == 4}">
+								|
+								<a href='approve/${request.id}'>Approve</a>
+							</c:if>
 						</div>
 					</td>
 				</tr>
