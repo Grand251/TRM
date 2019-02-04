@@ -3,11 +3,8 @@ import java.sql.Timestamp;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-
-import trm.dao.DAOJDBCTemplate;
-import trm.dao.employee.Employee;
-import trm.dao.employee.EmployeeCRUDService;
-
+//import trm.dao.employee.Employee;
+//import trm.dao.employee.EmployeeCRUDService;
 
 
 /*
@@ -56,7 +53,7 @@ public class TrainingRequestCRUD
 	public int deleteTrainingRequest(int trainingRequestId)
 	{
 		jTemp = DAOJDBCTemplate.getJdbcTemplate();
-		int numberOfRowsEffected = jTemp.update("delete from training_request where training_request_id = ?", 
+		int numberOfRowsEffected = jTemp.update("Update training_request set status = -10 where training_request_id = ?", 
 												  new Object[] {trainingRequestId});
 		return numberOfRowsEffected;
 	}
@@ -190,6 +187,21 @@ public class TrainingRequestCRUD
 		return numberOfRowsEffected;
 	}
 	
+	public int updateTrainingRequestScopeTypeModeParticip(int trainingRequestId, String requestScope, String requestType, String requestMode, int requestNumberOfParticipants)
+	{
+	    jTemp = DAOJDBCTemplate.getJdbcTemplate();
+	    int count = jTemp.update("Update training_request set request_training_module_scope = ?, request_training_type = ?, request_training_mode = ?, request_approx_participant = ? where training_request_id = ?",
+		    				           new Object[] {requestScope, requestType, requestMode, requestNumberOfParticipants, trainingRequestId});
+	    return count;
+	}
+	
+	public int updateTrainingRequestTimesTimezoneLocation(int trainingRequestId, Timestamp requestStartTime, Timestamp requestEndTime, String requestTimeZone, String requestLocation)
+	{
+	    jTemp = DAOJDBCTemplate.getJdbcTemplate();
+	    int count = jTemp.update("Update training_request set request_start_time = ?, request_end_time = ?, request_time_zone = ?, request_location = ? where training_request_id = ?",
+		    		      new Object[] { requestStartTime, requestEndTime, requestTimeZone, requestLocation, trainingRequestId});
+	    return count;
+	}
 	
 	/*
 	 * Gets the training request row from the training request table based on the 
@@ -201,10 +213,11 @@ public class TrainingRequestCRUD
 	 * @return Training request object which contains the attributes of the training 
 	 * 		   request needed.
 	 */
+	
 	public TrainingRequest getTrainingRequestById(int trainingRequestId)
 	{
 		jTemp = DAOJDBCTemplate.getJdbcTemplate();
-		TrainingRequest trainingRequest = jTemp.queryForObject("Select * from training_request where training_request_id = ?",
+		TrainingRequest trainingRequest = jTemp.queryForObject("Select * from training_request where training_request_id = ? AND status >= 0",
 												   				new Object[]{trainingRequestId}, new TrainingRequestMapper());
 		return trainingRequest;
 	}
@@ -220,7 +233,7 @@ public class TrainingRequestCRUD
 	public List<TrainingRequest> getAllTrainingRequest()
 	{
 		jTemp = DAOJDBCTemplate.getJdbcTemplate();
-		List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request" , new TrainingRequestMapper());
+		List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request where status >= 0" , new TrainingRequestMapper());
 		return trainingRequestList;
 	}
 	
@@ -247,7 +260,7 @@ public class TrainingRequestCRUD
 	{
 		TrainingRequestCRUD crud = new TrainingRequestCRUD();
 		
-	
+		/*
 		TrainingRequest tr = new TrainingRequest();
 		tr.setRequesterId(1000021);
 		tr.setRequestTrainingType("IT");
@@ -296,9 +309,16 @@ public class TrainingRequestCRUD
 		
 		//crud.deleteTrainingRequest(10014);
 		
-		System.out.println(crud.updateTrainingRequest(tr));
+		//System.out.println(crud.updateTrainingRequest(tr));
 		
-		//System.out.println(crud.getTrainingRequestById(10015).getRequestLocation());
+		//System.out.println(crud.updateTrainingRequestScopeTypeModeParticip(10000, "SpringMVC", "VT", "web based", 20));
+		
+		//System.out.println(crud.getTrainingRequestById(10000).getRequestLocation());
+		
+		Timestamp st = Timestamp.valueOf("2019-04-18 10:00:00");
+		Timestamp et = Timestamp.valueOf("2019-05-28 07:00:00");
+		
+		System.out.println(crud.updateTrainingRequestTimesTimezoneLocation(10000, st, et, "MST", "Phoenix"));
 		
 		/*
 		List<TrainingRequest> list = crud.getAllTrainingRequest();
