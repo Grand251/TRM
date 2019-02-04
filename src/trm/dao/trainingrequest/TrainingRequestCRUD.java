@@ -1,7 +1,10 @@
-package trm.dao.trainingrequest;
+//package trm.dao.trainingrequest;
 import java.sql.Timestamp;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+//import trm.dao.employee.Employee;
+//import trm.dao.employee.EmployeeCRUDService;
 
 
 /*
@@ -72,13 +75,13 @@ public class TrainingRequestCRUD
 		jTemp = DAOJDBCTemplate.getJdbcTemplate();
 		int numberOfRowsEffected = jTemp.update("Update training_request set request_training_type = ?, request_training_module = ?, request_training_module_scope = ?,"
 							 + " request_training_mode = ?, request_start_time = ?, request_end_time = ?, request_location = ?, request_time_zone = ?, request_approx_participant = ?, request_project_spoc = ?,"
-				             + " executive_id = ?, time_requested = ?, status = ? where training_request_id = ?",
+				                         + " executive_id = ?, time_requested = ?, status = ? where training_request_id = ?",
 												  new Object[] {trainingRequest.getRequestTrainingType(),
 														  		trainingRequest.getRequestTrainingModule(), trainingRequest.getRequestTrainingModuleScope(),
 														  		trainingRequest.getRequestTrainingMode(), trainingRequest.getRequestStartTime(),
 														  		trainingRequest.getRequestEndTime(), trainingRequest.getRequestLocation(),
 														  		trainingRequest.getRequestTimeZone(), trainingRequest.getApproxNumberOfParticipants(),
-														  		trainingRequest.getRequestProjectSpoc(), trainingRequest.getRequestExecutive(),
+														  		trainingRequest.getRequestProjectSpoc().getEmployee_id(), trainingRequest.getRequestExecutive().getEmployee_id(),
 														  		trainingRequest.getTimeRequested(), trainingRequest.getTrainingRequestId(), trainingRequest.getStatus()});
 		return numberOfRowsEffected;
 	}
@@ -225,5 +228,81 @@ public class TrainingRequestCRUD
 	        	new Object[] {projectManagerId}, new TrainingRequestMapper());
 	        
 	        return trainingRequestList;
+	}
+	
+	public List<TrainingRequest> getAllTrainingRequestByStatus(int status)
+	{
+	    	jTemp = DAOJDBCTemplate.getJdbcTemplate();
+	    	List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request where status = ?",
+	    								new Object[] {status}, new TrainingRequestMapper());
+	    	
+	    	return trainingRequestList;
+	}
+	
+	
+	public static void main(String[] args)
+	{
+		TrainingRequestCRUD crud = new TrainingRequestCRUD();
+		
+	
+		TrainingRequest tr = new TrainingRequest();
+		tr.setRequesterId(1000021);
+		tr.setRequestTrainingType("IT");
+		tr.setRequestTrainingModule("Java FSD");
+		tr.setRequestTrainingModuleScope("Spring");
+		tr.setRequestTrainingMode("class room");
+		Timestamp st = Timestamp.valueOf("2019-01-08 09:00:00");
+		Timestamp et = Timestamp.valueOf("2019-02-18 03:00:00");
+		tr.setRequestStartTime(st);
+		tr.setRequestEndTime(et);
+		tr.setRequestLocation("Boston");
+		tr.setRequestTimeZone("EST");
+		tr.setApproxNumberOfParticipants(15);
+		
+		Employee spoc = new EmployeeCRUDService().getEmployeeById(1000006);
+		tr.setRequestProjectSpoc(spoc);
+		
+		Employee exec = new EmployeeCRUDService().getEmployeeById(1000012);
+		tr.setRequestExecutive(exec);
+		Timestamp timeR = Timestamp.valueOf("2019-01-18 03:00:00");
+		tr.setTimeRequested(timeR);
+		tr.setStatus(1);
+		
+		/*
+		TrainingRequest tr = new TrainingRequest();
+		tr.setTrainingRequestId(10015);
+		tr.setRequesterId(1000021);
+		tr.setRequestTrainingType("IT");
+		tr.setRequestTrainingModule(".NET");
+		tr.setRequestTrainingModuleScope("VB");
+		tr.setRequestTrainingMode("web based");
+		Timestamp st = Timestamp.valueOf("2019-04-18 10:00:00");
+		Timestamp et = Timestamp.valueOf("2019-05-28 07:00:00");
+		tr.setRequestStartTime(st);
+		tr.setRequestEndTime(et);
+		tr.setRequestLocation("Phoenix");
+		tr.setRequestTimeZone("MST");
+		tr.setApproxNumberOfParticipants(10);
+		tr.setRequestProjectSpoc(1000006);
+		tr.setExecutiveId(1000012);
+		Timestamp timeR = Timestamp.valueOf("2019-02-08 15:30:00");
+		tr.setTimeRequested(timeR);
+		*/
+		
+		//crud.insertTrainingRequest(tr);
+		
+		//crud.deleteTrainingRequest(10014);
+		
+		System.out.println(crud.updateTrainingRequest(tr));
+		
+		//System.out.println(crud.getTrainingRequestById(10015).getRequestLocation());
+		
+		/*
+		List<TrainingRequest> list = crud.getAllTrainingRequest();
+		for(TrainingRequest trainerRequest : list)
+		{
+			System.out.println(trainerRequest.getTrainingRequestId());
+		}
+		*/
 	}
 }
