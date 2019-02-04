@@ -4,15 +4,11 @@ package trm.dao.internaltrainingrequest;
 import java.util.List;
 
 import trm.dao.DAOJDBCTemplate;
-<<<<<<< HEAD
 import trm.dao.employee.Employee;
 import trm.dao.trainingrequest.TrainingRequest;
 import trm.dao.trainingschedule.TrainingSchedule;
-=======
-import trm.dao.trainingrequest.TrainingRequest;
-import trm.dao.trainingschedule.TrainingSchedule;
-import trm.dao.employee.Employee;
->>>>>>> hueytemp
+
+
 
 
 /*CREATE TABLE INTERNAL_TRAINING_REQUEST

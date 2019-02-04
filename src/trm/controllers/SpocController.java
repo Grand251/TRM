@@ -3,6 +3,7 @@ package trm.controllers;
 
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
@@ -10,13 +11,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
 
 import javax.websocket.server.PathParam;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import trm.dao.employee.Employee;
 import trm.dao.employee.EmployeeCRUDService;
@@ -42,6 +47,25 @@ public class SpocController {
 		map.addAttribute("trainingRequest", internalTrainer);
 		return "trbyid";
 	}*/	
+	
+	
+	@RequestMapping(value="viewspocdashboard")
+	public String showDashboard(ModelMap map)
+	{
+		List<TrainingRequest> ntrList = new TrainingRequestCRUD().getAllTrainingRequest();
+		List<Employee> empList = new ArrayList<Employee>();
+		map.addAttribute("ntrList", ntrList);
+		
+		return "spocdashboard";
+	}
+//	
+//	@RequestMapping(value = "/selecttrainingrequest", method = RequestMethod.GET)
+//    public String authenticateUser(@RequestParam("userName") String userName, @RequestParam("password") String password ,Model model) {
+//        System.out.println("coming in controller    " +userName +" : "+ password);  
+//        model.addAttribute("message", "Hello Spring MVC Framework!");
+//        return "success";
+//    }
+	
 	//initBinder allows Spring forms to map user input to attributes of type Employee, TrainingRequest, and TrainingSchedule
 	@InitBinder
 	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder ) {
@@ -166,46 +190,46 @@ public class SpocController {
 //		int ret = new InternalTrainingCRUD().updateItr(ITRequest);
 //	}
 	
-	//Controller to get new training_req for internal_training_req to be initialized
-	@RequestMapping(value="newitr")
-	public String SelectedITR(ModelMap map, RedirectAttributes redirectAttributes,
-			@ModelAttribute("itr") InternalTrainingRequest itr)
-	{	
-//		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh24:mm:ss");
-		Date date = new Date();
-		map.addAttribute("currentTimestamp", date.toString());
-		
-		//set spoc as fixed data for testing
-		Employee spoc = new EmployeeCRUDService().getEmployeeById(1000008);
-		map.addAttribute("spoc", spoc);
-		
-		//temp request to add to new internal training
-		TrainingRequest temp_req = new TrainingRequestCRUD().getTrainingRequestById(10000);
-		
-		if(itr.getItrStatus() == 0)
-		{
-			itr = new InternalTrainingRequest();
-			itr.setItrSpoc(spoc);
-			itr.setItrStatus(1);
-			itr.setItrTrainingRequest(temp_req);
-			itr.setItrStatusDescription("Request Started");
-		}
-		else
-		{
-			itr.getItrStatus();
-			itr.setItrStatusDescription("Request In Progress");
-		}
-		
-		List<Employee> trainers = new ArrayList<>();
-		for (InternalTrainer temp: new InternalTrainerCRUD().getAllInternalTrainers()) {
-			trainers.add(temp.getTrainer());
-		}
-		map.addAttribute("trainers", trainers);
-		map.addAttribute("command", itr);
-		redirectAttributes.addFlashAttribute("itr", itr);
-		
-		return "spocnewitrform";
-	}
+//	//Controller to get new training_req for internal_training_req to be initialized
+//	@RequestMapping(value="newitr")
+//	public String SelectedITR(ModelMap map, RedirectAttributes redirectAttributes,
+//			@ModelAttribute("itr") InternalTrainingRequest itr)
+//	{	
+////		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh24:mm:ss");
+//		Date date = new Date();
+//		map.addAttribute("currentTimestamp", date.toString());
+//		
+//		//set spoc as fixed data for testing
+//		Employee spoc = new EmployeeCRUDService().getEmployeeById(1000008);
+//		map.addAttribute("spoc", spoc);
+//		
+//		//temp request to add to new internal training
+//		TrainingRequest temp_req = new TrainingRequestCRUD().getTrainingRequestById(10000);
+//		
+//		if(itr.getItrStatus() == 0)
+//		{
+//			itr = new InternalTrainingRequest();
+//			itr.setItrSpoc(spoc);
+//			itr.setItrStatus(1);
+//			itr.setItrTrainingRequest(temp_req);
+//			itr.setItrStatusDescription("Request Started");
+//		}
+//		else
+//		{
+//			itr.getItrStatus();
+//			itr.setItrStatusDescription("Request In Progress");
+//		}
+//		
+//		List<Employee> trainers = new ArrayList<>();
+//		for (InternalTrainer temp: new InternalTrainerCRUD().getAllInternalTrainers()) {
+//			trainers.add(temp.getTrainer());
+//		}
+//		map.addAttribute("trainers", trainers);
+//		map.addAttribute("command", itr);
+//		redirectAttributes.addFlashAttribute("itr", itr);
+//		
+//		return "spocnewitrform";
+//	}
 	
 	@RequestMapping(value="newitr/itrschedule")
 	public String InputSchedule(@ModelAttribute("itr") InternalTrainingRequest itr, ModelMap map)
@@ -241,82 +265,82 @@ public class SpocController {
 //			return "error";	
 //	}
 	
-	@RequestMapping(value="newitr/selectitrtrainer")
-	public String SelectITRTrainer(@RequestParam("itrTrainer") Employee itrTrainer,
-			@ModelAttribute("itr") InternalTrainingRequest itr, ModelMap map)
-	{
-//		itr.setItrTrainer(itrTrainer);
-//		itr.setItrStatusDescription("Trainer Selected");
-		map.addAttribute("command", itr);
-		return "spocnewschedule";
-	}
+//	@RequestMapping(value="newitr/selectitrtrainer")
+//	public String SelectITRTrainer(@RequestParam("itrTrainer") Employee itrTrainer,
+//			@ModelAttribute("itr") InternalTrainingRequest itr, ModelMap map)
+//	{
+////		itr.setItrTrainer(itrTrainer);
+////		itr.setItrStatusDescription("Trainer Selected");
+//		map.addAttribute("command", itr);
+//		return "spocnewschedule";
+//	}
+//	
+//	@RequestMapping(value="newitr/selectitrmode")
+//	public String SelectITRMode(@RequestParam("itrMode") String itrMode, 
+//			@ModelAttribute("itr") InternalTrainingRequest itr, ModelMap map,
+//			RedirectAttributes redirectAttributes)
+//	{
+//		Date date = new Date();
+//		map.addAttribute("currentTimestamp", date.toString());
+//		
+//		if(itrMode.equals("CRT"))
+//		{
+//			itr.setItrMode(itrMode);
+//			itr.setItrStatusDescription("Training Mode Selected");
+//			map.addAttribute("command", itr);
+//			return "spoccrtmodeform";
+//		}
+//		else if (itrMode.equals("WT"))
+//		{
+//			itr.setItrMode(itrMode);
+//			itr.setItrStatusDescription("Training Mode Selected");
+//			map.addAttribute("command", itr);
+//			return "spocwtmodeform";
+//		}
+//		else
+//			return "error";
+//	}
 	
-	@RequestMapping(value="newitr/selectitrmode")
-	public String SelectITRMode(@RequestParam("itrMode") String itrMode, 
-			@ModelAttribute("itr") InternalTrainingRequest itr, ModelMap map,
-			RedirectAttributes redirectAttributes)
-	{
-		Date date = new Date();
-		map.addAttribute("currentTimestamp", date.toString());
-		
-		if(itrMode.equals("CRT"))
-		{
-			itr.setItrMode(itrMode);
-			itr.setItrStatusDescription("Training Mode Selected");
-			map.addAttribute("command", itr);
-			return "spoccrtmodeform";
-		}
-		else if (itrMode.equals("WT"))
-		{
-			itr.setItrMode(itrMode);
-			itr.setItrStatusDescription("Training Mode Selected");
-			map.addAttribute("command", itr);
-			return "spocwtmodeform";
-		}
-		else
-			return "error";
-	}
-	
-	// Controllers for ClassroomTrainingMode
-	@RequestMapping(value="crtmode")
-	public String SelectedCRTMode(@ModelAttribute("itr") InternalTrainingRequest itr,
-			@ModelAttribute("spoc") Employee spoc, ModelMap map)
-	{
-		map.addAttribute("spoc", spoc);
-		map.addAttribute("command", itr);
-		
-		return "spoccrtmodeform";
-	}
-	
-	
-	@RequestMapping(value="confirmcrtmode")
-	public String ConfirmCRTMode(@ModelAttribute("itr") InternalTrainingRequest itr, ModelMap map)
-	{
-		return "redirect:/newitr";
-	}
-	
-	//Controllers for WebTrainingMode
-	@RequestMapping(value="wtmode")
-	public String SelectedWTMode(ModelMap map, @ModelAttribute("ITRequest") InternalTrainingRequest ITRequest)
-	{
-
-		ITRequest.setItrMode("WT");
-		map.addAttribute("command", ITRequest);
-		return "crtmodeform";
-	}
-	
-	@RequestMapping(value="confirmwtMode")
-	public String ConfirmWTMode(ModelMap map, @ModelAttribute("schedule") TrainingSchedule schedule,
-			@ModelAttribute("ITRequest") InternalTrainingRequest ITRequest)
-	{
-		ITRequest.setItrId(Integer.parseInt(schedule.getTraining_schedule_id()));
-		int ret = new InternalTrainingCRUD().updateItr(ITRequest);
-
-		TrainingSchedule schedule = ITRequest.getItrSchedule();
-		ITRequest.setItrMode("WT");
-		map.addAttribute("command", schedule);
-		return "spocwtmodeform";
-	}
+//	// Controllers for ClassroomTrainingMode
+//	@RequestMapping(value="crtmode")
+//	public String SelectedCRTMode(@ModelAttribute("itr") InternalTrainingRequest itr,
+//			@ModelAttribute("spoc") Employee spoc, ModelMap map)
+//	{
+//		map.addAttribute("spoc", spoc);
+//		map.addAttribute("command", itr);
+//		
+//		return "spoccrtmodeform";
+//	}
+//	
+//	
+//	@RequestMapping(value="confirmcrtmode")
+//	public String ConfirmCRTMode(@ModelAttribute("itr") InternalTrainingRequest itr, ModelMap map)
+//	{
+//		return "redirect:/newitr";
+//	}
+//	
+//	//Controllers for WebTrainingMode
+//	@RequestMapping(value="wtmode")
+//	public String SelectedWTMode(ModelMap map, @ModelAttribute("ITRequest") InternalTrainingRequest ITRequest)
+//	{
+//
+//		ITRequest.setItrMode("WT");
+//		map.addAttribute("command", ITRequest);
+//		return "crtmodeform";
+//	}
+//	
+//	@RequestMapping(value="confirmwtMode")
+//	public String ConfirmWTMode(ModelMap map, @ModelAttribute("schedule") TrainingSchedule schedule,
+//			@ModelAttribute("ITRequest") InternalTrainingRequest ITRequest)
+//	{
+//		ITRequest.setItrId(Integer.parseInt(schedule.getTraining_schedule_id()));
+//		int ret = new InternalTrainingCRUD().updateItr(ITRequest);
+//
+//		TrainingSchedule schedule = ITRequest.getItrSchedule();
+//		ITRequest.setItrMode("WT");
+//		map.addAttribute("command", schedule);
+//		return "spocwtmodeform";
+//	}
 	
 //	@RequestMapping(value="confirmwtmode")
 //	public String ConfirmWTMode(ModelMap map, @ModelAttribute("schedule") TrainingSchedule schedule)
