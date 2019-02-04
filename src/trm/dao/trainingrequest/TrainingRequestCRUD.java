@@ -3,12 +3,10 @@ import java.sql.Timestamp;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import trm.dao.DAOJDBCTemplate;
-
 
 /*
  * @author Ian Nielsen
- * Last changed: February 1st 2019 10:47PM
+ * Last changed: February 4th 2019 12:46PM
  */
 public class TrainingRequestCRUD 
 {
@@ -36,7 +34,7 @@ public class TrainingRequestCRUD
 														  		trainingRequest.getRequestTrainingMode(), trainingRequest.getRequestStartTime(),
 														  		trainingRequest.getRequestEndTime(), trainingRequest.getRequestLocation(),
 														  		trainingRequest.getRequestTimeZone(), trainingRequest.getApproxNumberOfParticipants(),
-														  		trainingRequest.getRequestProjectSpoc(), trainingRequest.getExecutiveId(),
+														  		null, null,
 														  		trainingRequest.getTimeRequested(), trainingRequest.getStatus()});
 		return numberOfRowsEffected;
 	}
@@ -80,7 +78,7 @@ public class TrainingRequestCRUD
 														  		trainingRequest.getRequestTrainingMode(), trainingRequest.getRequestStartTime(),
 														  		trainingRequest.getRequestEndTime(), trainingRequest.getRequestLocation(),
 														  		trainingRequest.getRequestTimeZone(), trainingRequest.getApproxNumberOfParticipants(),
-														  		trainingRequest.getRequestProjectSpoc(), trainingRequest.getExecutiveId(),
+														  		trainingRequest.getRequestProjectSpoc(), trainingRequest.getRequestExecutive(),
 														  		trainingRequest.getTimeRequested(), trainingRequest.getTrainingRequestId(), trainingRequest.getStatus()});
 		return numberOfRowsEffected;
 	}
@@ -218,5 +216,14 @@ public class TrainingRequestCRUD
 		jTemp = DAOJDBCTemplate.getJdbcTemplate();
 		List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request" , new TrainingRequestMapper());
 		return trainingRequestList;
+	}
+	
+	public List<TrainingRequest> getAllTrainingRequestForPM(int projectManagerId)
+	{
+	        jTemp = DAOJDBCTemplate.getJdbcTemplate();
+	        List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request where requester_id = ?",
+	        	new Object[] {projectManagerId}, new TrainingRequestMapper());
+	        
+	        return trainingRequestList;
 	}
 }

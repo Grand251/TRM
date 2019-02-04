@@ -1,8 +1,8 @@
-package trm.dao.employee;
+//package trm.dao.employee;
 
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
-import trm.dao.DAOJDBCTemplate;
+//import trm.dao.DAOJDBCTemplate;
 
 /**
  * CRUD Service for employee
@@ -21,6 +21,18 @@ public class EmployeeCRUDService {
 		jtemp = DAOJDBCTemplate.getJdbcTemplate();
 		List<Employee> custlist = jtemp.query("Select * from employee order by 1", new EmployeeMapper());
 		return custlist;
+	}
+	
+	/**
+	 * Query: get all employee by title
+	 * @return List<Employee>
+	 */
+	public List<Employee> getAllEmployeeByTitle(String jobTitle)
+	{
+	    jtemp = DAOJDBCTemplate.getJdbcTemplate();
+	    List<Employee> employeeList = jtemp.query("Select * from employee where job_title = ?", new Object[]{jobTitle}, new EmployeeMapper());
+	    
+	    return employeeList;
 	}
 	/**
 	 * Query: Delete employee
@@ -119,10 +131,19 @@ public class EmployeeCRUDService {
 
 
 	public static void main(String[] args) {
+	    	/*
 		System.out.println("hello");
 		int i = new EmployeeCRUDService().updateEmployee(1111111, "Moran", "Inaaya", "IM1111111", "123", "7759294432","Inaaya_Moran@syntelinc.com","122 St",
                 "Boston", "MA", "US","SPOC", "BNFS","spoc", 12345);
 		System.out.println(i);
+		*/
+	    
+	    	List<Employee> spocList = new EmployeeCRUDService().getAllEmployeeByTitle("SPOC");
+	    	
+	    	for(Employee spoc:spocList)
+	    	{
+	    	    System.out.println(spoc.getEmployee_id());
+	    	}
 	}
 	
 }
