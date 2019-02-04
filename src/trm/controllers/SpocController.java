@@ -142,20 +142,19 @@ public class SpocController {
 		return "allrequests";
 	}
 	// Controllers for ClassroomTrainingMode
-	@RequestMapping(value="CRTMode")
-	public String SelectedCRTMode(ModelMap map)
+	@RequestMapping(value="crtmode")
+	public String SelectedCRTMode(ModelMap map, @ModelAttribute("ITRequest") InternalTrainingRequest ITRequest)
 	{
-		TrainingSchedule schedule = new TrainingSchedule();
 		ITRequest.setItrMode("CRT");
 		map.addAttribute("command", ITRequest);
-		map.addAttribute("command", schedule);
 		return "crtmodeform";
 	}
 	
-	@RequestMapping(value="ConfirmCRTMode")
-	public String ConfirmCRTMode(ModelMap map)
+	@RequestMapping(value="confirmcrtMode")
+	public String ConfirmCRTMode(ModelMap map, @ModelAttribute("schedule") TrainingSchedule schedule,
+			@ModelAttribute("ITRequest") InternalTrainingRequest ITRequest)
 	{
-		ITRequest.setItrSchedule(schedule);
+		ITRequest.setItrId(Integer.parseInt(schedule.getTraining_schedule_id()));
 		int ret = new InternalTrainingCRUD().updateItr(ITRequest);
 		if (ret > 0)
 			return "spocdashboard";
@@ -164,20 +163,19 @@ public class SpocController {
 }
 	
 	//Controllers for WebTrainingMode
-	@RequestMapping(value="WTMode")
-	public String SelectedWTMode(ModelMap map)
+	@RequestMapping(value="wtmode")
+	public String SelectedWTMode(ModelMap map, @ModelAttribute("ITRequest") InternalTrainingRequest ITRequest)
 	{
-		TrainingSchedule schedule = new TrainingSchedule();
 		ITRequest.setItrMode("WT");
 		map.addAttribute("command", ITRequest);
-		map.addAttribute("command", schedule);
 		return "crtmodeform";
 	}
 	
-	@RequestMapping(value="ConfirmWTMode")
-	public String ConfirmWTMode(ModelMap map)
+	@RequestMapping(value="confirmwtMode")
+	public String ConfirmWTMode(ModelMap map, @ModelAttribute("schedule") TrainingSchedule schedule,
+			@ModelAttribute("ITRequest") InternalTrainingRequest ITRequest)
 	{
-		ITRequest.setItrSchedule(schedule);
+		ITRequest.setItrId(Integer.parseInt(schedule.getTraining_schedule_id()));
 		int ret = new InternalTrainingCRUD().updateItr(ITRequest);
 		if (ret > 0)
 			return "spocdashboard";
