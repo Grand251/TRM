@@ -45,6 +45,11 @@ public class SpocController {
 	        binder.registerCustomEditor(TrainingSchedule.class, new TrainingScheduleEditor(new TrainingScheduleCRUDService()));
 	  
 	} 
+	@RequestMapping(value="spocdashboard")
+	public String viewSpocDashboard(ModelMap model) {
+
+		return "spocdashboard";
+	}
 	  
 	@RequestMapping(value="showallitr")
 	public String showallITRequests(ModelMap map) {
@@ -134,13 +139,6 @@ public class SpocController {
 		return "requestoverview";
 	}
 	
-	@RequestMapping(value="allrequests")
-	public String showAllRequests(ModelMap map) {
-		
-		List<TrainingRequest> trainingRequests = new TrainingRequestCRUD().getAllTrainingRequest();
-		map.addAttribute("trainingRequests", trainingRequests);
-		return "allrequests";
-	}
 	// Controllers for ClassroomTrainingMode
 	@RequestMapping(value="crtmode")
 	public String SelectedCRTMode(ModelMap map, @ModelAttribute("ITRequest") InternalTrainingRequest ITRequest)
