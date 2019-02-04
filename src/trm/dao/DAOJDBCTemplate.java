@@ -9,6 +9,6 @@ public class DAOJDBCTemplate
 	public static JdbcTemplate getJdbcTemplate()
 	{
 		ApplicationContext appContext = new ClassPathXmlApplicationContext("spring-config.xml");
-		return (JdbcTemplate)appContext.getBean("jtemp");
+		return (JdbcTemplate)appContext.getBean("jTemp");
 	}
 }
