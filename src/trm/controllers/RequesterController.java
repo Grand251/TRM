@@ -63,7 +63,7 @@ public class RequesterController
 		
 		map.addAttribute("requests", requests);
 		
-		return "pmdashboard";
+		return "PMDashboard";
 	}
 
 	@RequestMapping(value = "createrequest")
@@ -164,11 +164,11 @@ public class RequesterController
 	@RequestMapping(value="requester/schedules/{id}/confirm", method=RequestMethod.PUT)
 	public String confirmSchedule(@PathVariable("id") int scheduleId, ModelMap map)
 	{
-//		int ret = new TrainingRequestCRUD().confirmSchedule(scheduleId);
+		int ret = new TrainingRequestCRUD().confirmSchedule(scheduleId);
 		
-//		if(ret>0)
-		return "testMainMenu";
-//		else
-//			return "error";
+		if(ret>0)
+			return "testMainMenu";
+		else
+			return "error";
 	}
 }

@@ -7,6 +7,7 @@ import trm.dao.trainingschedule.TrainingSchedule;
 import trm.dao.employee.Employee;
 import trm.dao.trainingrequest.TrainingRequest;
 
+
 public class InternalTrainingRequest {
 	/*CREATE TABLE INTERNAL_TRAINING_REQUEST
 	(
