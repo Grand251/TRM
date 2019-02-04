@@ -43,7 +43,7 @@ public class TrainingRequestMapper implements RowMapper<TrainingRequest>
 		trainingRequest.setRequestExecutive(requestExecutive);
 		
 		trainingRequest.setTimeRequested(result.getTimestamp(14));
-		trainingRequest.setStatus(result.getInt(15));
+		trainingRequest.setStatus(result.getDouble(15));
 		
 		return trainingRequest;
 	}

@@ -233,7 +233,7 @@ public class TrainingRequestCRUD
 	        return trainingRequestList;
 	}
 	
-	public List<TrainingRequest> getAllTrainingRequestByStatus(int status)
+	public List<TrainingRequest> getAllTrainingRequestByStatus(double status)
 	{
 	    	jTemp = DAOJDBCTemplate.getJdbcTemplate();
 	    	List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request where status = ?",

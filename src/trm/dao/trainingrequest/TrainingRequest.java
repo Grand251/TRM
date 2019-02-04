@@ -59,7 +59,7 @@ public class TrainingRequest
 	//The status of the request. 
 	//Possible values: Request made, request being processed, 
 	//type(IT or VT) being decided, type decided.
-	private int status;
+	private double status;
 	
 	/*
 	 * Gets the trainingRequestId
@@ -375,7 +375,7 @@ public class TrainingRequest
 	 * @param  None.
 	 * @return Returns status as an integer.
 	 */
-	public int getStatus() 
+	public double getStatus() 
 	{
 		return status;
 	}
@@ -386,7 +386,7 @@ public class TrainingRequest
 	 * @param  The value the status will be set to.
 	 * @return None.
 	 */
-	public void setStatus(int status) 
+	public void setStatus(double status) 
 	{
 		this.status = status;
 	}
