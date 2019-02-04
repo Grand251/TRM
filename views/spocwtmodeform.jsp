@@ -9,5 +9,11 @@
 <body>
 <h1>Web Training Mode</h1>
 <hr size="4" color="black"/>
+<br>
+<f:form action="confirmwtmode">
+	<f:input path="training_schedule_id" cssStyle="background-color: #D3D3D3" readonly="true"/>
+	<f:input path="training_location"/>
+	<f:button>Submit</f:button>
+</f:form>
 </body>
 </html>

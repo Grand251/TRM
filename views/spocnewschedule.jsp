@@ -5,22 +5,46 @@
 <%@taglib prefix="f" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Classroom Training Mode</title>
+<title>Internal Training Schedule</title>
 </head>
 <body>
-<h1>Classroom Training Mode</h1>
+<h1>Internal Training Request</h1>
 <h3>${spoc.getFirst_name()}&nbsp ${spoc.getFirst_name()}&nbsp &nbsp &nbsp &nbsp${currentTimestamp}</h3>
 <hr size="4" color="black"/>
 <br>
-<f:form action="confirmcrtmode">
-
-
+<br>
+<f:form action="confirmschedule">
+	City: &nbsp
+	<f:input path="training_city"/>
+	<br>
+	State: &nbsp
+	<f:input path="training_state"/>
+	<br>
+	Country: &nbsp
+	<f:input path="training_country"/>
+	<br>
+	Zipcode: &nbsp
+	<f:input path="training_zipcode"/>
+	<br>
+	Time Zone: &nbsp
+	<f:input path="training_time_zone"/>
+	<br>
+	Start Date: &nbsp
+	<f:input path="training_start_date"/>
+	<br>
+	End Date: &nbsp
+	<f:input path="training_end_date"/>
+	<br>
+	
+	<f:button>Submit</f:button>
 </f:form>
+<br>
+<br>
 
-<br>
-<br>
 </body>
 </html>
+
