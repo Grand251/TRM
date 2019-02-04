@@ -12,7 +12,13 @@ import trm.dao.employee.EmployeeCRUDService;
 @Controller
 public class LoginController {
 	@RequestMapping(value="/")
-	public String loginFrom(ModelMap model) {
+	public String rooRedirect(ModelMap model) {
+		
+		return "redirect:/loginform";
+	}
+	
+	@RequestMapping(value="loginform")
+	public String loginForm(ModelMap model) {
 		
 		return "loginform";
 	}
@@ -20,13 +26,20 @@ public class LoginController {
 	@RequestMapping(value="login")
 	public String login(HttpServletRequest request, ModelMap model) {
 		
+		request.getSession().invalidate();
+		
+		EmployeeCRUDService empCrud;
+		Employee emp;
 		int id = Integer.parseInt(request.getParameter("id"));
 		
-		EmployeeCRUDService empCrud = new EmployeeCRUDService();
-		if (empCrud == null)
+		try {
+			empCrud = new EmployeeCRUDService();
+			emp = empCrud.getEmployeeById(id);
+		} catch (Exception e) {
 			return "redirect:/loginform";
+		}
 		
-		Employee emp = empCrud.getEmployeeById(id);
+		emp = empCrud.getEmployeeById(id);
 		String role = emp.getJob_title();
 		
 		request.getSession().setAttribute("user", emp);
@@ -39,7 +52,15 @@ public class LoginController {
 				return "";
 		
 		}
-		
 	}
+
+	@RequestMapping(value="logout")
+	public String logout(HttpServletRequest request, ModelMap model) {
+		
+		request.getSession().invalidate();
+		
+		return "redirect:/loginform";
+	}
+					
 	
 }
