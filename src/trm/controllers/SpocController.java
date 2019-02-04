@@ -58,7 +58,10 @@ public class SpocController {
 	  
 	} 
 	@RequestMapping(value="spocdashboard")
-	public String viewSpocDashboard(ModelMap model) {
+	public String viewSpocDashboard(HttpServletRequest request, ModelMap model) {
+		if (request.getSession(false) == null || request.getSession().getAttribute("user") == null)
+			return "redirect:/loginform";
+		
 		return "spocdashboard";
 	}
 	
