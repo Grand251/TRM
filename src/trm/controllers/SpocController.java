@@ -14,12 +14,18 @@ import java.util.List;
 
 import javax.websocket.server.PathParam;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import trm.dao.employee.Employee;
 import trm.dao.employee.EmployeeCRUDService;
+import trm.dao.internaltrainer.InternalTrainer;
+import trm.dao.internaltrainer.InternalTrainerCRUD;
 import trm.dao.internaltrainingrequest.InternalTrainingCRUD;
 
 import trm.dao.internaltrainingrequest.*;
@@ -164,7 +170,8 @@ public class SpocController {
 //		int ret = new InternalTrainingCRUD().updateItr(ITRequest);
 //	}
 	
-	//Controller to get new training_req for internal_training_req to be initialized
+	//Controller to get new training_req for internal_training_req to be initialized 
+	/*
 	@RequestMapping(value="newitr")
 	public String SelectedITR(ModelMap map, RedirectAttributes redirectAttributes,
 			@ModelAttribute("itr") InternalTrainingRequest itr)
@@ -204,7 +211,7 @@ public class SpocController {
 		
 		return "spocnewitrform";
 	}
-	
+	*/
 	@RequestMapping(value="newitr/itrschedule")
 	public String InputSchedule(@ModelAttribute("itr") InternalTrainingRequest itr, ModelMap map)
 	{	
@@ -248,7 +255,7 @@ public class SpocController {
 		map.addAttribute("command", itr);
 		return "spocnewschedule";
 	}
-	
+	/*
 	@RequestMapping(value="newitr/selectitrmode")
 	public String SelectITRMode(@RequestParam("itrMode") String itrMode, 
 			@ModelAttribute("itr") InternalTrainingRequest itr, ModelMap map,
@@ -274,8 +281,9 @@ public class SpocController {
 		else
 			return "error";
 	}
-	
+	*/
 	// Controllers for ClassroomTrainingMode
+	/*
 	@RequestMapping(value="crtmode")
 	public String SelectedCRTMode(@ModelAttribute("itr") InternalTrainingRequest itr,
 			@ModelAttribute("spoc") Employee spoc, ModelMap map)
@@ -286,7 +294,7 @@ public class SpocController {
 		return "spoccrtmodeform";
 	}
 	
-	
+	*/
 	@RequestMapping(value="confirmcrtmode")
 	public String ConfirmCRTMode(@ModelAttribute("itr") InternalTrainingRequest itr, ModelMap map)
 	{
@@ -310,7 +318,6 @@ public class SpocController {
 		ITRequest.setItrId(Integer.parseInt(schedule.getTraining_schedule_id()));
 		int ret = new InternalTrainingCRUD().updateItr(ITRequest);
 
-		TrainingSchedule schedule = ITRequest.getItrSchedule();
 		ITRequest.setItrMode("WT");
 		map.addAttribute("command", schedule);
 		return "spocwtmodeform";
