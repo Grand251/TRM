@@ -3,6 +3,8 @@ import java.sql.Timestamp;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import trm.dao.DAOJDBCTemplate;
+
 
 /*
  * @author Ian Nielsen

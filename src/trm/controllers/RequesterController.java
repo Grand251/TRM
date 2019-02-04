@@ -1,6 +1,9 @@
 package trm.controllers;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -73,41 +76,37 @@ public class RequesterController
 
 	@RequestMapping(value = "addnewrequest")
 	public String addNewRequest(@ModelAttribute("requestTrainingType") String requestTrainingType, 
-			@ModelAttribute("requestTrainingModule") String requestTrainingModule, 
-			@ModelAttribute("requestTrainingModuleScope") String requestTrainingModuleScope, 
-			@ModelAttribute("requestTrainingMode") String requestTrainingMode, 
-			@ModelAttribute("requestLocation") String requestLocation, 
-			@ModelAttribute("requestTimeZone") String requestTimeZone, 
-			@ModelAttribute("approxNumberOfParticipants") String approxNumberOfParticipants, ModelMap map) {
-		TrainingRequest request = new TrainingRequest();
-		request.setRequestTrainingType(requestTrainingType);
-		request.setRequestTrainingModule(requestTrainingModule);
-		request.setRequestTrainingModuleScope(requestTrainingModuleScope);
-		request.setRequestTrainingMode(requestTrainingMode);
-		request.setRequestLocation(requestLocation);
-		request.setRequestTimeZone(requestTimeZone);
-		int nbOfParticipant = Integer.parseInt(approxNumberOfParticipants);
-		request.setApproxNumberOfParticipants(nbOfParticipant);
-		Timestamp requestTime = new Timestamp(System.currentTimeMillis());
-		request.setTimeRequested(requestTime);
-		//int ref = new TrainingRequestCRUD().insertTrainingRequest(request);
-//----------TESTING-------------------		
-		
-		System.out.println(requestTrainingType);
-		System.out.println(requestTrainingModule);
-		System.out.println(requestTrainingModuleScope);
-		System.out.println(requestTrainingMode);
-		System.out.println(requestLocation);
-		System.out.println(requestTimeZone);
-		System.out.println(nbOfParticipant);
-		System.out.println(requestTime.toString());
-		int ref = 1;
-//--------------------------------------
-//		Boolean bool = PMServices.addRequest(request)
-//		if(bool)
-			return "mainview";
-//		else
-//			return "error";
+	@ModelAttribute("requestTrainingModule") String requestTrainingModule, 
+	@ModelAttribute("requestTrainingModuleScope") String requestTrainingModuleScope, 
+	@ModelAttribute("requestTrainingMode") String requestTrainingMode, 
+	@ModelAttribute("requestLocation") String requestLocation,
+	@ModelAttribute("requestStartDate") String requestStartDate,
+	@ModelAttribute("requestEndDate") String requestEndDate,
+	@ModelAttribute("requestStartTime") String requestStartTime,
+	@ModelAttribute("requestEndTime") String requestEndTime,
+	@ModelAttribute("requestTimeZone") String requestTimeZone, 
+	@ModelAttribute("approxNumberOfParticipants") int approxNumberOfParticipants) {
+	TrainingRequest request = new TrainingRequest();
+	request.setRequesterId(1000019);//Change to session Employee ID
+	request.setRequestTrainingType(requestTrainingType);
+	request.setRequestTrainingModule(requestTrainingModule);
+	request.setRequestTrainingModuleScope(requestTrainingModuleScope);
+	request.setRequestTrainingMode(requestTrainingMode);
+	request.setRequestStartTime(stringToTimestamp(requestStartDate, requestStartTime));
+	request.setRequestEndTime(stringToTimestamp(requestEndDate, requestEndTime));
+	request.setRequestLocation(requestLocation);
+	request.setRequestTimeZone(requestTimeZone);
+	request.setApproxNumberOfParticipants(approxNumberOfParticipants);
+	request.setRequestProjectSpoc(1000008 /*java.sql.Types.INTEGER*/);//Change to null when DAO team allows null
+	request.setExecutiveId(1000017 /*java.sql.Types.INTEGER*/);//Change to null when DAO team allows null
+	Timestamp requestTime = new Timestamp(System.currentTimeMillis());
+	request.setTimeRequested(requestTime);
+	request.setStatus(0);
+	int ref = new TrainingRequestCRUD().insertTrainingRequest(request);
+	if(ref > 0)
+	return "redirect:/pmdashboard";
+	else
+	return "error";
 	}
 	
 	@RequestMapping(value = "editrequest")
@@ -164,11 +163,23 @@ public class RequesterController
 	@RequestMapping(value="requester/schedules/{id}/confirm", method=RequestMethod.PUT)
 	public String confirmSchedule(@PathVariable("id") int scheduleId, ModelMap map)
 	{
-		int ret = new TrainingRequestCRUD().confirmSchedule(scheduleId);
+		TrainingRequestCRUD svc = new TrainingRequestCRUD();
+		
+		int ret = 0;
 		
 		if(ret>0)
-			return "testMainMenu";
+			return "redirect:/pmdashboard";
 		else
 			return "error";
 	}
+	
+	private Timestamp stringToTimestamp(String date, String time) {
+		LocalDate datePart = LocalDate.parse(date);
+		    LocalTime timePart = LocalTime.parse(time+":00");
+		    LocalDateTime dt = LocalDateTime.of(datePart, timePart);
+
+		Timestamp timestamp = Timestamp.valueOf(dt);
+
+		return timestamp;
+		}
 }
