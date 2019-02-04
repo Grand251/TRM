@@ -47,5 +47,10 @@ public class TrainingRequestMapper implements RowMapper<TrainingRequest>
 		
 		return trainingRequest;
 	}
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> htemp
 }
 
