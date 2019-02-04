@@ -4,14 +4,14 @@ import java.sql.Timestamp;
 
 /*
  * @author Ian Nielsen
- * Last changed: February 1st 2019 11:16PM
+ * Last changed: February 4th 2019 12:46PM
  */
 public class TrainingRequest 
 {
 	//Training request instance variables. 
 	//They refer to the attributes in the 
 	//training_request table
-
+        
     	//Unique ID for each request. For RDBMS purposes only.
 	private int trainingRequestId;
 	
@@ -46,10 +46,10 @@ public class TrainingRequest
 	private int approxNumberOfParticipants;
 	
 	//If the PM has a team member in mind for a SPOC they can specify them here.
-	private int requestProjectSpoc;
+	private Employee requestProjectSpoc;
 	
 	//If the PM has an executive in mind they can specify them here.
-	private int executiveId;
+	private Employee requestExecutive;
 	
 	//The time the request was made. Not when the training takes place.
 	private Timestamp timeRequested;
@@ -285,7 +285,7 @@ public class TrainingRequest
 	 * @param  None.
 	 * @return Returns the id of the spoc as an integer.
 	 */
-	public int getRequestProjectSpoc() 
+	public Employee getRequestProjectSpoc() 
 	{
 		return requestProjectSpoc;
 	}
@@ -296,7 +296,7 @@ public class TrainingRequest
 	 * @param  The value the spoc id will be set to.
 	 * @return None.
 	 */
-	public void setRequestProjectSpoc(int requestProjectSpoc) 
+	public void setRequestProjectSpoc(Employee requestProjectSpoc) 
 	{
 		this.requestProjectSpoc = requestProjectSpoc;
 	}
@@ -307,9 +307,9 @@ public class TrainingRequest
 	 * @param  None.
 	 * @return Returns the id of the executive as an integer.
 	 */
-	public int getExecutiveId() 
+	public Employee getRequestExecutive() 
 	{
-		return executiveId;
+		return requestExecutive;
 	}
 	
 	/*
@@ -318,9 +318,9 @@ public class TrainingRequest
 	 * @param  The value the executive id will be set to.
 	 * @return None.
 	 */
-	public void setExecutiveId(int executiveId) 
+	public void setRequestExecutive(Employee requestExecutive) 
 	{
-		this.executiveId = executiveId;
+		this.requestExecutive = requestExecutive;
 	}
 	
 	/*
