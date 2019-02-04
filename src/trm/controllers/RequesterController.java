@@ -6,23 +6,14 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import trm.dao.employee.Employee;
-import trm.dao.employee.EmployeeCRUDService;
-import trm.dao.internaltrainer.InternalTrainerCRUD;
 import trm.dao.internaltrainingrequest.InternalTrainingCRUD;
 import trm.dao.internaltrainingrequest.InternalTrainingRequest;
 import trm.dao.trainingrequest.*;
-import trm.dao.trainingschedule.TrainingScheduleCRUDService;
 import trm.requestor.PMRequestInfo;
 
 @Controller
@@ -35,7 +26,7 @@ public class RequesterController
 		
 		List<PMRequestInfo> requests = new ArrayList<PMRequestInfo>();
 		
-		for (TrainingRequest req : getAllTrainingRequestByEmpId(1000034))
+		for (TrainingRequest req : new TrainingRequestCRUD().getAllTrainingRequestForPM(1000034))
 		{			
 			try
 			{
@@ -52,21 +43,6 @@ public class RequesterController
 		map.addAttribute("requests", requests);
 		
 		return "pmdashboard";
-	}
-	
-	private List<TrainingRequest> getAllTrainingRequestByEmpId(int id)
-	{
-		List<TrainingRequest> requests = new ArrayList<TrainingRequest>();
-		
-		for (TrainingRequest req : new TrainingRequestCRUD().getAllTrainingRequest())
-		{
-			if (req.getRequesterId() == id)
-			{
-				requests.add(req);
-			}
-		}
-		
-		return requests;
 	}
 	
 	@RequestMapping(value = "createrequest")
@@ -97,8 +73,6 @@ public class RequesterController
 	request.setRequestLocation(requestLocation);
 	request.setRequestTimeZone(requestTimeZone);
 	request.setApproxNumberOfParticipants(approxNumberOfParticipants);
-	request.setRequestProjectSpoc(1000008 /*java.sql.Types.INTEGER*/);//Change to null when DAO team allows null
-	request.setExecutiveId(1000017 /*java.sql.Types.INTEGER*/);//Change to null when DAO team allows null
 	Timestamp requestTime = new Timestamp(System.currentTimeMillis());
 	request.setTimeRequested(requestTime);
 	request.setStatus(0);

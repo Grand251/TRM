@@ -1,10 +1,4 @@
-<<<<<<< HEAD
 package trm.dao.trainingschedule;
-
-=======
-
-package trm.dao.trainingschedule;
->>>>>>> hueytemp
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

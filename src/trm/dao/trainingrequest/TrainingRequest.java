@@ -2,6 +2,8 @@ package trm.dao.trainingrequest;
 
 import java.sql.Timestamp;
 
+import trm.dao.employee.Employee;
+
 /*
  * @author Ian Nielsen
  * Last changed: February 4th 2019 12:46PM
