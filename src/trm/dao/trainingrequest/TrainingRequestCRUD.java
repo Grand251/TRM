@@ -1,4 +1,4 @@
-//package trm.dao.trainingrequest;
+package trm.dao.trainingrequest;
 import java.sql.Timestamp;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -230,7 +230,7 @@ public class TrainingRequestCRUD
 	        return trainingRequestList;
 	}
 	
-	public List<TrainingRequest> getAllTrainingRequestByStatus(int status)
+	public List<TrainingRequest> getAllTrainingRequestByStatus(double status)
 	{
 	    	jTemp = DAOJDBCTemplate.getJdbcTemplate();
 	    	List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request where status = ?",
