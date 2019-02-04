@@ -1,13 +1,8 @@
-<<<<<<< HEAD
-package trm.dao.trainingschedule;
-
-=======
-
-package trm.dao.trainingschedule;
->>>>>>> hueytemp
+package trm.dao.trainingschedule.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import org.springframework.jdbc.core.RowMapper;
 
 import trm.dao.trainingschedule.TrainingSchedule;

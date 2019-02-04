@@ -138,15 +138,15 @@ public class RequesterController
 		
 	}
 
-	@RequestMapping(value = "saveUpdateData")
-	public String saveUpdatedDetails(/*@ModelAttribute("request") TrainingRequest request, */ModelMap map) {
-		//int ret = new TrainingRequestCRUD().updateTrainingRequest(request);
-		int ret = 1;
-		if (ret > 0)
-			return "testMainMenu";
-		else
-			return "error";
-	}
+//	@RequestMapping(value = "saveUpdateData")
+//	public String saveUpdatedDetails(/*@ModelAttribute("request") TrainingRequest request, */ModelMap map) {
+//		//int ret = new TrainingRequestCRUD().updateTrainingRequest(request);
+//		int ret = 1;
+//		if (ret > 0)
+//			return "testMainMenu";
+//		else
+//			return "error";
+//	}
 	
 	
 	@RequestMapping(value="requests/{id}/delete")
