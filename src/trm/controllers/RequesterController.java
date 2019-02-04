@@ -15,7 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import trm.dao.employee.Employee;
+import trm.dao.employee.EmployeeCRUDService;
+import trm.dao.internaltrainer.InternalTrainer;
+import trm.dao.internaltrainer.InternalTrainerCRUD;
+import trm.dao.internaltrainingrequest.InternalTrainingCRUD;
+import trm.dao.internaltrainingrequest.InternalTrainingRequest;
 import trm.dao.trainingrequest.*;
+import trm.requestor.PMRequestInfo;
 
 @Controller
 public class RequesterController 
@@ -23,15 +29,39 @@ public class RequesterController
 	@RequestMapping(value = "/pmdashboard")
 	public String openMainView(ModelMap map) 
 	{
-		RequestCRUDService svc = new RequestCRUDService();
-		DataStore.loadData();
-		List<TrainingRequest> newReqs = svc.getITNewRequests();
-		List<TrainingRequest> inProgressReqs = svc.getITInProgressRequests();
-		List<TrainingRequest> doneReqs = svc.getITDoneRequests();
+		TrainingRequestCRUD reqSvc = new TrainingRequestCRUD();
+		InternalTrainingCRUD trainingSvc = new InternalTrainingCRUD();
+		InternalTrainerCRUD trainerSvc = new InternalTrainerCRUD();
+		EmployeeCRUDService empSvc = new EmployeeCRUDService();
 		
-		map.addAttribute("newReq", newReqs);
-		map.addAttribute("inProgressReqs", inProgressReqs);
-		map.addAttribute("doneReqs", doneReqs);
+		List<PMRequestInfo> requests = new ArrayList<PMRequestInfo>();
+		
+		for (TrainingRequest req : reqSvc.getAllTrainingRequest())
+		{
+			try
+			{
+				
+				InternalTrainingRequest itr = trainingSvc.getItrByTrainingRequest(req.getTrainingRequestId());
+				Employee trainer = trainerSvc.getInternalTrainerById(itr.getItrId()).getTrainer();
+				Employee spoc = empSvc.getEmployeeById(req.getRequestProjectSpoc());
+				requests.add(new PMRequestInfo(
+						req,
+						spoc.getFirst_name() + " " + spoc.getLast_name(),
+						spoc.getEmail(),
+						itr.getItrStatus(), 
+						trainer.getFirst_name() + " " + trainer.getLast_name(), 
+						trainer.getEmail()));
+			}
+			catch (Exception e)
+			{
+				System.out.println(req.getTrainingRequestId() + " : " + e.getMessage());
+			}
+			
+		}
+		
+		//requests.add(new PMRequestInfo(createRequest(), "Rie Kumar", "rk@gmail.com", 1, "miley", "ml@gmail.com"));
+		
+		map.addAttribute("requests", requests);
 		
 		return "pmdashboard";
 	}
@@ -123,7 +153,7 @@ public class RequesterController
 	@RequestMapping(value="requests/{id}/delete")
 	public String deleteRequest(@PathVariable("id") int reqId)
 	{
-		int ret = new RequestCRUDService().deleteTrainingRequest(reqId);
+		int ret = new TrainingRequestCRUD().deleteTrainingRequest(reqId);
 		
 		if(ret > 0)
 			return "redirect:/pmdashboard";
@@ -134,117 +164,11 @@ public class RequesterController
 	@RequestMapping(value="requester/schedules/{id}/confirm", method=RequestMethod.PUT)
 	public String confirmSchedule(@PathVariable("id") int scheduleId, ModelMap map)
 	{
-		int ret = new RequestCRUDService().confirmSchedule(scheduleId);
+//		int ret = new TrainingRequestCRUD().confirmSchedule(scheduleId);
 		
-//------------------------------------------
-		if(ret>0)
+//		if(ret>0)
 		return "testMainMenu";
-		else
-			return "error";
-	}
-	
-	static class DataStore
-	{
-		static List<TrainingRequest> requests = new ArrayList<TrainingRequest>();
-		static boolean hasLoaded = false;
-		
-		static void loadData()
-		{
-			if (!hasLoaded)
-			{
-				List<TrainingRequest> reqs = new ArrayList<TrainingRequest>();
-				
-				TrainingRequest req = new TrainingRequest();
-				Random rand = new Random();
-				
-				req.setTrainingRequestId(rand.nextInt());
-				reqs.add(req);
-				
-				req = new TrainingRequest();
-				req.setTrainingRequestId(rand.nextInt());
-				reqs.add(req);
-				
-				req = new TrainingRequest();
-				req.setTrainingRequestId(rand.nextInt());
-				reqs.add(req);
-				
-				req = new TrainingRequest();
-				req.setTrainingRequestId(rand.nextInt());
-				reqs.add(req);
-				
-				requests = reqs;
-				hasLoaded = true;
-			}
-		}
-	}
-	
-	class RequestCRUDService extends TrainingRequestCRUD
-	{		
-		public List<TrainingRequest> getITNewRequests()
-		{
-			return DataStore.requests;
-		}
-		
-		public List<TrainingRequest> getITInProgressRequests()
-		{
-			List<TrainingRequest> reqs = new ArrayList<TrainingRequest>();
-			
-			return reqs;
-		}
-		
-		public List<TrainingRequest> getITDoneRequests()
-		{
-			List<TrainingRequest> reqs = new ArrayList<TrainingRequest>();
-			
-			return reqs;
-		}
-		
-		public int deleteTrainingRequest(int id)
-		{
-			for (int i = 0; i < DataStore.requests.size(); ++i)
-			{
-				if (DataStore.requests.get(i).getTrainingRequestId() == id)
-				{
-					DataStore.requests.remove(i);
-					return 1;
-				}
-			}
-			
-			return 0;
-		}
-		
-		public int confirmSchedule(int id)
-		{
-			return 0;
-		}
-		
-		public Employee getExecutiveById(int execId)
-		{
-			Employee emp = new Employee();
-			emp.setFirst_name("Sammy");
-			
-			return emp; 
-		}
-		
-		public Employee getSPOCById(int spocId)
-		{
-			Employee emp = new Employee();
-			emp.setFirst_name("Sammy");
-			
-			return emp; 
-		}
-	}
-}
-
-//dummy class
-class Request{
-	private Timestamp requestTimeStamp;
-
-	public Timestamp getRequestTimeStamp() {
-		return requestTimeStamp;
-	}
-
-	public void setRequestTimeStamp(Timestamp timestamp) {
-		this.requestTimeStamp = timestamp;
+//		else
+//			return "error";
 	}
 }

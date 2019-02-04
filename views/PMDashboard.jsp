@@ -33,7 +33,7 @@
 	<h1>Dashboard</h1>
 	<br>
 	<br>
-	<h3>New Requests</h3>
+	<h3>Requests</h3>
 	<hr size="4" color="red"/>
 	<table class="table table-striped table-dark">
 		<thead>
@@ -46,15 +46,15 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${newReq}" var="request">
+			<c:forEach items="${requests}" var="request">
 				<tr>
 					<th scope="row">
 						<button type="button" class="btn btn-info btn-expand">Expand</button>
 						<span style="margin-left: 15px">
-							${request.trainingRequestId}
+							${request.request.trainingRequestId}
 						</span>
 						<div style="margin-top: 15px; display: none;" >
-							<table class="table">
+							<table class="table" style="background-color: transparent;">
 								<thead>
 									<tr>
 										<th scope="col">Type</th>
@@ -63,66 +63,61 @@
 								</thead>
 								<tbody>
 									<tr>
-										<td>Executive Name</td>
-										<td></td>
-									</tr>
-									<tr>
 										<td>SPOC Name</td>
-										<td></td>
+										<td>${request.spocName}</td>
 									</tr>
 									<tr>
-										<td>Training Type</td>
-										<td>${request.requestTrainingType}</td>
+										<td>SPOC Email</td>
+										<td>${request.spocEmail}</td>
 									</tr>
 									<tr>
-										<td>Module</td>
-										<td>${request.requestTrainingModule}</td>
+										<td>Trainer Name</td>
+										<td>${request.trainerName}</td>
 									</tr>
 									<tr>
-										<td>Module Scope</td>
-										<td>${request.requestTrainingModuleScope}</td>
+										<td>Trainer Email</td>
+										<td>${request.trainerEmail}</td>
 									</tr>
 									<tr>
 										<td>Mode</td>
-										<td>${request.requestTrainingMode}</td>
+										<td>${request.request.requestStartTime}</td>
 									</tr>
 									<tr>
-										<td>Start</td>
-										<td>${request.requestStartTime}</td>
+										<td>Training Type</td>
+										<td>${request.request.requestEndTime}</td>
 									</tr>
 									<tr>
-										<td>End</td>
-										<td>${request.requestEndTime}</td>
-									</tr>
-									<tr>
-										<td>Location</td>
-										<td>${request.requestLocation}</td>
-									</tr>
-									<tr>
-										<td>Time Zone</td>
-										<td>${request.requestTimeZone}</td>
+										<td>Training Subject</td>
+										<td>${request.request.requestLocation}</td>
 									</tr>
 									<tr>
 										<td># of Participants</td>
-										<td>${request.approxNumberOfParticipants}</td>
+										<td>${request.request.approxNumberOfParticipants}</td>
 									</tr>
 									<tr>
-										<td>Time Requested</td>
-										<td>${request.timeRequested}</td>
+										<td>Start Time</td>
+										<td>${request.request.timeRequested}</td>
+									</tr>
+									<tr>
+										<td>End Time</td>
+										<td>${request.request.timeRequested}</td>
+									</tr>
+									<tr>
+										<td>Location</td>
+										<td>${request.request.timeRequested}</td>
 									</tr>
 								</tbody>
 							</table>
 						</div>
 					</th>
-					<td>${request.requestTrainingType}</td>
-					<td>${request.requestStartTime}</td>
-					<td>${request.requestEndTime}</td>
+					<td>${request.trainerName}</td>
+					<td>${request.trainerEmail}</td>
 					
 					<td>
 						<div class="container">
-							<a href='requests/${request.trainingRequestId}/delete'>Delete</a>
+							<a href='requests/${request.request.trainingRequestId}/delete'>Delete</a>
 							|
-							<a href='editrequest/${request.trainingRequestId}'>Edit</a>
+							<a href='editrequest/${request.request.trainingRequestId}'>Edit</a>
 						</div>
 					</td>
 				</tr>
