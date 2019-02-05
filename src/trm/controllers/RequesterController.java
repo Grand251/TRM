@@ -37,18 +37,15 @@ public class RequesterController
 		
 		for (TrainingRequest req : new TrainingRequestCRUD().getAllTrainingRequestForPM(pm.getEmployee_id()))
 		{			
-			if (req.getStatus() >= 0)
+			try
 			{
-				try
-				{
-					InternalTrainingRequest itr = trainingSvc.getItrByTrainingRequest(req.getTrainingRequestId());
-					requests.add(new PMRequestInfo(req, itr, itr.getItrSchedule(), itr.getItrTrainer(), itr.getItrSpoc()));
-				}
-				catch (Exception e)
-				{
-					System.out.println(req.getTrainingRequestId() + " : " + e.getMessage());
-					requests.add(new PMRequestInfo(req, null, null, null, null));
-				}
+				InternalTrainingRequest itr = trainingSvc.getItrByTrainingRequest(req.getTrainingRequestId());
+				requests.add(new PMRequestInfo(req, itr, itr.getItrSchedule(), itr.getItrTrainer(), itr.getItrSpoc()));
+			}
+			catch (Exception e)
+			{
+				System.out.println(req.getTrainingRequestId() + " : " + e.getMessage());
+				requests.add(new PMRequestInfo(req, null, null, null, null));
 			}
 		}
 		
