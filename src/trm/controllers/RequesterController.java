@@ -10,10 +10,12 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import trm.dao.employee.Employee;
 import trm.dao.internaltrainingrequest.InternalTrainingCRUD;
@@ -96,17 +98,25 @@ public class RequesterController
 			return "error";
 	}
 	
-	@RequestMapping(value = "editrequest/{trainingRequestId}")
-	public String editRequest(@PathVariable("trainingRequestId") int trainingRequestId, ModelMap map) {
+	@RequestMapping(value = "editrequest/{trainingRequestId}", method = RequestMethod.GET)
+	public String editRequest(@PathVariable("trainingRequestId") int trainingRequestId, ModelMap map, Model model) {
 		TrainingRequest request = new TrainingRequestCRUD().getTrainingRequestById(trainingRequestId);
 		map.addAttribute("command", request);
-		return "editrequestform";
+		model.addAttribute("startdate", getDateString(request.getRequestStartTime().toString()));
+		model.addAttribute("enddate", getDateString(request.getRequestEndTime().toString()));
+		map.addAttribute("starttime", getTimeString(request.getRequestStartTime().toString()));
+		map.addAttribute("endtime", getTimeString(request.getRequestEndTime().toString()));
+		return "testEditRequest";
 	}
 
-	@RequestMapping(value = "editrequestschedule/{trainingRequestId}")
-	public String editRequestSchedule(@PathVariable("trainingRequestId") int trainingRequestId, ModelMap map) {
+	@RequestMapping(value = "editrequestschedule/{trainingRequestId}", method = RequestMethod.GET)
+	public String editRequestSchedule(@PathVariable("trainingRequestId") int trainingRequestId, ModelMap map, Model model) {
 		TrainingRequest request = new TrainingRequestCRUD().getTrainingRequestById(trainingRequestId);
 		map.addAttribute("command", request);
+		model.addAttribute("startdate", getDateString(request.getRequestStartTime().toString()));
+		model.addAttribute("enddate", getDateString(request.getRequestEndTime().toString()));
+		map.addAttribute("starttime", getTimeString(request.getRequestStartTime().toString()));
+		map.addAttribute("endtime", getTimeString(request.getRequestEndTime().toString()));
 		return "editrequestscheduleform";
 	}
 	
@@ -126,11 +136,15 @@ public class RequesterController
 			@ModelAttribute("requestTrainingModuleScope") String requestTrainingModuleScope,
 			@ModelAttribute("requestTrainingMode") String requestTrainingMode,
 			@ModelAttribute("requestLocation") String requestLocation,
-			@ModelAttribute("requestStartTime") String requestStartTime,
-			@ModelAttribute("requestEndTime") String requestEndTime,
+			@ModelAttribute("requestStartDate") String requestStartDate,
+			@ModelAttribute("requestEndDate") String requestEndDate,
+			@ModelAttribute("requestStartHour") String requestStartTime,
+			@ModelAttribute("requestEndHour") String requestEndTime,
 			@ModelAttribute("requestTimeZone") String requestTimeZone,
 			@ModelAttribute("approxNumberOfParticipants") int approxNumberOfParticipants, ModelMap map) {
-
+		
+		Timestamp startDateTime = stringToTimestamp(requestStartDate, requestStartTime);
+		Timestamp endDateTime = stringToTimestamp(requestEndDate, requestEndTime);
 		int ret;
 		ret = new TrainingRequestCRUD().updateTrainingRequestByAttribute(trainingRequestId, "request_Training_Type",
 				requestTrainingType);
@@ -142,14 +156,8 @@ public class RequesterController
 				requestTrainingModuleScope);
 		ret += new TrainingRequestCRUD().updateTrainingRequestByAttribute(trainingRequestId, "request_Training_mode",
 				requestTrainingMode);
-		ret += new TrainingRequestCRUD().updateTrainingRequestByAttribute(trainingRequestId, "request_start_time",
-				Timestamp.valueOf
-
-				(requestStartTime));
-		ret += new TrainingRequestCRUD().updateTrainingRequestByAttribute(trainingRequestId, "request_end_time",
-				Timestamp.valueOf
-
-				(requestEndTime));
+		ret += new TrainingRequestCRUD().updateTrainingRequestByAttribute(trainingRequestId, "request_start_time", startDateTime);
+		ret += new TrainingRequestCRUD().updateTrainingRequestByAttribute(trainingRequestId, "request_end_time",endDateTime);
 		ret += new TrainingRequestCRUD().updateTrainingRequestByAttribute(trainingRequestId, "request_location",
 				requestLocation);
 		ret += new TrainingRequestCRUD().updateTrainingRequestByAttribute(trainingRequestId, "request_Time_zone",
@@ -168,13 +176,16 @@ public class RequesterController
 	@RequestMapping(value = "saveScheduleUpdateData")
 	public String saveScheduleUpdatedDetails(@ModelAttribute("trainingRequestId") int trainingRequestId,
 			@ModelAttribute("requestLocation") String requestLocation,
-			@ModelAttribute("requestStartTime") String requestStartTime,
-			@ModelAttribute("requestEndTime") String requestEndTime,
+			@ModelAttribute("requestStartDate") String requestStartDate,
+			@ModelAttribute("requestEndDate") String requestEndDate,
+			@ModelAttribute("requestStartHour") String requestStartTime,
+			@ModelAttribute("requestEndHour") String requestEndTime,
 			@ModelAttribute("requestTimeZone") String requestTimeZone,
 			 ModelMap map) {
-
+		Timestamp startDateTime = stringToTimestamp(requestStartDate, requestStartTime);
+		Timestamp endDateTime = stringToTimestamp(requestEndDate, requestEndTime);
 		int ret;
-		ret = new TrainingRequestCRUD().updateTrainingRequestTimesTimezoneLocation(trainingRequestId, Timestamp.valueOf(requestStartTime), Timestamp.valueOf(requestEndTime), requestTimeZone, requestLocation);
+		ret = new TrainingRequestCRUD().updateTrainingRequestTimesTimezoneLocation(trainingRequestId, startDateTime, endDateTime, requestTimeZone, requestLocation);
 		if (ret > 0)
 			return "redirect:/pmdashboard";
 		else
@@ -188,7 +199,9 @@ public class RequesterController
 			@ModelAttribute("requestTrainingMode") String requestTrainingMode,
 			@ModelAttribute("approxNumberOfParticipants") int approxNumberOfParticipants, ModelMap map) {
 
-		int ret = new TrainingRequestCRUD().updateTrainingRequestScopeTypeModeParticip(trainingRequestId, requestTrainingModuleScope, requestTrainingType, requestTrainingMode, approxNumberOfParticipants);
+		int ret = new TrainingRequestCRUD().updateTrainingRequestScopeTypeModeParticip(trainingRequestId, requestTrainingModuleScope, 
+
+requestTrainingType, requestTrainingMode, approxNumberOfParticipants);
 		if (ret > 0)
 			return "redirect:/pmdashboard";
 		else
@@ -252,5 +265,15 @@ public class RequesterController
 		Timestamp timestamp = Timestamp.valueOf(dt);
 
 		return timestamp;
+	}
+	
+	private String getDateString(String datetime) {
+		String date = datetime.substring(0, 10);
+		return date;
+	}
+	
+	private String getTimeString(String datetime) {
+		String time = datetime.substring(11, 16);
+		return time;
 	}
 }
