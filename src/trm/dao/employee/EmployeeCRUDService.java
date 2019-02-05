@@ -3,9 +3,14 @@ package trm.dao.employee;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+<<<<<<< HEAD
 import java.util.Map;
+=======
+>>>>>>> ccb45ef1c5dbf7677cb67cd017ef1c5c1c76d088
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import trm.dao.DAOJDBCTemplate;
+
 import trm.dao.DAOJDBCTemplate;
 
 /**
@@ -25,6 +30,18 @@ public class EmployeeCRUDService {
 		jtemp = DAOJDBCTemplate.getJdbcTemplate();
 		List<Employee> custlist = jtemp.query("Select * from employee order by 1", new EmployeeMapper());
 		return custlist;
+	}
+	
+	/**
+	 * Query: get all employee by title
+	 * @return List<Employee>
+	 */
+	public List<Employee> getAllEmployeeByTitle(String jobTitle)
+	{
+	    jtemp = DAOJDBCTemplate.getJdbcTemplate();
+	    List<Employee> employeeList = jtemp.query("Select * from employee where job_title = ?", new Object[]{jobTitle}, new EmployeeMapper());
+	    
+	    return employeeList;
 	}
 	/**
 	 * Query: Delete employee
@@ -305,7 +322,9 @@ public class EmployeeCRUDService {
 	
 	
 	public static void main(String[] args) {
+	    	/*
 		System.out.println("hello");
+<<<<<<< HEAD
 	//	int i = new EmployeeCRUDService().updateEmployee(1111111, "Moran", "Inaaya", "IM1111111", "123", "7759294432","Inaaya_Moran@syntelinc.com","122 St",
     //            "Boston", "MA", "US","SPOC", "BNFS","spoc", 12345);
 		new EmployeeCRUDService().updateEmployeeLastNameById(1212121, "MON");
@@ -322,6 +341,19 @@ public class EmployeeCRUDService {
 		new EmployeeCRUDService().updateEmployeeVerticalById(1212121, "ver");
 		new EmployeeCRUDService().updateEmployeeProjectNameById(1212121, "PNAme");
 		new EmployeeCRUDService().updateEmployeeProjectIdById(1212121, 12);
+=======
+		int i = new EmployeeCRUDService().updateEmployee(1111111, "Moran", "Inaaya", "IM1111111", "123", "7759294432","Inaaya_Moran@syntelinc.com","122 St",
+                "Boston", "MA", "US","SPOC", "BNFS","spoc", 12345);
+		System.out.println(i);
+		*/
+	    
+	    	List<Employee> spocList = new EmployeeCRUDService().getAllEmployeeByTitle("SPOC");
+	    	
+	    	for(Employee spoc:spocList)
+	    	{
+	    	    System.out.println(spoc.getEmployee_id());
+	    	}
+>>>>>>> ccb45ef1c5dbf7677cb67cd017ef1c5c1c76d088
 	}
 	
 }
