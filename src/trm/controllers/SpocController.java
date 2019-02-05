@@ -10,7 +10,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.sql.Date;
 import java.util.HashMap;
 
 import javax.websocket.server.PathParam;
@@ -20,10 +20,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 
 import trm.dao.employee.Employee;
 import trm.dao.employee.EmployeeCRUDService;
@@ -58,18 +58,54 @@ public class SpocController {
 	{
 		List<TrainingRequest> newTR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(0);
 		List<TrainingRequest> TR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(1);
-		List<TrainingRequest> inProgressTR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(2);
-		List<TrainingRequest> pendingTR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(3);
+		//List<TrainingRequest> inProgressTR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(2);
+		//List<TrainingRequest> pendingTR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(3);
 		List<TrainingRequest> trList = new ArrayList<TrainingRequest>();
 		
 		trList.addAll(TR);
-		trList.addAll(inProgressTR);
-		trList.addAll(pendingTR);
+		//trList.addAll(inProgressTR);
+		//trList.addAll(pendingTR);
 		
 		map.addAttribute("ntrList", newTR);
 		map.addAttribute("trList", trList);
 		
 		return "spocdashboard";
+	}
+	
+	@RequestMapping(value="steponeform/{itrId}")
+	public String stepOneForm(@PathVariable("itrId") int itrId, ModelMap map) {
+		map.addAttribute("itrId", itrId);
+		
+		return "steponeform";
+	}
+	
+	@RequestMapping(value="submitstepone/{itrId}")
+	public String submitStepOne(@PathVariable("itrId") int itrId, HttpServletRequest request, ModelMap map) {
+		map.addAttribute("itrId", itrId);
+		InternalTrainingCRUD itrCrud = new InternalTrainingCRUD();
+		InternalTrainingRequest itr = itrCrud.getItrById(itrId);
+		TrainingScheduleCRUDService tsCrud = new TrainingScheduleCRUDService();
+		//TrainingSchedule ts = tsCrud.getTrainingScheduleById(itr.get);
+		TrainingSchedule ts = itr.getItrSchedule();
+		
+		itr.setItrMode(request.getParameter("mode"));
+		//Selected Trainer
+		itrCrud.updateItr(itr);
+		
+		Date startDate = null;
+		Date endDate = null;
+		try {
+			//System.out.println(request.getParameter("startDate"));
+			String temp;
+			startDate = (Date) new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("startDate"));
+			endDate = (Date) new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("endDate"));
+		} catch (Exception e) {return "error";}
+		
+		ts.setTraining_start_date(startDate);
+		ts.setTraining_end_date(endDate);
+		tsCrud.updateTrainingSchedule(ts.getTraining_schedule_id(), "", "", "", "", "", "", "", 
+				ts.getTraining_start_date(), ts.getTraining_end_date());
+		return "edititrform/" + itrId;
 	}
 	
 	@RequestMapping(value = "/selecttrainingrequest", method = RequestMethod.GET)
@@ -144,13 +180,44 @@ public class SpocController {
 		
 		return "insertitr";
 	}
-	
+	@RequestMapping(value="edititr/{itrId}")
+	public String editiITRequest(@PathVariable("itrId") int itrId, ModelMap map)
+	{
+		//create Internal Training object here --->
+		//change from internalTrainingRequest to InternalTraining
+		InternalTrainingRequest itr = new InternalTrainingCRUD().getItrById(itrId);
+		List<Employee> execList = new EmployeeCRUDService().getAllEmployeeByTitle("Executive");
+		//------------Important code to be written---------------------
+		//command is a keyword
+		map.addAttribute("command", itr);
+		map.addAttribute("execList", execList);
+		
+		
+		return "edititrform";
+	}
+	@RequestMapping(value="saveUpdatedData")
+	public String saveUpdatedDetails(@ModelAttribute("itr") InternalTrainingRequest itr)
+	{
+		itr.setItrStatus(3);
+		itr.getItrTrainingRequest().setStatus(4);
+		
+		/*
+		int ret = new InternalTrainingTableCRUD.insert();
+		
+		if(ret > 0)
+			return "redirect:/showall";
+		else
+			return "error";
+		*/
+		return "redirect:/edititrform/1000000";
+		
+	}
 	@RequestMapping(value="newitr")
 	public String insertITRequest(@ModelAttribute("internalTrainingRequest") InternalTrainingRequest internalTrainingRequest)
 	{
 		
 		System.out.println(internalTrainingRequest.getItrTrainer());
-		internalTrainingRequest.setItrId(99999);
+		//internalTrainingRequest.setItrId(99999);
 		int ret = new InternalTrainingCRUD().insertItr(internalTrainingRequest);
 		
 		if(ret > 0)
