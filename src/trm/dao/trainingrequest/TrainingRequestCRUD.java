@@ -39,7 +39,7 @@ public class TrainingRequestCRUD
 														  		trainingRequest.getRequestTrainingMode(), trainingRequest.getRequestStartTime(),
 														  		trainingRequest.getRequestEndTime(), trainingRequest.getRequestLocation(),
 														  		trainingRequest.getRequestTimeZone(), trainingRequest.getApproxNumberOfParticipants(),
-														  		null, null,
+														  		trainingRequest.getRequestProjectSpoc().getEmployee_id(), trainingRequest.getRequestExecutive().getEmployee_id(),
 														  		trainingRequest.getTimeRequested(), trainingRequest.getStatus()});
 		return numberOfRowsEffected;
 	}
@@ -248,6 +248,15 @@ public class TrainingRequestCRUD
 	        return trainingRequestList;
 	}
 	
+	public List<TrainingRequest> getAllRequestBySPOCStatus(int spocId, int status)
+	{
+	        jTemp = DAOJDBCTemplate.getJdbcTemplate();
+	        List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request where requester_spoc_id = ? AND status = ?",
+	        	new Object[] {spocId, status}, new TrainingRequestMapper());
+	        
+	        return trainingRequestList;
+	}
+	
 	public List<TrainingRequest> getAllTrainingRequestByStatus(double status)
 	{
 	    	jTemp = DAOJDBCTemplate.getJdbcTemplate();
@@ -317,17 +326,20 @@ public class TrainingRequestCRUD
 		
 		//System.out.println(crud.getTrainingRequestById(10000).getRequestLocation());
 		
-		Timestamp st = Timestamp.valueOf("2019-04-18 10:00:00");
-		Timestamp et = Timestamp.valueOf("2019-05-28 07:00:00");
+		//Timestamp st = Timestamp.valueOf("2019-04-18 10:00:00");
+		//Timestamp et = Timestamp.valueOf("2019-05-28 07:00:00");
 		
-		System.out.println(crud.updateTrainingRequestTimesTimezoneLocation(10000, st, et, "MST", "Phoenix"));
+		//System.out.println(crud.updateTrainingRequestTimesTimezoneLocation(10000, st, et, "MST", "Phoenix"));
 		
-		/*
-		List<TrainingRequest> list = crud.getAllTrainingRequest();
+		List<TrainingRequest> list = crud.getAllRequest;
+		
+		
+		//List<TrainingRequest> list = crud.getAllTrainingRequest();
 		for(TrainingRequest trainerRequest : list)
 		{
 			System.out.println(trainerRequest.getTrainingRequestId());
 		}
-		*/
+		
+		
 	}
 }
