@@ -61,42 +61,45 @@ public class RequesterController
 	}
 	
 	@RequestMapping(value = "createrequest")
-	public String createNewRequests(ModelMap map) {
-		return "testNewRequest";
-	}
+public String createNewRequests(ModelMap map) {
+	return "CreateNewRequestversion3.0";
+}
 
-	@RequestMapping(value = "addnewrequest")
-	public String addNewRequest(@ModelAttribute("requestTrainingType") String requestTrainingType,
-			@ModelAttribute("requestTrainingModule") String requestTrainingModule,
-			@ModelAttribute("requestTrainingModuleScope") String requestTrainingModuleScope,
-			@ModelAttribute("requestTrainingMode") String requestTrainingMode,
-			@ModelAttribute("requestLocation") String requestLocation,
-			@ModelAttribute("requestStartDate") String requestStartDate,
-			@ModelAttribute("requestEndDate") String requestEndDate,
-			@ModelAttribute("requestStartTime") String requestStartTime,
-			@ModelAttribute("requestEndTime") String requestEndTime,
-			@ModelAttribute("requestTimeZone") String requestTimeZone,
-			@ModelAttribute("approxNumberOfParticipants") int approxNumberOfParticipants) {
-		TrainingRequest request = new TrainingRequest();
-		request.setRequesterId(1000019);// Change to session Employee ID
-		request.setRequestTrainingType(requestTrainingType);
-		request.setRequestTrainingModule(requestTrainingModule);
-		request.setRequestTrainingModuleScope(requestTrainingModuleScope);
-		request.setRequestTrainingMode(requestTrainingMode);
-		request.setRequestStartTime(stringToTimestamp(requestStartDate, requestStartTime));
-		request.setRequestEndTime(stringToTimestamp(requestEndDate, requestEndTime));
-		request.setRequestLocation(requestLocation);
-		request.setRequestTimeZone(requestTimeZone);
-		request.setApproxNumberOfParticipants(approxNumberOfParticipants);
-		Timestamp requestTime = new Timestamp(System.currentTimeMillis());
-		request.setTimeRequested(requestTime);
-		request.setStatus(0);
-		int ref = new TrainingRequestCRUD().insertTrainingRequest(request);
-		if (ref > 0)
-			return "redirect:/pmdashboard";
-		else
-			return "error";
-	}
+@RequestMapping(value = "addnewrequest")
+public String addNewRequest(@ModelAttribute("type") String requestTrainingType,
+		@ModelAttribute("request_training_module") String requestTrainingModule,
+		@ModelAttribute("textarea") String requestTrainingModuleScope,
+		@ModelAttribute("online") String requestTrainingMode,
+		@ModelAttribute("location") String requestLocation,
+		@ModelAttribute("training_start") String requestStartDate,
+		@ModelAttribute("training_end") String requestEndDate,
+		@ModelAttribute("training_startTime") String requestStartTime,
+		@ModelAttribute("training_endTime") String requestEndTime,
+		@ModelAttribute("timezone") String requestTimeZone,
+		@ModelAttribute("spoc") int requestProjectSpoc,
+		@ModelAttribute("participants") int approxNumberOfParticipants) {
+	TrainingRequest request = new TrainingRequest();
+	request.setRequesterId(1000019);// Change to session Employee ID when integrated
+	request.setRequestTrainingType(requestTrainingType);
+	request.setRequestTrainingModule(requestTrainingModule);
+	request.setRequestTrainingModuleScope(requestTrainingModuleScope);
+	request.setRequestTrainingMode(requestTrainingMode);
+	request.setRequestStartTime(stringToTimestamp(requestStartDate, requestStartTime));
+	request.setRequestEndTime(stringToTimestamp(requestEndDate, requestEndTime));
+	request.setRequestLocation(requestLocation);
+	request.setRequestTimeZone(requestTimeZone);
+	Employee spoc = new EmployeeCRUDService().getEmployeeById(requestProjectSpoc);
+	request.setRequestProjectSpoc(spoc);
+	request.setApproxNumberOfParticipants(approxNumberOfParticipants);
+	Timestamp requestTime = new Timestamp(System.currentTimeMillis());
+	request.setTimeRequested(requestTime);
+	request.setStatus(0);
+	int ref = new TrainingRequestCRUD().insertTrainingRequest(request);
+	if (ref > 0)
+		return "pmdashboard";
+	else
+		return "error";
+}
 	
 	@RequestMapping(value = "editrequest/{trainingRequestId}", method = RequestMethod.GET)
 	public String editRequest(@PathVariable("trainingRequestId") int trainingRequestId, ModelMap map, Model model) {
