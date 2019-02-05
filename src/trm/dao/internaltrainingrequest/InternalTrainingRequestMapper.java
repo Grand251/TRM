@@ -38,6 +38,7 @@ public class InternalTrainingRequestMapper implements RowMapper<InternalTraining
 		Employee trainer = new EmployeeCRUDService().getEmployeeById(rs.getInt(3));
 		request.setItrTrainer(trainer);
 		
+		System.out.println(rs.getInt(4));
 		TrainingRequest trainingRequest = new TrainingRequestCRUD().getTrainingRequestById(rs.getInt(4));
 		request.setItrTrainingRequest(trainingRequest);
 		
