@@ -3,6 +3,8 @@ import java.sql.Timestamp;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import trm.dao.DAOJDBCTemplate;
+
 //import trm.dao.employee.Employee;
 //import trm.dao.employee.EmployeeCRUDService;
 
@@ -233,7 +235,7 @@ public class TrainingRequestCRUD
 	public List<TrainingRequest> getAllTrainingRequest()
 	{
 		jTemp = DAOJDBCTemplate.getJdbcTemplate();
-		List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request where status >= 0" , new TrainingRequestMapper());
+		List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request where status>=0" , new TrainingRequestMapper());
 		return trainingRequestList;
 	}
 	

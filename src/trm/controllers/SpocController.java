@@ -21,6 +21,7 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -55,19 +56,28 @@ public class SpocController {
 	@RequestMapping(value="viewspocdashboard")
 	public String showDashboard(ModelMap map)
 	{
-		List<TrainingRequest> ntrList = new TrainingRequestCRUD().getAllTrainingRequest();
-		List<Employee> empList = new ArrayList<Employee>();
-		map.addAttribute("ntrList", ntrList);
+		List<TrainingRequest> newTR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(0);
+		List<TrainingRequest> TR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(1);
+		List<TrainingRequest> inProgressTR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(2);
+		List<TrainingRequest> pendingTR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(3);
+		List<TrainingRequest> trList = new ArrayList<TrainingRequest>();
+		
+		trList.addAll(TR);
+		trList.addAll(inProgressTR);
+		trList.addAll(pendingTR);
+		
+		map.addAttribute("ntrList", newTR);
+		map.addAttribute("trList", trList);
 		
 		return "spocdashboard";
 	}
-//	
-//	@RequestMapping(value = "/selecttrainingrequest", method = RequestMethod.GET)
-//    public String authenticateUser(@RequestParam("userName") String userName, @RequestParam("password") String password ,Model model) {
-//        System.out.println("coming in controller    " +userName +" : "+ password);  
-//        model.addAttribute("message", "Hello Spring MVC Framework!");
-//        return "success";
-//    }
+	
+	@RequestMapping(value = "/selecttrainingrequest", method = RequestMethod.GET)
+    public String selectedTrainingRequest(@RequestParam("userName") String userName, ModelMap map) {
+        
+		
+		return null;
+    }
 	
 	//initBinder allows Spring forms to map user input to attributes of type Employee, TrainingRequest, and TrainingSchedule
 	@InitBinder
