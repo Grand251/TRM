@@ -28,10 +28,16 @@
 		<f:input path="requestTrainingMode"/> 
 		<br>
 		Start Date:
-		<f:input path="requestStartTime"/> 
+		<input type = "date" name="requestStartDate" value = "${startdate}"/>
 		<br>
 		End Date:
-		<f:input path="requestEndTime"/> 
+		<input type = "date" name="requestEndDate" value = "${enddate}"/>
+		<br>
+		Start Time:
+		<input type = "time" name="requestStartTime" value = "${starttime}"/>
+		<br>
+		End Time:
+		<input type = "time" name="requestEndTime" value = "${endtime}"/>
 		<br>
 		Location:
 		<f:input path="requestLocation" /> 
