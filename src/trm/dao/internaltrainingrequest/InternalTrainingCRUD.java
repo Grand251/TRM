@@ -9,6 +9,7 @@ import trm.dao.trainingrequest.TrainingRequest;
 import trm.dao.trainingschedule.TrainingSchedule;
 
 
+
 /*CREATE TABLE INTERNAL_TRAINING_REQUEST
 (
   internal_training_id number(7) primary key,

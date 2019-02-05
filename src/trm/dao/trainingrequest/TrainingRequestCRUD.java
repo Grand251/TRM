@@ -1,9 +1,12 @@
 package trm.dao.trainingrequest;
+
 import java.sql.Timestamp;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import trm.dao.DAOJDBCTemplate;
+import trm.dao.employee.Employee;
+import trm.dao.employee.EmployeeCRUDService;
 
 
 /*
@@ -36,8 +39,8 @@ public class TrainingRequestCRUD
 														  		trainingRequest.getRequestTrainingMode(), trainingRequest.getRequestStartTime(),
 														  		trainingRequest.getRequestEndTime(), trainingRequest.getRequestLocation(),
 														  		trainingRequest.getRequestTimeZone(), trainingRequest.getApproxNumberOfParticipants(),
-														  		null, null,
-														  		trainingRequest.getTimeRequested(), trainingRequest.getStatus()});
+														  		trainingRequest.getRequestProjectSpoc().getEmployee_id(),
+														  		trainingRequest.getTimeRequested(), trainingRequest.getStatus(), trainingRequest.getJustificationOfRequest()});
 		return numberOfRowsEffected;
 	}
 	
@@ -52,7 +55,7 @@ public class TrainingRequestCRUD
 	public int deleteTrainingRequest(int trainingRequestId)
 	{
 		jTemp = DAOJDBCTemplate.getJdbcTemplate();
-		int numberOfRowsEffected = jTemp.update("delete from training_request where training_request_id = ?", 
+		int numberOfRowsEffected = jTemp.update("Update training_request set status = -10 where training_request_id = ?", 
 												  new Object[] {trainingRequestId});
 		return numberOfRowsEffected;
 	}
@@ -74,14 +77,14 @@ public class TrainingRequestCRUD
 		jTemp = DAOJDBCTemplate.getJdbcTemplate();
 		int numberOfRowsEffected = jTemp.update("Update training_request set request_training_type = ?, request_training_module = ?, request_training_module_scope = ?,"
 							 + " request_training_mode = ?, request_start_time = ?, request_end_time = ?, request_location = ?, request_time_zone = ?, request_approx_participant = ?, request_project_spoc = ?,"
-				             + " executive_id = ?, time_requested = ?, status = ? where training_request_id = ?",
+				                         + " executive_id = ?, time_requested = ?, status = ? where training_request_id = ?",
 												  new Object[] {trainingRequest.getRequestTrainingType(),
 														  		trainingRequest.getRequestTrainingModule(), trainingRequest.getRequestTrainingModuleScope(),
 														  		trainingRequest.getRequestTrainingMode(), trainingRequest.getRequestStartTime(),
 														  		trainingRequest.getRequestEndTime(), trainingRequest.getRequestLocation(),
 														  		trainingRequest.getRequestTimeZone(), trainingRequest.getApproxNumberOfParticipants(),
-														  		trainingRequest.getRequestProjectSpoc(), trainingRequest.getRequestExecutive(),
-														  		trainingRequest.getTimeRequested(), trainingRequest.getTrainingRequestId(), trainingRequest.getStatus()});
+														  		trainingRequest.getRequestProjectSpoc().getEmployee_id(),
+														  		trainingRequest.getTimeRequested(), trainingRequest.getTrainingRequestId(), trainingRequest.getStatus(), trainingRequest.getJustificationOfRequest()});
 		return numberOfRowsEffected;
 	}
 	
@@ -186,6 +189,21 @@ public class TrainingRequestCRUD
 		return numberOfRowsEffected;
 	}
 	
+	public int updateTrainingRequestScopeTypeModeParticip(int trainingRequestId, String requestScope, String requestType, String requestMode, int requestNumberOfParticipants)
+	{
+	    jTemp = DAOJDBCTemplate.getJdbcTemplate();
+	    int count = jTemp.update("Update training_request set request_training_module_scope = ?, request_training_type = ?, request_training_mode = ?, request_approx_participant = ? where training_request_id = ?",
+		    				           new Object[] {requestScope, requestType, requestMode, requestNumberOfParticipants, trainingRequestId});
+	    return count;
+	}
+	
+	public int updateTrainingRequestTimesTimezoneLocation(int trainingRequestId, Timestamp requestStartTime, Timestamp requestEndTime, String requestTimeZone, String requestLocation)
+	{
+	    jTemp = DAOJDBCTemplate.getJdbcTemplate();
+	    int count = jTemp.update("Update training_request set request_start_time = ?, request_end_time = ?, request_time_zone = ?, request_location = ? where training_request_id = ?",
+		    		      new Object[] { requestStartTime, requestEndTime, requestTimeZone, requestLocation, trainingRequestId});
+	    return count;
+	}
 	
 	/*
 	 * Gets the training request row from the training request table based on the 
@@ -197,10 +215,11 @@ public class TrainingRequestCRUD
 	 * @return Training request object which contains the attributes of the training 
 	 * 		   request needed.
 	 */
+	
 	public TrainingRequest getTrainingRequestById(int trainingRequestId)
 	{
 		jTemp = DAOJDBCTemplate.getJdbcTemplate();
-		TrainingRequest trainingRequest = jTemp.queryForObject("Select * from training_request where training_request_id = ?",
+		TrainingRequest trainingRequest = jTemp.queryForObject("Select * from training_request where training_request_id = ? AND status >= 0",
 												   				new Object[]{trainingRequestId}, new TrainingRequestMapper());
 		return trainingRequest;
 	}
@@ -216,7 +235,7 @@ public class TrainingRequestCRUD
 	public List<TrainingRequest> getAllTrainingRequest()
 	{
 		jTemp = DAOJDBCTemplate.getJdbcTemplate();
-		List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request" , new TrainingRequestMapper());
+		List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request where status >= 0" , new TrainingRequestMapper());
 		return trainingRequestList;
 	}
 	
@@ -227,5 +246,101 @@ public class TrainingRequestCRUD
 	        	new Object[] {projectManagerId}, new TrainingRequestMapper());
 	        
 	        return trainingRequestList;
+	}
+	
+	public List<TrainingRequest> getAllRequestBySPOCStatus(int spocId, int status)
+	{
+	        jTemp = DAOJDBCTemplate.getJdbcTemplate();
+	        List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request where requester_spoc_id = ? AND status = ?",
+	        	new Object[] {spocId, status}, new TrainingRequestMapper());
+	        
+	        return trainingRequestList;
+	}
+	
+	public List<TrainingRequest> getAllTrainingRequestByStatus(double status)
+	{
+	    	jTemp = DAOJDBCTemplate.getJdbcTemplate();
+	    	List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request where status = ?",
+	    								new Object[] {status}, new TrainingRequestMapper());
+	    	
+	    	return trainingRequestList;
+	}
+	
+	
+	public static void main(String[] args)
+	{
+		TrainingRequestCRUD crud = new TrainingRequestCRUD();
+		
+		/*
+		TrainingRequest tr = new TrainingRequest();
+		tr.setRequesterId(1000021);
+		tr.setRequestTrainingType("IT");
+		tr.setRequestTrainingModule("Java FSD");
+		tr.setRequestTrainingModuleScope("Spring");
+		tr.setRequestTrainingMode("class room");
+		Timestamp st = Timestamp.valueOf("2019-01-08 09:00:00");
+		Timestamp et = Timestamp.valueOf("2019-02-18 03:00:00");
+		tr.setRequestStartTime(st);
+		tr.setRequestEndTime(et);
+		tr.setRequestLocation("Boston");
+		tr.setRequestTimeZone("EST");
+		tr.setApproxNumberOfParticipants(15);
+		
+		Employee spoc = new EmployeeCRUDService().getEmployeeById(1000006);
+		tr.setRequestProjectSpoc(spoc);
+		
+		Employee exec = new EmployeeCRUDService().getEmployeeById(1000012);
+		tr.setRequestExecutive(exec);
+		Timestamp timeR = Timestamp.valueOf("2019-01-18 03:00:00");
+		tr.setTimeRequested(timeR);
+		tr.setStatus(1);
+		
+		/*
+		TrainingRequest tr = new TrainingRequest();
+		tr.setTrainingRequestId(10015);
+		tr.setRequesterId(1000021);
+		tr.setRequestTrainingType("IT");
+		tr.setRequestTrainingModule(".NET");
+		tr.setRequestTrainingModuleScope("VB");
+		tr.setRequestTrainingMode("web based");
+		Timestamp st = Timestamp.valueOf("2019-04-18 10:00:00");
+		Timestamp et = Timestamp.valueOf("2019-05-28 07:00:00");
+		tr.setRequestStartTime(st);
+		tr.setRequestEndTime(et);
+		tr.setRequestLocation("Phoenix");
+		tr.setRequestTimeZone("MST");
+		tr.setApproxNumberOfParticipants(10);
+		tr.setRequestProjectSpoc(1000006);
+		tr.setExecutiveId(1000012);
+		Timestamp timeR = Timestamp.valueOf("2019-02-08 15:30:00");
+		tr.setTimeRequested(timeR);
+		*/
+		
+		//crud.insertTrainingRequest(tr);
+		
+		//crud.deleteTrainingRequest(10014);
+		
+		//System.out.println(crud.updateTrainingRequest(tr));
+		
+		//System.out.println(crud.updateTrainingRequestScopeTypeModeParticip(10000, "SpringMVC", "VT", "web based", 20));
+		
+		//System.out.println(crud.getTrainingRequestById(10000).getRequestLocation());
+		
+		//Timestamp st = Timestamp.valueOf("2019-04-18 10:00:00");
+		//Timestamp et = Timestamp.valueOf("2019-05-28 07:00:00");
+		
+		//System.out.println(crud.updateTrainingRequestTimesTimezoneLocation(10000, st, et, "MST", "Phoenix"));
+		
+		//List<TrainingRequest> list = crud.getAllRequest;
+		
+		
+		//List<TrainingRequest> list = crud.getAllTrainingRequest();
+		/*
+		for(TrainingRequest trainerRequest : list)
+		{
+			System.out.println(trainerRequest.getTrainingRequestId());
+		}
+		*/
+		
 	}
 }

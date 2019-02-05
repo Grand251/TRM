@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    
+
+
     
 <!DOCTYPE html>
 <html>
@@ -30,9 +31,10 @@
 </script>
 </head>
 <body>
-	<h1>Dashboard</h1>
+	<h1>${name}'s Dashboard</h1>
 	<br>
 	<br>
+	<a href="createrequest">Create Request</a>
 	<h3>Requests</h3>
 	<hr size="4" color="red"/>
 	<table class="table table-striped table-dark">
