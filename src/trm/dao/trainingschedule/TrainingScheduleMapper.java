@@ -5,7 +5,11 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 
 import trm.dao.trainingschedule.TrainingSchedule;
-
+/**
+ * This is training schedule mapper class
+ * @author Kei Ng
+ *
+ */
 public class TrainingScheduleMapper implements RowMapper<TrainingSchedule>{
 	/**
 	 * use RowMapper interface
