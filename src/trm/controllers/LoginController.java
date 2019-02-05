@@ -6,10 +6,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import trm.dao.employee.Employee;
+import trm.dao.employee.EmployeeCRUDService;
+
 @Controller
 public class LoginController {
 	@RequestMapping(value="/")
-	public String loginFrom(ModelMap model) {
+	public String rooRedirect(ModelMap model) {
+		
+		return "redirect:/loginform";
+	}
+	
+	@RequestMapping(value="loginform")
+	public String loginForm(ModelMap model) {
 		
 		return "loginform";
 	}
@@ -17,9 +26,25 @@ public class LoginController {
 	@RequestMapping(value="login")
 	public String login(HttpServletRequest request, ModelMap model) {
 		
-		String role = request.getParameter("jobTitle");
+		request.getSession().invalidate();
+		
+		EmployeeCRUDService empCrud;
+		Employee emp;
+		int id = Integer.parseInt(request.getParameter("id"));
+		
+		try {
+			empCrud = new EmployeeCRUDService();
+			emp = empCrud.getEmployeeById(id);
+		} catch (Exception e) {
+			return "redirect:/loginform";
+		}
+		
+		emp = empCrud.getEmployeeById(id);
+		String role = emp.getJob_title();
+		
+		request.getSession().setAttribute("user", emp);
 		switch (role) {
-			case "PM":
+			case "Project Manager":
 				return "redirect:/pmdashboard";
 			case "SPOC":
 				return "redirect:/spocdashboard";
@@ -27,7 +52,15 @@ public class LoginController {
 				return "";
 		
 		}
-		
 	}
+
+	@RequestMapping(value="logout")
+	public String logout(HttpServletRequest request, ModelMap model) {
+		
+		request.getSession().invalidate();
+		
+		return "redirect:/loginform";
+	}
+					
 	
 }
