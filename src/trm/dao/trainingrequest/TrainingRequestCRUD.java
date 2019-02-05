@@ -3,8 +3,8 @@ package trm.dao.trainingrequest;
 import java.sql.Timestamp;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
-import trm.dao.DAOJDBCTemplate;
 
+import trm.dao.DAOJDBCTemplate;
 import trm.dao.employee.Employee;
 import trm.dao.employee.EmployeeCRUDService;
 
@@ -39,8 +39,8 @@ public class TrainingRequestCRUD
 														  		trainingRequest.getRequestTrainingMode(), trainingRequest.getRequestStartTime(),
 														  		trainingRequest.getRequestEndTime(), trainingRequest.getRequestLocation(),
 														  		trainingRequest.getRequestTimeZone(), trainingRequest.getApproxNumberOfParticipants(),
-														  		trainingRequest.getRequestProjectSpoc().getEmployee_id(), trainingRequest.getRequestExecutive().getEmployee_id(),
-														  		trainingRequest.getTimeRequested(), trainingRequest.getStatus()});
+														  		trainingRequest.getRequestProjectSpoc().getEmployee_id(),
+														  		trainingRequest.getTimeRequested(), trainingRequest.getStatus(), trainingRequest.getJustificationOfRequest()});
 		return numberOfRowsEffected;
 	}
 	
@@ -83,8 +83,8 @@ public class TrainingRequestCRUD
 														  		trainingRequest.getRequestTrainingMode(), trainingRequest.getRequestStartTime(),
 														  		trainingRequest.getRequestEndTime(), trainingRequest.getRequestLocation(),
 														  		trainingRequest.getRequestTimeZone(), trainingRequest.getApproxNumberOfParticipants(),
-														  		trainingRequest.getRequestProjectSpoc().getEmployee_id(), trainingRequest.getRequestExecutive().getEmployee_id(),
-														  		trainingRequest.getTimeRequested(), trainingRequest.getTrainingRequestId(), trainingRequest.getStatus()});
+														  		trainingRequest.getRequestProjectSpoc().getEmployee_id(),
+														  		trainingRequest.getTimeRequested(), trainingRequest.getTrainingRequestId(), trainingRequest.getStatus(), trainingRequest.getJustificationOfRequest()});
 		return numberOfRowsEffected;
 	}
 	
@@ -331,15 +331,16 @@ public class TrainingRequestCRUD
 		
 		//System.out.println(crud.updateTrainingRequestTimesTimezoneLocation(10000, st, et, "MST", "Phoenix"));
 		
-		List<TrainingRequest> list = crud.getAllRequest;
+		//List<TrainingRequest> list = crud.getAllRequest;
 		
 		
 		//List<TrainingRequest> list = crud.getAllTrainingRequest();
+		/*
 		for(TrainingRequest trainerRequest : list)
 		{
 			System.out.println(trainerRequest.getTrainingRequestId());
 		}
-		
+		*/
 		
 	}
 }

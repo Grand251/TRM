@@ -4,6 +4,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 
+import trm.dao.employee.Employee;
+import trm.dao.employee.EmployeeCRUDService;
+
 /*
  * @author Ian Nielsen
  * Last changed: February 4th 2019 12:45PM
@@ -36,11 +39,9 @@ public class TrainingRequestMapper implements RowMapper<TrainingRequest>
 		Employee requestProjectSpoc = new EmployeeCRUDService().getEmployeeById(result.getInt(12));
 		trainingRequest.setRequestProjectSpoc(requestProjectSpoc);
 		
-		Employee requestExecutive = new EmployeeCRUDService().getEmployeeById(result.getInt(13));
-		trainingRequest.setRequestExecutive(requestExecutive);
-		
-		trainingRequest.setTimeRequested(result.getTimestamp(14));
-		trainingRequest.setStatus(result.getDouble(15));
+		trainingRequest.setTimeRequested(result.getTimestamp(13));
+		trainingRequest.setStatus(result.getDouble(14));
+		trainingRequest.setJustificationOfRequest(result.getString(15));
 		
 		return trainingRequest;
 	}

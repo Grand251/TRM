@@ -2,6 +2,8 @@ package trm.dao.trainingrequest;
 
 import java.sql.Timestamp;
 
+import trm.dao.employee.Employee;
+
 /*
  * @author Ian Nielsen
  * Last changed: February 4th 2019 12:46PM
@@ -48,9 +50,6 @@ public class TrainingRequest
 	//If the PM has a team member in mind for a SPOC they can specify them here.
 	private Employee requestProjectSpoc;
 	
-	//If the PM has an executive in mind they can specify them here.
-	private Employee requestExecutive;
-	
 	//The time the request was made. Not when the training takes place.
 	private Timestamp timeRequested;
 	
@@ -58,6 +57,8 @@ public class TrainingRequest
 	//Possible values: Request made, request being processed, 
 	//type(IT or VT) being decided, type decided.
 	private double status;
+	
+	private String justificationOfRequest;
 	
 	/*
 	 * Gets the trainingRequestId
@@ -302,28 +303,6 @@ public class TrainingRequest
 	}
 	
 	/*
-	 * Gets the executiveId
-	 *
-	 * @param  None.
-	 * @return Returns the id of the executive as an integer.
-	 */
-	public Employee getRequestExecutive() 
-	{
-		return requestExecutive;
-	}
-	
-	/*
-	 * Sets the executiveId
-	 *
-	 * @param  The value the executive id will be set to.
-	 * @return None.
-	 */
-	public void setRequestExecutive(Employee requestExecutive) 
-	{
-		this.requestExecutive = requestExecutive;
-	}
-	
-	/*
 	 * Gets the timeRequested
 	 *
 	 * @param  None.
@@ -387,5 +366,15 @@ public class TrainingRequest
 	public void setStatus(double status) 
 	{
 		this.status = status;
+	}
+
+	public String getJustificationOfRequest()
+	{
+	    return justificationOfRequest;
+	}
+
+	public void setJustificationOfRequest(String justificationOfRequest)
+	{
+	    this.justificationOfRequest = justificationOfRequest;
 	}
 }
