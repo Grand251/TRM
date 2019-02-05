@@ -127,6 +127,18 @@ public class InternalTrainingCRUD {
 				new InternalTrainingRequestMapper());
 	}
 	
+	public List<InternalTrainingRequest> getAllItrByExec(Employee exec){
+		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM internal_training_request "
+				+ "WHERE EXECUTIVE_ID=?", new Object[]{exec.getEmployee_id()},
+				new InternalTrainingRequestMapper());
+	}
+	
+	public List<InternalTrainingRequest> getAllItrByExec(int execId){
+		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM internal_training_request "
+				+ "WHERE EXECUTIVE_ID=?", new Object[]{execId},
+				new InternalTrainingRequestMapper());
+	}
+	
 	/*
 	 * Get list of InternalTrainingRequest objects with scheduleId contained in TrainingSchedule object
 	 * 
