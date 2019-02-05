@@ -100,7 +100,7 @@ public class RequesterController
 	public String editRequest(@PathVariable("trainingRequestId") int trainingRequestId, ModelMap map) {
 		TrainingRequest request = new TrainingRequestCRUD().getTrainingRequestById(trainingRequestId);
 		map.addAttribute("command", request);
-		return "editrequestscheduleform";
+		return "editrequestform";
 	}
 
 	@RequestMapping(value = "editrequestschedule/{trainingRequestId}")
