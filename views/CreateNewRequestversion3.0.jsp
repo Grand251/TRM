@@ -198,6 +198,18 @@
         </div>
         <br>
         <div class="row">
+        <div class="col-xs-2">
+          <label class="control-label">
+            Justification of Request:
+          </label>
+        </div>
+        <div class="col-xs-10">
+          <textarea class="form-control" rows="5" id="justification" name="justification" placeholder="Reason for request" required></textarea>
+        </div>
+      </div>
+      <br>
+        <br>
+        <div class="row">
             <div class="col">
               <div class="text-right">
                 <button type="submit" class="btn btn-info">

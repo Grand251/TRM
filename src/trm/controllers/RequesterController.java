@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import trm.dao.employee.Employee;
+import trm.dao.employee.EmployeeCRUDService;
 import trm.dao.internaltrainingrequest.InternalTrainingCRUD;
 import trm.dao.internaltrainingrequest.InternalTrainingRequest;
 import trm.dao.trainingrequest.*;
@@ -77,7 +78,8 @@ public String addNewRequest(@ModelAttribute("type") String requestTrainingType,
 		@ModelAttribute("training_endTime") String requestEndTime,
 		@ModelAttribute("timezone") String requestTimeZone,
 		@ModelAttribute("spoc") int requestProjectSpoc,
-		@ModelAttribute("participants") int approxNumberOfParticipants) {
+		@ModelAttribute("participants") int approxNumberOfParticipants,
+		@ModelAttribute("justification") String justification) {
 	TrainingRequest request = new TrainingRequest();
 	request.setRequesterId(1000019);// Change to session Employee ID when integrated
 	request.setRequestTrainingType(requestTrainingType);
@@ -94,6 +96,7 @@ public String addNewRequest(@ModelAttribute("type") String requestTrainingType,
 	Timestamp requestTime = new Timestamp(System.currentTimeMillis());
 	request.setTimeRequested(requestTime);
 	request.setStatus(0);
+	request.setJustificationOfRequest(justification);
 	int ref = new TrainingRequestCRUD().insertTrainingRequest(request);
 	if (ref > 0)
 		return "pmdashboard";
