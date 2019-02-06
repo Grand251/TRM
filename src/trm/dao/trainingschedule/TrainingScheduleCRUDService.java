@@ -134,8 +134,8 @@ public class TrainingScheduleCRUDService {
 										schedule.getTraining_room_number(),
 										schedule.getTraining_start_date(),
 										schedule.getTraining_end_date(),
-										schedule.getTrainingUrl(),
-										schedule.getTrainingAudio()});
+										schedule.getTraining_url(),
+										schedule.getTraining_audio()});
 		return ret;
 	}
 	
@@ -267,123 +267,6 @@ public class TrainingScheduleCRUDService {
 		jtemp = DAOJDBCTemplate.getJdbcTemplate();
 		int ret = jtemp.update("UPDATE TRAINING_SCHEDULE SET training_audio = ? where training_schedule_id = ?",
 							new Object[] {training_audio, training_schedule_id});
-		return ret;
-	}
-	
-	/**
-	 * update training schedule city
-	 * @param training_schedule_id
-	 * @param training_city
-	 * @return int(boolean)
-	 */
-	public int updateTrainingScheduleCityById(String training_schedule_id, String training_city) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
-		int ret = jtemp.update("UPDATE TRAINING_SCHEDULE SET training_city = ? where training_schedule_id = ?",
-							new Object[] {training_city, training_schedule_id});
-		return ret;
-	}
-	
-	/**
-	 * update training schedule state
-	 * @param training_schedule_id
-	 * @param training_state
-	 * @return int(boolean)
-	 */
-	public int updateTrainingScheduleStateById(String training_schedule_id, String training_state) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
-		int ret = jtemp.update("UPDATE TRAINING_SCHEDULE SET training_state = ? where training_schedule_id = ?",
-							new Object[] {training_state, training_schedule_id});
-		return ret;
-	}
-	
-	/**
-	 *  update training schedule country
-	 * @param training_schedule_id
-	 * @param training_country
-	 * @return int(boolean)
-	 */
-	public int updateTrainingScheduleCountryById(String training_schedule_id, String training_country) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
-		int ret = jtemp.update("UPDATE TRAINING_SCHEDULE SET training_country = ? where training_schedule_id = ?",
-							new Object[] {training_country, training_schedule_id});
-		return ret;
-	}
-	
-	/**
-	 * update training schedule zipcode
-	 * @param training_schedule_id
-	 * @param training_zipcode
-	 * @return int(boolean)
-	 */
-	public int updateTrainingScheduleZipcodeById(String training_schedule_id, String training_zipcode) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
-		int ret = jtemp.update("UPDATE TRAINING_SCHEDULE SET training_zipcode = ? where training_schedule_id = ?",
-							new Object[] {training_zipcode, training_schedule_id});
-		return ret;
-	}
-	
-	/**
-	 * update training schedule time zone
-	 * @param training_schedule_id
-	 * @param training_time_zone
-	 * @return int(boolean)
-	 */
-	public int updateTrainingScheduleTimeZoneById(String training_schedule_id, String training_time_zone) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
-		int ret = jtemp.update("UPDATE TRAINING_SCHEDULE SET training_time_zone = ? where training_schedule_id = ?",
-							new Object[] {training_time_zone, training_schedule_id});
-		return ret;
-	}
-	
-	/**
-	 * update training schedule location
-	 * @param training_schedule_id
-	 * @param training_location
-	 * @return int(boolean)
-	 */
-	public int updateTrainingScheduleLocationById(String training_schedule_id, String training_location) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
-		int ret = jtemp.update("UPDATE TRAINING_SCHEDULE SET training_location = ? where training_schedule_id = ?",
-							new Object[] {training_location, training_schedule_id});
-		return ret;
-	}
-	
-	/**
-	 * update training schedule room number
-	 * @param training_schedule_id
-	 * @param training_location
-	 * @return int(boolean)
-	 */
-	public int updateTrainingScheduleRoomNumberById(String training_schedule_id, String training_room_number) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
-		int ret = jtemp.update("UPDATE TRAINING_SCHEDULE SET training_room_number = ? where training_schedule_id = ?",
-							new Object[] {training_room_number, training_schedule_id});
-		return ret;
-	}
-	
-	/**
-	 * update training schedule start date
-	 * @param training_schedule_id
-	 * @param training_start_date
-	 * @return int(boolean)
-	 */
-	public int updateTrainingScheduleStartDateById(String training_schedule_id, String training_start_date) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
-		int ret = jtemp.update("UPDATE TRAINING_SCHEDULE SET training_start_date = ? where training_schedule_id = ?",
-							new Object[] {training_start_date, training_schedule_id});
-		return ret;
-	}
-	
-	/**
-	 * update training schedule end date
-	 * @param training_schedule_id
-	 * @param training_start_date
-	 * @return int(boolean)
-	 */
-	public int updateTrainingScheduleEndDateById(String training_schedule_id, String training_end_date) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
-		int ret = jtemp.update("UPDATE TRAINING_SCHEDULE SET training_end_date = ? where training_schedule_id = ?",
-							new Object[] {training_end_date, training_schedule_id});
 		return ret;
 	}
 	
