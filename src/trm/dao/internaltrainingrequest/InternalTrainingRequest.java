@@ -4,6 +4,8 @@ import trm.dao.trainingrequest.TrainingRequest;
 import trm.dao.trainingschedule.TrainingSchedule;
 import trm.dao.employee.Employee;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -21,7 +23,14 @@ public class InternalTrainingRequest {
 	  description_of_status varchar(30)
 	);*/
 	
+	public static void main(String[] args) {
+		InternalTrainingRequest itr = new InternalTrainingRequest();
+		itr.setItrId(-1);
+	}
+	
 	@NotNull
+	@Min(0)
+	@Max(99999)
 	private int itrId;
 	
 	@NotNull
@@ -34,7 +43,8 @@ public class InternalTrainingRequest {
 	private Employee itrExecutive;
 	
 	@NotNull
-	@Size(max=2)
+	@Min(-10)
+	@Max(99)
 	private int itrStatus;
 	
 	@Size(max=30) 
