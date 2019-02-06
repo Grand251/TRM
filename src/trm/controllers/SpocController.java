@@ -156,7 +156,7 @@ public class SpocController {
 		ts.setTraining_end_date(endDate);
 		tsCrud.updateTrainingSchedule(ts.getTraining_schedule_id(), "", "", "", "", "", "", "", 
 				ts.getTraining_start_date(), ts.getTraining_end_date());
-		return "edititrform/" + itrId;
+		return "redirect:/edititr/" + itrId;
 	}
 	
 
@@ -242,9 +242,18 @@ public class SpocController {
 		List<Employee> execList = new EmployeeCRUDService().getAllEmployeeByTitle("Executive");
 		//------------Important code to be written---------------------
 		//command is a keyword
-		map.addAttribute("command", itr);
 		map.addAttribute("execList", execList);
+		map.addAttribute("itrId", itrId);
+		map.addAttribute("itr", itr);
+		EmployeeCRUDService empCrud = new EmployeeCRUDService();
+		List<Employee> trainers = empCrud.getAllEmployeeByTitle("Trainer");
+		map.addAttribute("trainers", trainers);
 		
+		if (itr.getItrStatus() > 3)
+			map.addAttribute("approvalStatus", "Confirmed");
+		else
+			map.addAttribute("approvalStatus", "Not Confirmed");
+
 		
 		return "edititrform";
 	}
