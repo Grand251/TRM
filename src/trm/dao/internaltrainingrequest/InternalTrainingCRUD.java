@@ -159,14 +159,27 @@ public class InternalTrainingCRUD {
 	 * @param itr TrainingRequest object with fields matching the above descriptions
 	 */	
 	public int insertItr(InternalTrainingRequest itr) {
+		String scheduleId = null;
+		int trainerId = 0;
+		int executiveId = 0;
+		
+		if(itr.getItrSchedule()!=null)
+			scheduleId = itr.getItrSchedule().getTraining_schedule_id();
+		
+		if(itr.getItrTrainer()!=null)
+			trainerId = itr.getItrTrainer().getEmployee_id();
+		
+		if(itr.getItrExecutive()!=null)
+			executiveId = itr.getItrExecutive().getEmployee_id();
+		
 		return DAOJDBCTemplate.getJdbcTemplate().update(
 				"INSERT INTO internal_training_request VALUES(internal_training_id_seq.nextval, "
 				+ "?, ?, ?, ?, ?, ?, ?)",
 				new Object[] {itr.getItrStatus(),
 						      itr.getItrTrainingRequest().getTrainingRequestId(),
-						      itr.getItrSchedule().getTraining_schedule_id(),
-						      itr.getItrTrainer().getEmployee_id(),
-						      itr.getItrExecutive().getEmployee_id(),
+						      scheduleId,
+						      (trainerId==0) ? null : trainerId,
+						      (executiveId==0) ? null : executiveId,
 						      itr.getItrStatus(),
 						      itr.getItrStatusDescription()});
 	}
