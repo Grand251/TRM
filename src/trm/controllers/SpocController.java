@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 import trm.dao.employee.Employee;
 import trm.dao.employee.EmployeeCRUDService;
 import trm.dao.internaltrainer.InternalTrainer;
@@ -72,7 +71,6 @@ public class SpocController {
 		
 		return "spocdashboard";
 	}
-	
 	
 	@RequestMapping(value="steponeform/{itrId}")
 	public String stepOneForm(@PathVariable("itrId") int itrId, ModelMap map) {
@@ -187,13 +185,44 @@ public class SpocController {
 		
 		return "insertitr";
 	}
-	
+	@RequestMapping(value="edititr/{itrId}")
+	public String editiITRequest(@PathVariable("itrId") int itrId, ModelMap map)
+	{
+		//create Internal Training object here --->
+		//change from internalTrainingRequest to InternalTraining
+		InternalTrainingRequest itr = new InternalTrainingCRUD().getItrById(itrId);
+		List<Employee> execList = new EmployeeCRUDService().getAllEmployeeByTitle("Executive");
+		//------------Important code to be written---------------------
+		//command is a keyword
+		map.addAttribute("command", itr);
+		map.addAttribute("execList", execList);
+		
+		
+		return "edititrform";
+	}
+	@RequestMapping(value="saveUpdatedData")
+	public String saveUpdatedDetails(@ModelAttribute("itr") InternalTrainingRequest itr)
+	{
+		itr.setItrStatus(3);
+		itr.getItrTrainingRequest().setStatus(4);
+		
+		/*
+		int ret = new InternalTrainingTableCRUD.insert();
+		
+		if(ret > 0)
+			return "redirect:/showall";
+		else
+			return "error";
+		*/
+		return "redirect:/edititrform/1000000";
+		
+	}
 	@RequestMapping(value="newitr")
 	public String insertITRequest(@ModelAttribute("internalTrainingRequest") InternalTrainingRequest internalTrainingRequest)
 	{
 		
 		System.out.println(internalTrainingRequest.getItrTrainer());
-		internalTrainingRequest.setItrId(99999);
+		//internalTrainingRequest.setItrId(99999);
 		int ret = new InternalTrainingCRUD().insertItr(internalTrainingRequest);
 		
 		if(ret > 0)
