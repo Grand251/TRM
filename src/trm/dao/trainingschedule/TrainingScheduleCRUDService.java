@@ -21,13 +21,18 @@ public class TrainingScheduleCRUDService {
 	private JdbcTemplate jtemp;
 	
 	public static void main(String[] args) {
-		//int i = new TrainingScheduleCRUDService().getAllTrainingSchedule().size();
+		/*TrainingScheduleCRUDService tCRUD =  new TrainingScheduleCRUDService();
 		//System.out.println(i);
 		
-		//List<TrainingSchedule> sc= new TrainingScheduleCRUDService().getAllTrainingSchedule();
+		TrainingSchedule sc= new TrainingScheduleCRUDService().getTrainingScheduleById("10000");
+		TrainingSchedule ts = tCRUD.insertTrainingSchedule(sc);
+		
+		
+		tCRUD.insertTrainingSchedule(ts);*/
+		
 		//System.out.println(sc.get(0).getTraining_schedule_id());
 
-		int i = new TrainingScheduleCRUDService().updateTrainingSchedule("9876543211", "Boston", "MA", "US", "12345", "EST", "542 st", "R210", null, null,"url","audio");
+		//int i = new TrainingScheduleCRUDService().updateTrainingSchedule("9876543211", "Boston", "MA", "US", "12345", "EST", "542 st", "R210", null, null,"url","audio");
 		//int i = new TrainingScheduleCRUDService().updateTrainingScheduleCityById("9876543211", "city");
 		/*
 		new TrainingScheduleCRUDService().updateTrainingScheduleStateById("9876543211", "state");
@@ -39,10 +44,13 @@ public class TrainingScheduleCRUDService {
 		new TrainingScheduleCRUDService().updateTrainingScheduleEndDateById("9876543211", null);
 		new TrainingScheduleCRUDService().updateTrainingScheduleLocationById("9876543211", "location");
 		*/
-		new TrainingScheduleCRUDService().updateTrainingScheduleTrainingURLlById("9876543211", "URL");
-		new TrainingScheduleCRUDService().updateTrainingScheduleTrainingAudioById("9876543211", "AUDIO");
+		//new TrainingScheduleCRUDService().updateTrainingScheduleTrainingURLlById("9876543211", "URL");
+		//new TrainingScheduleCRUDService().updateTrainingScheduleTrainingAudioById("9876543211", "AUDIO");
+		
+		//TrainingSchedule ts = new TrainingSchedule();
+		//ts.set
 
-		System.out.println(i);
+		//System.out.println(i);
 	}
 	
 	
@@ -125,22 +133,8 @@ public class TrainingScheduleCRUDService {
 	 * @param schedule
 	 * @return int(boolean)
 	 */
-	public int insertTrainingSchedule(TrainingSchedule schedule) {
+	public TrainingSchedule insertTrainingSchedule(TrainingSchedule schedule) {
 		jtemp = DAOJDBCTemplate.getJdbcTemplate();
-		/*int ret = jtemp.update("insert into TRAINING_SCHEDULE values (training_schedule_id_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-								new Object[] {
-										schedule.getTraining_schedule_id(),
-										schedule.getTraining_city(),
-										schedule.getTraining_state(),
-										schedule.getTraining_country(),
-										schedule.getTraining_zipcode(),
-										schedule.getTraining_time_zone(),
-										schedule.getTraining_location(),
-										schedule.getTraining_room_number(),
-										schedule.getTraining_start_date(),
-										schedule.getTraining_end_date(),
-										schedule.getTraining_url(),
-										schedule.getTraining_audio()});*/
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		
@@ -169,9 +163,8 @@ public class TrainingScheduleCRUDService {
 				 );
 		
 		int key = keyHolder.getKey().intValue();
-		System.out.println(key);
-		
-		return key;
+		TrainingSchedule newTrainingSchedule = getTrainingScheduleById(key + "");
+		return newTrainingSchedule;
 	}
 	
 	/**
