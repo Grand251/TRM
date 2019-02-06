@@ -43,7 +43,7 @@ public class RequesterController
 			try
 			{
 				InternalTrainingRequest itr = trainingSvc.getItrByTrainingRequest(req.getTrainingRequestId());
-				requests.add(new PMRequestInfo(req, itr, itr.getItrSchedule(), itr.getItrTrainer(), itr.getItrSpoc()));
+				requests.add(new PMRequestInfo(req, itr, itr.getItrSchedule(), itr.getItrTrainer(), req.getRequestProjectSpoc()));
 			}
 			catch (Exception e)
 			{
