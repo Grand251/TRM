@@ -41,7 +41,7 @@ public class InternalTrainingRequestMapper implements RowMapper<InternalTraining
 
 		request.setItrTrainingRequest(trainingRequest);
 		
-		TrainingSchedule schedule = new TrainingScheduleCRUDService().getTrainingScheduleById(rs.getInt(3)); 
+		TrainingSchedule schedule = new TrainingScheduleCRUDService().getTrainingScheduleById(rs.getString(3)); 
 		request.setItrSchedule(schedule);
 		
 		Employee trainer = new EmployeeCRUDService().getEmployeeById(rs.getInt(4));
