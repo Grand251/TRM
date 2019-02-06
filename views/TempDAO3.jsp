@@ -56,21 +56,19 @@
 </div>
 <script>
 	var labels = [];
-	var data = new Map();
+	var datasets = new Map();
 	var first = true;
 	<c:forEach items="${requests}" var="location">
 		var key = "${location.key}";
+		console.log(key);
 		labels.push(key);
 		<c:forEach items="${location.value}" var="mode">
 			var m = "${mode.key}";
 			var data = "${mode.value}";
 			if(first)
-				data.set(m, [data]);
+				datasets.set(m, [data]);
 			else
-				data.get(m).push(data);
-			//console.log(key);
-			//console.log(value);
-			data.push(value);
+				datasets.get(m).push(data);
 		</c:forEach>
 		first = false;
 	</c:forEach>
@@ -82,7 +80,7 @@
 	//</c:forEach>
 	
 	console.log(labels);
-	console.log(data);
+	console.log(datasets);
 
 	var ctxBarChart = document.getElementById("priceComplianceBarChart").getContext("2d");
 	var priceBarChart = new Chart(ctxBarChart, {

@@ -54,7 +54,10 @@ public class TempRequestController {
 	public String chartSpocRequestByLocationandMode(HttpServletRequest req, ModelMap model) {
 		EmployeeCRUDService eCRUD = new EmployeeCRUDService();
 		List<Employee> spocs = eCRUD.getAllEmployeeByTitle("SPOC");
-		
+		System.out.println("HELLO");
+		System.out.println(req.getParameter("spocChoice"));
+		System.out.println(req.getParameter("period"));
+		System.out.println("WTF");
 		HashMap<Integer, String> spocOptions = new HashMap<Integer, String>();
 		
 		for(Employee spoc : spocs) {
@@ -68,7 +71,8 @@ public class TempRequestController {
 			int spocId = Integer.parseInt(req.getParameter("spocChoice"));
 			
 			
-			
+			System.out.println(period);
+			System.out.println(spocId);
 			model.addAttribute("requests", getSpocRequestByModeAndLocation(spocId, period));
 			model.addAttribute("period", period);
 			model.addAttribute("spoc", spocId);
