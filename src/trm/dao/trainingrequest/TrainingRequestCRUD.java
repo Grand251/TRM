@@ -16,7 +16,7 @@ import trm.dao.employee.EmployeeCRUDService;
 public class TrainingRequestCRUD 
 {
 	//JdbcTemplate object. Will be initialized in every method using the static method
-	//getJdbcTemplate in the DAOJDBCTemplate class.
+	//getJdbcTemplate in the new DAOJDBCTemplate() class.
 	private JdbcTemplate jTemp;
 	
 	/*
@@ -32,7 +32,7 @@ public class TrainingRequestCRUD
 	 */
 	public int insertTrainingRequest(TrainingRequest trainingRequest)
 	{
-		jTemp = DAOJDBCTemplate.getJdbcTemplate();
+		jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int numberOfRowsEffected = jTemp.update("Insert into training_Request values(training_id_request_seq.nextval,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" , 
 												  new Object[] {trainingRequest.getRequesterId(), trainingRequest.getRequestTrainingType(),
 														  		trainingRequest.getRequestTrainingModule(), trainingRequest.getRequestTrainingModuleScope(),
@@ -54,7 +54,7 @@ public class TrainingRequestCRUD
 	 */
 	public int deleteTrainingRequest(int trainingRequestId)
 	{
-		jTemp = DAOJDBCTemplate.getJdbcTemplate();
+		jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int numberOfRowsEffected = jTemp.update("Update training_request set status = -10 where training_request_id = ?", 
 												  new Object[] {trainingRequestId});
 		return numberOfRowsEffected;
@@ -74,7 +74,7 @@ public class TrainingRequestCRUD
 	 */
 	public int updateTrainingRequest(TrainingRequest trainingRequest)
 	{
-		jTemp = DAOJDBCTemplate.getJdbcTemplate();
+		jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int numberOfRowsEffected = jTemp.update("Update training_request set request_training_type = ?, request_training_module = ?, request_training_module_scope = ?,"
 							 + " request_training_mode = ?, request_start_time = ?, request_end_time = ?, request_location = ?, request_time_zone = ?, request_approx_participant = ?, request_project_spoc = ?,"
 				                         + " executive_id = ?, time_requested = ?, status = ? where training_request_id = ?",
@@ -108,7 +108,7 @@ public class TrainingRequestCRUD
 	 */
 	public int updateTrainingRequestByAttribute(int trainingRequestId, String trainingRequestAttribute, String attributeNewValue)
 	{
-		jTemp = DAOJDBCTemplate.getJdbcTemplate();
+		jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 		
 		String sqlPreparedStatement = "Update training_request set ";
 		sqlPreparedStatement = sqlPreparedStatement.concat(trainingRequestAttribute);
@@ -139,7 +139,7 @@ public class TrainingRequestCRUD
 	 */
 	public int updateTrainingRequestByAttribute(int trainingRequestId, String trainingRequestAttribute, Timestamp newTimestamp)
 	{
-		jTemp = DAOJDBCTemplate.getJdbcTemplate();
+		jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int numberOfRowsEffected = 0;
 		if(trainingRequestAttribute.equals("request_start_time"))
 		{
@@ -175,7 +175,7 @@ public class TrainingRequestCRUD
 	 */
 	public int updateTrainingRequestByAttribute(int trainingRequestId, String trainingRequestAttribute, int attributeNewValue)
 	{
-		jTemp = DAOJDBCTemplate.getJdbcTemplate();
+		jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 		
 		String sqlPreparedStatement = "Update training_request set ";
 		sqlPreparedStatement = sqlPreparedStatement.concat(trainingRequestAttribute);
@@ -191,7 +191,7 @@ public class TrainingRequestCRUD
 	
 	public int updateTrainingRequestScopeTypeModeParticip(int trainingRequestId, String requestScope, String requestType, String requestMode, int requestNumberOfParticipants)
 	{
-	    jTemp = DAOJDBCTemplate.getJdbcTemplate();
+	    jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 	    int count = jTemp.update("Update training_request set request_training_module_scope = ?, request_training_type = ?, request_training_mode = ?, request_approx_participant = ? where training_request_id = ?",
 		    				           new Object[] {requestScope, requestType, requestMode, requestNumberOfParticipants, trainingRequestId});
 	    return count;
@@ -199,7 +199,7 @@ public class TrainingRequestCRUD
 	
 	public int updateTrainingRequestTimesTimezoneLocation(int trainingRequestId, Timestamp requestStartTime, Timestamp requestEndTime, String requestTimeZone, String requestLocation)
 	{
-	    jTemp = DAOJDBCTemplate.getJdbcTemplate();
+	    jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 	    int count = jTemp.update("Update training_request set request_start_time = ?, request_end_time = ?, request_time_zone = ?, request_location = ? where training_request_id = ?",
 		    		      new Object[] { requestStartTime, requestEndTime, requestTimeZone, requestLocation, trainingRequestId});
 	    return count;
@@ -218,7 +218,7 @@ public class TrainingRequestCRUD
 	
 	public TrainingRequest getTrainingRequestById(int trainingRequestId)
 	{
-		jTemp = DAOJDBCTemplate.getJdbcTemplate();
+		jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 		TrainingRequest trainingRequest = jTemp.queryForObject("Select * from training_request where training_request_id = ? AND status >= 0",
 												   				new Object[]{trainingRequestId}, new TrainingRequestMapper());
 		return trainingRequest;
@@ -234,14 +234,14 @@ public class TrainingRequestCRUD
 	 */
 	public List<TrainingRequest> getAllTrainingRequest()
 	{
-		jTemp = DAOJDBCTemplate.getJdbcTemplate();
+		jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 		List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request where status >= 0" , new TrainingRequestMapper());
 		return trainingRequestList;
 	}
 	
 	public List<TrainingRequest> getAllTrainingRequestForPM(int projectManagerId)
 	{
-	        jTemp = DAOJDBCTemplate.getJdbcTemplate();
+	        jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 	        List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request where requester_id = ?",
 	        	new Object[] {projectManagerId}, new TrainingRequestMapper());
 	        
@@ -250,7 +250,7 @@ public class TrainingRequestCRUD
 	
 	public List<TrainingRequest> getAllRequestBySPOCStatus(int spocId, int status)
 	{
-	        jTemp = DAOJDBCTemplate.getJdbcTemplate();
+	        jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 	        List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request where requester_spoc_id = ? AND status = ?",
 	        	new Object[] {spocId, status}, new TrainingRequestMapper());
 	        
@@ -259,7 +259,7 @@ public class TrainingRequestCRUD
 	
 	public List<TrainingRequest> getAllTrainingRequestByStatus(double status)
 	{
-	    	jTemp = DAOJDBCTemplate.getJdbcTemplate();
+	    	jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 	    	List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request where status = ?",
 	    								new Object[] {status}, new TrainingRequestMapper());
 	    	

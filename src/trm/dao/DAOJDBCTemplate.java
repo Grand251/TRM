@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 public class DAOJDBCTemplate 
 {
-	public static JdbcTemplate getJdbcTemplate()
+	public JdbcTemplate getJdbcTemplate()
 	{
 		ApplicationContext appContext = new ClassPathXmlApplicationContext("spring-config.xml");
 		return (JdbcTemplate)appContext.getBean("jTemp");
