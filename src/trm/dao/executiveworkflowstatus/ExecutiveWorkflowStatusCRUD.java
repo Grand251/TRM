@@ -8,6 +8,12 @@ import trm.dao.trainingrequest.TrainingRequest;
 
 
 public class ExecutiveWorkflowStatusCRUD {
+	
+	public static void main(String[] args) {
+		ExecutiveWorkflowStatusCRUD ewfCRUD = new ExecutiveWorkflowStatusCRUD();
+		System.out.println(ewfCRUD.getAllExecutiveWorkflowStatusByExec(1000043));
+
+	}
 
 	public List<ExecutiveWorkflowStatus> getAllExecutiveWorkflowStatus(){
 		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM executive_workflow_status", new ExecutiveWorkflowStatusMapper());
