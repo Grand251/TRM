@@ -231,6 +231,7 @@
 
                     <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                       <div class="card-body">
+                      
                           <input type="text" required />
                           <input type="date" required />
                           <br>
@@ -253,10 +254,9 @@
 
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                       <div class="card-body">
-                          <input type="text" required />
-                          <input type="date" required />
-                          <br>
-                          <input type="submit" value="Click"/>
+                      	  <f:select path="itrTrainingRequest">
+							<f:options items="${trainingRequests}" itemValue="trainingRequestId" itemLabel="trainingRequestId"/>
+						</f:select><br>
                       </div>
                     </div>
 
