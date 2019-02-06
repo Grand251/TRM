@@ -20,6 +20,25 @@
   <link rel="stylesheet" href="resources/CSS/custom.css">
 
   <script src="resources/spocJquery.js"></script>
+  <script>
+  	function submitTT(){
+    	$(".toModal").click(function(){
+    	    var trainingRequestId =$(this).find('#ongoingId').val();
+    	    var status =$(this).find('#ongoingStatus').val();
+    	    console.log(trainingRequestId);
+    	    console.log(status);
+    		if(status == 1.0)
+    		{
+    			$("#selectTT").get(0).setAttribute('action', "selectTrainingType/"+trainingRequestId);
+    			$( "#selectTT" ).submit();
+    		}else
+    		{
+    			$("#selectTT").get(0).setAttribute('action', "viewspocdashboard");
+    			$( "#selectTT" ).submit();
+    		}
+    	})	
+	}
+  </script>
   
 </head>
 
@@ -48,7 +67,6 @@
   <!--Some space between navigation bar and actual content-->
   <div class="row* space"></div>
 
-
   <div class="row" style="height: 65vh;">
     <!--New Request Box-->
     <div id="newRequestBox" class="border">
@@ -64,7 +82,6 @@
       <div class="col">
 	<c:forEach items="${ntrList}" var="ntr">
       	<c:if test="${ntr.status == 0}">
-      	
         <!-- 1 card -->
         <div class="center-block newRequest">
           <div class="card" id="card">
@@ -102,7 +119,7 @@
               <table id="Info">
                 <tr></tr>
                 <tr>
-                  <td><input type="hidden" id="tRId" name="trainingRequestId" value="${ntr.trainingRequestId}"></td>
+                  <td><input type="hidden" id="ntRId" name="trainingRequestId" value="${ntr.trainingRequestId}"></td>
                 </tr>
                 <tr>
                   <td>
@@ -137,16 +154,15 @@
       </div>
     </div>
     <!--End of New Request Box-->
-
+    
     <!--Ongoing Request Box-->
     <div id="ongoingRequestBox" class="border">
       <!-- Insert orange requests here-->
-     
                    <!-- 1 card -->
            <c:forEach items="${trList}" var="trainingRequest">
            	<c:if test="${trainingRequest.status > 0 && trainingRequest.status < 4}">
            <div class="ongoingRequest">
-              <div class="card orangeCard" id="card">  
+              <div class="card orangeCard" id="card"> 
                 <table>
                   <th>
                     <td>
@@ -169,14 +185,14 @@
                     <li><a href="#"><span class="glyphicon glyphicon-calendar"></span>End Time </a></li>
                     <li><a href="#"> location  </a></li><!--Where it is taking place if not online (IF ONLINE DONT SHOW)-->
                   </ul>
-    
-                  
               </div> 
             </td>
             </th> 
-            
             </table>
-                <div class="card-body pointer toModal">
+            <f:form id="selectTT" action="">
+                <div class="card-body pointer toModal" onclick="submitTT()">
+                <input type="hidden" id="ongoingId" value="${trainingRequest.trainingRequestId}">
+               	<input type="hidden" id="ongoingStatus" value="${trainingRequest.status}"> 
                   <table> 
                       <tr>
                         <td> <span class="glyphicon glyphicon-briefcase"></span>   Vertical </td> <!--What Vertical -->
@@ -190,168 +206,14 @@
                       </tr>
                   </table>
                 </div>
+          </f:form>
               </div>
             </div>
             <!--end card -->
              <!-- 1 card -->
-           
            </c:if>
             <!--end card -->
         </c:forEach>
-
-      <!-- Modal -->
-      <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
-        aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h3 class="modal-title text-center w-100" id="exampleModalLongTitle" style="font-weight:bold">Training
-                Name</h3>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body" style="height: 87vh; overflow: auto">
-              <div class="progress" style=" height: 30px;">
-                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75"
-                  aria-valuemin="0" aria-valuemax="100" style="background-color: dodgerblue; width: 75%"></div>
-              </div>
-              <div class="requestDetailsBox border">
-
-                <div id="accordion">
-                  <!--Detail with collapse-->
-                  <div class="detail-container border">
-                    <div class="detail-header" id="headingOne">
-                      <button class="detailBtn" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
-                        aria-controls="collapseOne">
-                        Status 1
-                        <span class="glyphicon glyphicon-arrow-right"></span>
-                      </button>
-                    </div>
-
-                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-                      <div class="card-body">
-                          <input type="text" required />
-                          <input type="date" required />
-                          <br>
-                          <input type="submit" value="Click"/>
-                      </div>
-                    </div>
-
-                  </div>
-                  <!--End of detail-->
-
-                  <!--Detail with collapse-->
-                  <div class="detail-container border">
-                    <div class="detail-header" id="headingTwo">
-                      <button class="detailBtn" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-                        aria-controls="collapseTwo">
-                        Status 2
-                        <span class="glyphicon glyphicon-arrow-right"></span>
-                      </button>
-                    </div>
-
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                      <div class="card-body">
-                          <input type="text" required />
-                          <input type="date" required />
-                          <br>
-                          <input type="submit" value="Click"/>
-                      </div>
-                    </div>
-
-                  </div>
-                  <!--End of detail-->
-
-                  <!--Detail with collapse-->
-                  <div class="detail-container border">
-                    <div class="detail-header" id="headingThree">
-                      <button class="detailBtn" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true"
-                        aria-controls="collapseThree">
-                        Status 3
-                        <span class="glyphicon glyphicon-arrow-right"></span>
-                      </button>
-                    </div>
-
-                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                      <div class="card-body">
-                          <input type="text" required />
-                          <input type="date" required />
-                          <br>
-                          <input type="submit" value="Click"/>
-                      </div>
-                    </div>
-
-                  </div>
-                  <!--End of detail-->
-
-                  <!--Detail with collapse-->
-                  <div class="detail-container border">
-                    <div class="detail-header" id="headingFour">
-                      <button class="detailBtn" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true"
-                        aria-controls="collapseFour">
-                        Status 4
-                        <span class="glyphicon glyphicon-arrow-right"></span>
-                      </button>
-                    </div>
-
-                    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
-                      <div class="card-body">
-                          <input type="text" required />
-                          <input type="date" required />
-                          <br>
-                          <input type="submit" value="Click"/>
-                      </div>
-                    </div>
-
-                  </div>
-                  <!--End of detail-->
-
-                  <!--Detail with collapse-->
-                  <div class="detail-container border">
-                    <div class="detail-header" id="headingFive">
-                      <button class="detailBtn" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true"
-                        aria-controls="collapseFive">
-                        Status 5
-                        <span class="glyphicon glyphicon-arrow-right"></span>
-                      </button>
-                    </div>
-
-                    <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
-                      <div class="card-body">
-                       <form>
-                          <input type="text" required />
-                          <input type="date" required />
-                          <br>
-                          <input type="submit" value="Click"/>
-                       </form>
-                      </div>
-                    </div>
-
-                  </div>
-                  <!--End of detail-->
-                </div>
-              </div>
-              <!--End of detailRequestBox-->
-
-              <!-- Space between details and summary-->
-              <div class="spaceBetweenModal">&nbsp;</div>
-
-              <div class="requestSummaryBox">
-                <div class="row* border" style="height: 50vh;">
-                  Summary
-                </div>
-                <div class="row*" style="margin-top: 5vh; height:10vh;">
-                  <button type="button" class="btn btn-lg btn-success">Submit</button>
-                  <button type="button" class="btn btn-lg btn-primary">Save changes</button>
-                  <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-              </div>
-              <!--End of Summary Box-->
-            </div>
-          </div>
-        </div>
-      </div><!-- End of Modal-->
     </div>
   </div>
   <!--End of ongoing request box-->

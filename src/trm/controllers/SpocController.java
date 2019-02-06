@@ -45,12 +45,12 @@ public class SpocController {
 	{
 		List<TrainingRequest> newTR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(0);
 		List<TrainingRequest> TR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(1);
-		//List<TrainingRequest> inProgressTR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(2);
+		List<TrainingRequest> inProgressTR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(2);
 		//List<TrainingRequest> pendingTR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(3);
 		List<TrainingRequest> trList = new ArrayList<TrainingRequest>();
 		
 		trList.addAll(TR);
-		//trList.addAll(inProgressTR);
+		trList.addAll(inProgressTR);
 		//trList.addAll(pendingTR);
 		
 		map.addAttribute("ntrList", newTR);
@@ -88,6 +88,35 @@ public class SpocController {
         else
         	return "error";
     }
+	
+	@RequestMapping(value="selectTrainingType/{trainingRequestId}")
+	public String selectTrainingType(@PathVariable("trainingRequestId") int trId, ModelMap map)
+	{
+		System.out.println(trId);
+		
+		TrainingRequest treq = new TrainingRequestCRUD().getTrainingRequestById(trId);
+		map.addAttribute("command", treq);
+		
+		return "spocrequesttype";
+	}
+	
+	@RequestMapping(value="saveTrainingType")
+	public String saveTrainingType(@ModelAttribute("treq") TrainingRequest treq, ModelMap map)
+	{
+
+		int type = new TrainingRequestCRUD().updateTrainingRequestByAttribute(treq.getTrainingRequestId(), 
+				"request_training_type", treq.getRequestTrainingType());
+		if(type > 0)
+		{
+			int status = new TrainingRequestCRUD().updateTrainingRequestByAttribute(treq.getTrainingRequestId(), "status", 2);
+			if(status > 0)
+				return "redirect:/viewspocdashboard";
+			else
+				return "error";
+		}
+		else
+			return "error";
+	}
 
 	@RequestMapping(value="steponeform/{itrId}")
 	public String stepOneForm(@PathVariable("itrId") int itrId, ModelMap map) {
