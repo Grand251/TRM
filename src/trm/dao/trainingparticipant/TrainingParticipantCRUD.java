@@ -1,8 +1,18 @@
 package trm.dao.trainingparticipant;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import trm.dao.DAOJDBCTemplate;
 import trm.dao.employee.Employee;
@@ -17,11 +27,27 @@ public class TrainingParticipantCRUD
     
     public int insertTrainingParticipant(TrainingParticipant trainingParticipant)
     {
-	jTemp = DAOJDBCTemplate.getJdbcTemplate();
-	int numberOfRowsEffected = jTemp.update("Insert into training_participants values(training_participant_seq.nextval,?,?)" , 
-											  new Object[] {trainingParticipant.getParticipantEmployee().getEmployee_id(),
-												        trainingParticipant.getTrainingSessionAttended().getTrainingRequestId()});
-	return numberOfRowsEffected;
+    	KeyHolder keyHolder = new GeneratedKeyHolder();
+    	
+		jTemp = DAOJDBCTemplate.getJdbcTemplate();
+		
+		NamedParameterJdbcTemplate j = new NamedParameterJdbcTemplate(jTemp);
+		
+		SqlParameterSource parameters = new MapSqlParameterSource().addValue(
+				"peid", trainingParticipant.getParticipantEmployee().getEmployee_id())
+    			.addValue("tsa",trainingParticipant.getTrainingSessionAttended().getTrainingRequestId());
+											
+		
+		j.update("Insert into training_participants(TRAINING_PARTICIPANT_ID,PARTICIPANT_EMPLOYEE_ID, TRAINING_SESSION_ATTENDED)"
+				+ "  values(training_participant_seq.nextval,:peid,:tsa)" , 
+				 parameters,
+				  keyHolder, new String[]{"TRAINING_PARTICIPANT_ID"}
+				 );
+		
+		int key = keyHolder.getKey().intValue();
+		System.out.println(key);
+		
+		return key;
     }
     
     public int deleteTrainingParticipant(int trainingParticipantId)
@@ -71,23 +97,22 @@ public class TrainingParticipantCRUD
     
     public static void main(String[] args)
     {
-	/*
-	TrainingParticipantCRUD crud = new TrainingParticipantCRUD();
-	
-	TrainingParticipant participant = new TrainingParticipant();
-	Employee employee = new EmployeeCRUDService().getEmployeeById(1000000);
-	participant.setParticipantEmployee(employee);
-	
-	TrainingRequest trainingRequest = new TrainingRequestCRUD().getTrainingRequestById(10004);
-	participant.setTrainingSessionAttended(trainingRequest);
-	
-	//crud.insertTrainingParticipant(participant);
+
+		TrainingParticipantCRUD crud = new TrainingParticipantCRUD();
+		
+		TrainingParticipant participant = new TrainingParticipant();
+		Employee employee = new EmployeeCRUDService().getEmployeeById(1000000);
+		participant.setParticipantEmployee(employee);
+		
+		TrainingRequest trainingRequest = new TrainingRequestCRUD().getTrainingRequestById(10004);
+		participant.setTrainingSessionAttended(trainingRequest);
+		
+		crud.insertTrainingParticipant(participant);
 	
 	//crud.deleteTrainingParticipant(participant.getParticipantEmployee().getEmployee_id());
 	
 	//crud.updateTrainingParticipant(10000, 1000001, 10005);
 	
 	//System.out.println(crud.getAllTrainingParticipants().get(0).getParticipantEmployee().getEmployee_id());
-	 */
     }
 }
