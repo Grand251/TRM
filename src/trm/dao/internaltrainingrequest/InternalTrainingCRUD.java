@@ -26,7 +26,7 @@ public class InternalTrainingCRUD {
 	
     	public List<InternalTrainingRequest> getAllItrBySPOC(int spocId)
     	{
-    	    	return DAOJDBCTemplate.getJdbcTemplate().query("Select * from internal_training_request it" 
+    	    	return new DAOJDBCTemplate().getJdbcTemplate().query("Select * from internal_training_request it" 
     	    								+" left outer join training_request tr" 
     	    								+ " on it.training_request_id = tr.training_request_id"
     	    								+ " AND tr.request_project_spoc = ?", new Object[]{spocId},

@@ -251,7 +251,7 @@ public class TrainingRequestCRUD
 	public List<TrainingRequest> getAllRequestBySPOCStatus(int spocId, int status)
 	{
 	        jTemp = new DAOJDBCTemplate().getJdbcTemplate();
-	        List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request where requester_spoc_id = ? AND status = ?",
+	        List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request where request_project_spoc = ? AND status = ?",
 	        	new Object[] {spocId, status}, new TrainingRequestMapper());
 	        
 	        return trainingRequestList;
@@ -334,7 +334,7 @@ public class TrainingRequestCRUD
 		//List<TrainingRequest> list = crud.getAllRequest;
 		
 		
-		//List<TrainingRequest> list = crud.getAllTrainingRequest();
+		//List<TrainingRequest> list = crud.getAllT;
 		/*
 		for(TrainingRequest trainerRequest : list)
 		{
