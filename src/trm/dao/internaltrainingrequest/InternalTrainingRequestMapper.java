@@ -15,7 +15,8 @@ import trm.dao.trainingrequest.TrainingRequest;
 import trm.dao.trainingrequest.TrainingRequestCRUD;
 
 
-public class InternalTrainingRequestMapper implements RowMapper<InternalTrainingRequest>{
+public class InternalTrainingRequestMapper implements RowMapper<InternalTrainingRequest>
+{
 
 	/*CREATE TABLE INTERNAL_TRAINING_REQUEST
 	(
@@ -30,25 +31,26 @@ public class InternalTrainingRequestMapper implements RowMapper<InternalTraining
 	);*/
 	
 	@Override
-	public InternalTrainingRequest mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public InternalTrainingRequest mapRow(ResultSet rs, int rowNum) throws SQLException 
+	{
 		InternalTrainingRequest request = new InternalTrainingRequest();
 		
 		request.setItrId(rs.getInt(1));
-		request.setItrStatus(rs.getInt(2));
-		Employee trainer = new EmployeeCRUDService().getEmployeeById(rs.getInt(3));
-		request.setItrTrainer(trainer);
 		
-		TrainingRequest trainingRequest = new TrainingRequestCRUD().getTrainingRequestById(rs.getInt(4));
+		TrainingRequest trainingRequest = new TrainingRequestCRUD().getTrainingRequestById(rs.getInt(2));
 		request.setItrTrainingRequest(trainingRequest);
 		
-		Employee spoc = new EmployeeCRUDService().getEmployeeById(rs.getInt(5));
-		request.setItrSpoc(spoc);
-		
-		request.setItrMode(rs.getString(6));
-		
-		TrainingSchedule schedule = new TrainingScheduleCRUDService().getTrainingScheduleById(rs.getString(7)); 
+		TrainingSchedule schedule = new TrainingScheduleCRUDService().getTrainingScheduleById(rs.getString(3)); 
 		request.setItrSchedule(schedule);
-		request.setItrStatusDescription(rs.getString(8));
+		
+		Employee trainer = new EmployeeCRUDService().getEmployeeById(rs.getInt(4));
+		request.setItrTrainer(trainer);
+		
+		Employee executive = new EmployeeCRUDService().getEmployeeById(rs.getInt(5));
+		request.setItrExecutive(executive);
+		
+		request.setItrStatus(rs.getInt(6));
+		request.setItrStatusDescription(rs.getString(7));
 		
 		return request;
 	}

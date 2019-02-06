@@ -1,18 +1,13 @@
-package trm.dao.internaltrainingrequest;
+ package trm.dao.internaltrainingrequest;
 
 
 import java.util.List;
 
 import trm.dao.DAOJDBCTemplate;
-<<<<<<< HEAD
 import trm.dao.employee.Employee;
 import trm.dao.trainingrequest.TrainingRequest;
 import trm.dao.trainingschedule.TrainingSchedule;
-=======
-import trm.dao.trainingrequest.TrainingRequest;
-import trm.dao.trainingschedule.TrainingSchedule;
-import trm.dao.employee.Employee;
->>>>>>> hueytemp
+
 
 
 /*CREATE TABLE INTERNAL_TRAINING_REQUEST
@@ -39,7 +34,6 @@ public class InternalTrainingCRUD {
 	
 	/**
 		Get InternalTrainingRequest object with matching id
-
 		@param requestId 5 digit id to search database with
 	*/
 	public InternalTrainingRequest getItrById(int requestId){
@@ -79,22 +73,22 @@ public class InternalTrainingCRUD {
 	}
 	
 	/*
-	 * Get list of InternalTrainingRequest objects with Employee object, which contains employee_id of a SPOC
+	 * Get list of InternalTrainingRequest objects with Employee object, which contains employee_id of an executive
 	 * 
-	 * @param spoc Employee object with 7 digit employee id to search itrs for
+	 * @param executive Employee object with 7 digit employee id to search itrs for
 	 */
-	public List<InternalTrainingRequest> getAllItrBySPOC(Employee spoc){
-		return getAllItrBySPOC(spoc.getEmployee_id());
+	public List<InternalTrainingRequest> getAllItrByExec(Employee exec){
+		return getAllItrByExec(exec.getEmployee_id());
 	}
 	
 	/*
-	 * Get list of InternalTrainingRequest objects with specified spocId
+	 * Get list of InternalTrainingRequest objects with specified execId
 	 * 
-	 * @param spocId 7 digit Employee id to search itrs for
+	 * @param execId 7 digit Employee id to search itrs for
 	 */
-	public List<InternalTrainingRequest> getAllItrBySPOC(int spocId){
+	public List<InternalTrainingRequest> getAllItrByExec(int execId){
 		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM internal_training_request "
-				+ "WHERE training_spoc_id=?", new Object[]{spocId},
+				+ "WHERE executive_id=?", new Object[]{execId},
 				new InternalTrainingRequestMapper());
 	}
 	
@@ -135,11 +129,11 @@ public class InternalTrainingCRUD {
 				"INSERT INTO internal_training_request VALUES(internal_training_id_seq.nextval, "
 				+ "?, ?, ?, ?, ?, ?, ?)",
 				new Object[] {itr.getItrStatus(),
-						      itr.getItrTrainer().getEmployee_id(),
 						      itr.getItrTrainingRequest().getTrainingRequestId(),
-						      itr.getItrSpoc().getEmployee_id(),
-						      itr.getItrMode(),
 						      itr.getItrSchedule().getTraining_schedule_id(),
+						      itr.getItrTrainer().getEmployee_id(),
+						      itr.getItrExecutive().getEmployee_id(),
+						      itr.getItrStatus(),
 						      itr.getItrStatusDescription()});
 	}
 	
@@ -167,13 +161,12 @@ public class InternalTrainingCRUD {
 												   + "description_of_status=? "
 												   + "WHERE internal_training_id=?",
 				new Object[] {itr.getItrStatus(),
-					      	  itr.getItrTrainer().getEmployee_id(),
-					      	  itr.getItrTrainingRequest().getTrainingRequestId(),
-					      	  itr.getItrSpoc().getEmployee_id(),
-					      	  itr.getItrMode(),
-					      	  itr.getItrSchedule().getTraining_schedule_id(),
-					      	  itr.getItrStatusDescription(),
-					      	  itr.getItrId()});
+				      itr.getItrTrainingRequest().getTrainingRequestId(),
+				      itr.getItrSchedule().getTraining_schedule_id(),
+				      itr.getItrTrainer().getEmployee_id(),
+				      itr.getItrExecutive().getEmployee_id(),
+				      itr.getItrStatus(),
+				      itr.getItrStatusDescription()});
 	}
 	
 	/*
@@ -220,9 +213,9 @@ public class InternalTrainingCRUD {
 		//System.out.println(itCRUD.getItrBySchedule("10000"));
 		InternalTrainingRequest itr = new InternalTrainingRequest();
 		itr.setItrId(100);
-		itr.setItrMode("test");
+		
 		itr.setItrSchedule(ts);
-		itr.setItrSpoc(spoc);
+		
 		itr.setItrStatus(1);
 		itr.setItrStatusDescription("good status");
 		itr.setItrTrainer(trainer);
@@ -232,9 +225,10 @@ public class InternalTrainingCRUD {
 		System.out.println(itCRUD.insertItr(itr));
 		System.out.println(itCRUD.deleteItr(100));
 		System.out.println(itCRUD.insertItr(itr));
-		itr.setItrMode("great test");
 		itr.setItrStatus(2);
 		itr.setItrStatusDescription("great status");
 		System.out.println(itCRUD.updateItr(itr));
 	}
 }
+
+
