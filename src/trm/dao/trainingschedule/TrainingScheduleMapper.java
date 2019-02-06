@@ -1,17 +1,15 @@
-<<<<<<< HEAD
 package trm.dao.trainingschedule;
-
-=======
-
-package trm.dao.trainingschedule;
->>>>>>> hueytemp
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 
 import trm.dao.trainingschedule.TrainingSchedule;
-
+/**
+ * This is training schedule mapper class
+ * @author Kei Ng
+ *
+ */
 public class TrainingScheduleMapper implements RowMapper<TrainingSchedule>{
 	/**
 	 * use RowMapper interface
@@ -32,6 +30,8 @@ public class TrainingScheduleMapper implements RowMapper<TrainingSchedule>{
 		schedule.setTraining_room_number(result.getString(8));
 		schedule.setTraining_start_date(result.getDate(9));
 		schedule.setTraining_end_date(result.getDate(10));
+		schedule.setTrainingUrl(result.getString(11));
+		schedule.setTrainingAudio(result.getString(12));
 		return schedule;
 	}
 
