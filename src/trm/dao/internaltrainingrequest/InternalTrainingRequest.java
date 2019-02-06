@@ -22,61 +22,83 @@ public class InternalTrainingRequest {
 	);*/
 	
 	private int itrId;
-	private int itrStatus;
-	private Employee itrTrainer;
-	private Employee itrSpoc;
 	private TrainingRequest itrTrainingRequest;
-	private String itrMode;
 	private TrainingSchedule itrSchedule;
+	private Employee itrTrainer;
+	private Employee itrExecutive;
+	private int itrStatus;
 	private String itrStatusDescription;
 	
-	public int getItrId() {
+	
+	public int getItrId() 
+	{
 		return itrId;
 	}
-	public void setItrId(int itrId) {
+	
+	public void setItrId(int itrId) 
+	{
 		this.itrId = itrId;
 	}
-	public int getItrStatus() {
+	
+	public int getItrStatus() 
+	{
 		return itrStatus;
 	}
-	public void setItrStatus(int itrStatus) {
+	
+	public void setItrStatus(int itrStatus)
+	{
 		this.itrStatus = itrStatus;
 	}
-	public Employee getItrTrainer() {
+	
+	public Employee getItrTrainer() 
+	{
 		return itrTrainer;
 	}
-	public void setItrTrainer(Employee itrTrainer) {
+	
+	public void setItrTrainer(Employee itrTrainer) 
+	{
 		this.itrTrainer = itrTrainer;
 	}
-	public Employee getItrSpoc() {
-		return itrSpoc;
-	}
-	public void setItrSpoc(Employee itrSpoc) {
-		this.itrSpoc = itrSpoc;
-	}
-	public TrainingRequest getItrTrainingRequest() {
+	
+	public TrainingRequest getItrTrainingRequest() 
+	{
 		return itrTrainingRequest;
 	}
-	public void setItrTrainingRequest(TrainingRequest itrTrainingRequest) {
+	
+	public void setItrTrainingRequest(TrainingRequest itrTrainingRequest) 
+	{
 		this.itrTrainingRequest = itrTrainingRequest;
 	}
-	public String getItrMode() {
-		return itrMode;
-	}
-	public void setItrMode(String itrMode) {
-		this.itrMode = itrMode;
-	}
-	public TrainingSchedule getItrSchedule() {
+	
+	public TrainingSchedule getItrSchedule() 
+	{
 		return itrSchedule;
 	}
-	public void setItrSchedule(TrainingSchedule itrSchedule) {
+	
+	public void setItrSchedule(TrainingSchedule itrSchedule) 
+	{
 		this.itrSchedule = itrSchedule;
 	}
-	public String getItrStatusDescription() {
+	
+	public String getItrStatusDescription() 
+	{
 		return itrStatusDescription;
 	}
-	public void setItrStatusDescription(String itrStatusDescription) {
+	
+	public void setItrStatusDescription(String itrStatusDescription) 
+	{
 		this.itrStatusDescription = itrStatusDescription;
 	}
 	
+	public Employee getItrExecutive()
+	{
+	    return itrExecutive;
+	}
+	
+	public void setItrExecutive(Employee itrExecutive)
+	{
+	    this.itrExecutive = itrExecutive;
+	}
+	
 }
+

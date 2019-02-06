@@ -32,6 +32,8 @@ public class TrainingScheduleMapper implements RowMapper<TrainingSchedule>{
 		schedule.setTraining_end_date(result.getDate(10));
 		schedule.setTraining_url(result.getString(11));
 		schedule.setTraining_audio(result.getString(12));
+
+
 		return schedule;
 	}
 
