@@ -132,6 +132,6 @@ public class TrainingSchedule {
 	}
 	public void setTraining_audio(String training_audio) {
 		this.training_audio = training_audio;
-
+	}	
 }
 
