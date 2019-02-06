@@ -103,7 +103,7 @@ public class ExecutiveWorkflowStatusCRUD {
 				+ "assessments_recorded=?, "
 				+ "vendor_training_clearance=?, "
 				+ "completed_feedback=?, "
-				+ "training_completed=?, "
+				+ "training_completed=? "
 				+ " WHERE executive_workflow_status_id= ?",
 				new Object[]{executiveWorkflowStatus.getInvitationsSent(),
 						executiveWorkflowStatus.getSkillportEnrollmentsCompleted(),
