@@ -126,18 +126,6 @@ public class InternalTrainingCRUD {
 				new InternalTrainingRequestMapper());
 	}
 	
-	public List<InternalTrainingRequest> getAllItrByExec(Employee exec){
-		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM internal_training_request "
-				+ "WHERE EXECUTIVE_ID=?", new Object[]{exec.getEmployee_id()},
-				new InternalTrainingRequestMapper());
-	}
-	
-	public List<InternalTrainingRequest> getAllItrByExec(int execId){
-		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM internal_training_request "
-				+ "WHERE EXECUTIVE_ID=?", new Object[]{execId},
-				new InternalTrainingRequestMapper());
-	}
-	
 	/*
 	 * Get list of InternalTrainingRequest objects with scheduleId contained in TrainingSchedule object
 	 * 
@@ -201,19 +189,19 @@ public class InternalTrainingCRUD {
 		return DAOJDBCTemplate.getJdbcTemplate().update(
 				"UPDATE internal_training_request SET status=?, "
 												   + "confirmed_trainer_id=?, "
-												   + "training_spoc_id=?, "
-												   + "internal_training_mode=?, "
 												   + "description_of_status=?, "
-												   + "schedule_id = ? "
+												   + "schedule_id = ?, "
+												   + "training_request_id = ?,"
+												   + "executive_id = ?"
 												   + "WHERE internal_training_id=?",
 				new Object[] {itr.getItrStatus(),
-
-				      itr.getItrTrainingRequest().getTrainingRequestId(),
-				      itr.getItrSchedule().getTraining_schedule_id(),
-				      itr.getItrTrainer().getEmployee_id(),
-				      itr.getItrExecutive().getEmployee_id(),
-				      itr.getItrStatus(),
-				      itr.getItrStatusDescription()});
+					      itr.getItrTrainer().getEmployee_id(),
+					      itr.getItrStatusDescription(),
+            				      itr.getItrSchedule().getTraining_schedule_id(),
+            				      itr.getItrTrainingRequest().getTrainingRequestId(),
+            				      itr.getItrExecutive().getEmployee_id(),
+            				      itr.getItrId()
+            				      });
 	}
 	
 	/**
@@ -282,17 +270,6 @@ public class InternalTrainingCRUD {
 	}
 	
 	/**
-	 * Update an ITR spoc with an object containing updated value. Only updates
-	 * spoc regardless of other changes to object variables.
-	 * 
-	 * @param itr Object containing reference to new ITR SPOC
-	 * @return Number of rows updated
-	 */
-	public int updateSpoc(InternalTrainingRequest itr) {
-		return DAOJDBCTemplate.getJdbcTemplate().update(
-				"UPDATE internal_training_request SET training_spoc_id=? WHERE internal_training_id=?",
-				new Object[] {itr.getItrSpoc().getEmployee_id(), itr.getItrId()});
-	}
 	
 	/**
 	 * Update an ITR's SPOC with an ITR ID and Employee object containing new SPOC's id.
@@ -320,18 +297,6 @@ public class InternalTrainingCRUD {
 				new Object[]{spocId, itrId});
 	}
 	
-	/**
-	 * Update an ITR training mode with an object containing updated value. Only updates
-	 * training mode regardless of other changes to object variables.
-	 * 
-	 * @param itr Object containing updated training mode value.
-	 * @return Number of rows updated
-	 */
-	public int updateItrMode(InternalTrainingRequest itr) {
-		return DAOJDBCTemplate.getJdbcTemplate().update(
-				"UPDATE internal_training_request SET internal_training_mode=? WHERE internal_training_id=?",
-				new Object[] {itr.getItrMode(), itr.getItrId()});
-	}
 	
 	/**
 	 * Update an ITR's trainingMode with a trainingMode string and ITR ID.
@@ -470,15 +435,15 @@ public class InternalTrainingCRUD {
 		
 
 		InternalTrainingRequest itr = itCRUD.getItrById(1000015);
-		itr.setItrMode("great test");
-		System.out.println("mode: " + itCRUD.updateItrMode(itr));
+		//itr.setItrMode("great test");
+		//System.out.println("mode: " + itCRUD.updateItrMode(itr));
 		System.out.println("mode2: " + itCRUD.updateItrMode("greatest test", itr.getItrId()));
 
 		itr.setItrStatus(2);
 		System.out.println("Stat: " + itCRUD.updateStatus(itr));
 		System.out.println("stat2: " + itCRUD.updateStatus(4, itr.getItrId()));
 		itr.setItrStatusDescription("great status");
-		System.out.println("desc: " + itCRUD.updateItrMode(itr));
+		//System.out.println("desc: " + itCRUD.updateItrMode(itr));
 		System.out.println("desc2: " + itCRUD.updateItrMode("what a description", itr.getItrId()));
 		
 		//System.out.println(itCRUD.updateItr(itr));
