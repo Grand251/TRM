@@ -20,14 +20,14 @@
             <!-- Left-aligned link -->
             <div class="left-header">
                 <a class="logo-content" href="#" title="Home">
-                    <img class="logoimage1" src="resources/img/as-logo.png" alt="Home">
+                    <img class="logoimage1" src="resources/images/as-logo.png" alt="Home">
                 </a>
             </div>
             <!-- Right-aligned links -->
             <div id="right-header">
                 <a href="#" class="about">About</a>
                 <a href="#" class="logolink" title="Home">
-                    <img class="logoimage2" src="resources/img/as-logo.png" alt="Home">
+                    <img class="logoimage2" src="resources/images/as-logo.png" alt="Home">
                 </a>
             </div>
         </div>
