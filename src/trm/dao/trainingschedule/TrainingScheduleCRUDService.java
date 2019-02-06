@@ -21,8 +21,9 @@ public class TrainingScheduleCRUDService {
 		
 		//List<TrainingSchedule> sc= new TrainingScheduleCRUDService().getAllTrainingSchedule();
 		//System.out.println(sc.get(0).getTraining_schedule_id());
-		//int i = new TrainingScheduleCRUDService().updateTrainingSchedule("9876543211", "Boston", "MA", "US", "12345", "EST", "542 st", "R210", null, null);
-		int i = new TrainingScheduleCRUDService().updateTrainingScheduleCityById("9876543211", "city");
+		int i = new TrainingScheduleCRUDService().updateTrainingSchedule("9876543211", "Boston", "MA", "US", "12345", "EST", "542 st", "R210", null, null,"url","audio");
+		//int i = new TrainingScheduleCRUDService().updateTrainingScheduleCityById("9876543211", "city");
+		/*
 		new TrainingScheduleCRUDService().updateTrainingScheduleStateById("9876543211", "state");
 		new TrainingScheduleCRUDService().updateTrainingScheduleCountryById("9876543211", "country");
 		new TrainingScheduleCRUDService().updateTrainingScheduleZipcodeById("9876543211", "zip");
@@ -31,7 +32,9 @@ public class TrainingScheduleCRUDService {
 		new TrainingScheduleCRUDService().updateTrainingScheduleStartDateById("9876543211", null);
 		new TrainingScheduleCRUDService().updateTrainingScheduleEndDateById("9876543211", null);
 		new TrainingScheduleCRUDService().updateTrainingScheduleLocationById("9876543211", "location");
-
+		*/
+		new TrainingScheduleCRUDService().updateTrainingScheduleTrainingURLlById("9876543211", "URL");
+		new TrainingScheduleCRUDService().updateTrainingScheduleTrainingAudioById("9876543211", "AUDIO");
 		System.out.println(i);
 	}
 	
@@ -87,9 +90,9 @@ public class TrainingScheduleCRUDService {
 	 */
 	public int updateTrainingSchedule(String training_schedule_id, String training_city, String training_state,
 			String training_country, String training_zipcode, String training_time_zone, String training_location,
-			String training_room_number, Date training_start_date, Date training_end_date) {
+			String training_room_number, Date training_start_date, Date training_end_date, String training_url, String training_audio) {
 		jtemp = DAOJDBCTemplate.getJdbcTemplate();
-		int ret = jtemp.update("UPDATE TRAINING_SCHEDULE SET training_city = ?, training_state = ?, training_country = ?, training_zipcode = ?, training_time_zone = ?, training_location = ?, training_room_number = ?, training_start_date = ?, training_end_date = ? where training_schedule_id = ?",
+		int ret = jtemp.update("UPDATE TRAINING_SCHEDULE SET training_city = ?, training_state = ?, training_country = ?, training_zipcode = ?, training_time_zone = ?, training_location = ?, training_room_number = ?, training_start_date = ?, training_end_date = ?, training_url = ?, training_audio = ? where training_schedule_id = ?",
 							new Object[] {
 									training_city,
 									training_state,
@@ -100,6 +103,8 @@ public class TrainingScheduleCRUDService {
 									training_room_number,
 									training_start_date,
 									training_end_date,
+									training_url,
+									training_audio,
 									training_schedule_id});
 		return ret;
 	}
@@ -243,4 +248,31 @@ public class TrainingScheduleCRUDService {
 							new Object[] {training_end_date, training_schedule_id});
 		return ret;
 	}
+	
+	/**
+	 * update training URL
+	 * @param training_schedule_id
+	 * @param training_url
+	 * @return int(boolean)
+	 */
+	public int updateTrainingScheduleTrainingURLlById(String training_schedule_id, String training_url) {
+		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		int ret = jtemp.update("UPDATE TRAINING_SCHEDULE SET training_url = ? where training_schedule_id = ?",
+							new Object[] {training_url, training_schedule_id});
+		return ret;
+	}
+	
+	/**
+	 * update training audio
+	 * @param training_schedule_id
+	 * @param training_audio
+	 * @return  int(boolean)
+	 */
+	public int updateTrainingScheduleTrainingAudioById(String training_schedule_id, String training_audio) {
+		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		int ret = jtemp.update("UPDATE TRAINING_SCHEDULE SET training_audio = ? where training_schedule_id = ?",
+							new Object[] {training_audio, training_schedule_id});
+		return ret;
+	}
+	
 }

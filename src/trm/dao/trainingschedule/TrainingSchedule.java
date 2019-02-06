@@ -17,6 +17,8 @@ public class TrainingSchedule {
 	private String training_room_number;
 	private Date training_start_date;
 	private Date training_end_date;
+	private String training_url;
+	private String training_audio;
 
 	
 	public String getTraining_schedule_id() {
@@ -78,5 +80,17 @@ public class TrainingSchedule {
 	}
 	public void setTraining_end_date(Date training_end_date) {
 		this.training_end_date = training_end_date;
+	}
+	public String getTraining_url() {
+		return training_url;
+	}
+	public void setTraining_url(String training_url) {
+		this.training_url = training_url;
+	}
+	public String getTraining_audio() {
+		return training_audio;
+	}
+	public void setTraining_audio(String training_audio) {
+		this.training_audio = training_audio;
 	}
 }
