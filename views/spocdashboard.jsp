@@ -1,12 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
+<!DOCTYPE html>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="f" uri="http://www.springframework.org/tags/form"%>
 
 <html lang="en">
-<title>SPOC Dashboard</title>
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,9 +19,10 @@
   <link rel="stylesheet" href="resources/CSS/trm.css">
   <link rel="stylesheet" href="resources/CSS/custom.css">
 
-	<script src="resources/spocJquery.js"></script> 
-
+  <script src="resources/spocJquery.js"></script>
+  
 </head>
+
 <body>
 
   <!-- Top navigation -->
@@ -50,12 +48,12 @@
   <!--Some space between navigation bar and actual content-->
   <div class="row* space"></div>
 
+
   <div class="row" style="height: 65vh;">
-  
     <!--New Request Box-->
     <div id="newRequestBox" class="border">
     <f:form action="followupSelection" >
-      <!--Start Button Send selected new reqests to be ongoing requests-->
+      <!--Start Button Send selected new requests to be ongoing requests-->
       <button id="startButton" class="row* sticky-top" onclick="submitTR()">
         Start
         <span id="right_arrow" class="glyphicon glyphicon-arrow-right"></span>
@@ -64,7 +62,7 @@
 	 </f:form>
       <!--New Requests would be added here-->
       <div class="col">
-      <c:forEach items="${ntrList}" var="ntr">
+	<c:forEach items="${ntrList}" var="ntr">
       	<c:if test="${ntr.status == 0}">
       	
         <!-- 1 card -->
@@ -82,7 +80,7 @@
                   <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                     <li><a href="#">${ntr.trainingRequestId }</a></li>
                     <li><a href="#">${ntr.requestTrainingModuleScope }</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-home"></span>${btr.requestTrainingType }</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-home"></span>${ntr.requestTrainingType }</a></li>
                     <!--internal or vender -->
                     <li><a href="#">${ntr.requestTrainingMode }</a></li>
                     <!--"mode" of training -->
@@ -140,9 +138,11 @@
     </div>
     <!--End of New Request Box-->
 
-   <!--Ongoing Request Box-->
-        <div id="ongoingRequestBox" class="border">
-             <!-- 1 card -->
+    <!--Ongoing Request Box-->
+    <div id="ongoingRequestBox" class="border">
+      <!-- Insert orange requests here-->
+     
+                   <!-- 1 card -->
            <c:forEach items="${trList}" var="trainingRequest">
            	<c:if test="${trainingRequest.status > 0 && trainingRequest.status < 4}">
            <div class="ongoingRequest">
@@ -198,7 +198,7 @@
            </c:if>
             <!--end card -->
         </c:forEach>
-           
+
       <!-- Modal -->
       <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
         aria-hidden="true">
@@ -231,7 +231,6 @@
 
                     <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                       <div class="card-body">
-                      
                           <input type="text" required />
                           <input type="date" required />
                           <br>
@@ -254,9 +253,10 @@
 
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                       <div class="card-body">
-                      	  <f:select path="itrTrainingRequest">
-							<f:options items="${trainingRequests}" itemValue="trainingRequestId" itemLabel="trainingRequestId"/>
-						</f:select><br>
+                          <input type="text" required />
+                          <input type="date" required />
+                          <br>
+                          <input type="submit" value="Click"/>
                       </div>
                     </div>
 
