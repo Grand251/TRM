@@ -10,11 +10,11 @@ import trm.dao.trainingrequest.TrainingRequest;
 public class ExecutiveWorkflowStatusCRUD {
 
 	public List<ExecutiveWorkflowStatus> getAllExecutiveWorkflowStatus(){
-		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM executive_workflow_status", new ExecutiveWorkflowStatusMapper());
+		return new DAOJDBCTemplate().getJdbcTemplate().query("SELECT * FROM executive_workflow_status", new ExecutiveWorkflowStatusMapper());
 	}
 	
 	public ExecutiveWorkflowStatus getExecutiveWorkflowStatusById(int executiveWorkflowStatusId){
-		return DAOJDBCTemplate.getJdbcTemplate().queryForObject("SELECT * FROM executive_workflow_status "
+		return new DAOJDBCTemplate().getJdbcTemplate().queryForObject("SELECT * FROM executive_workflow_status "
 				+ "WHERE executive_workflow_status_id=?", 
 				new Object[]{executiveWorkflowStatusId}, new ExecutiveWorkflowStatusMapper());
 	}
@@ -22,19 +22,19 @@ public class ExecutiveWorkflowStatusCRUD {
 
 	
 	public List<ExecutiveWorkflowStatus> getExecutiveWorkflowStatusByInvitationsSent(int invitationsSent){
-		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM executive_workflow_status "
+		return new DAOJDBCTemplate().getJdbcTemplate().query("SELECT * FROM executive_workflow_status "
 				+ "WHERE sent_invitations=?", 
 				new Object[]{invitationsSent}, new ExecutiveWorkflowStatusMapper());
 	}
 	
 	public ExecutiveWorkflowStatus getExecutiveWorkflowStatusByTrainingRequest(TrainingRequest trainingRequest){
-		return DAOJDBCTemplate.getJdbcTemplate().queryForObject("SELECT * FROM executive_workflow_status "
+		return new DAOJDBCTemplate().getJdbcTemplate().queryForObject("SELECT * FROM executive_workflow_status "
 				+ "WHERE training_request_id=?", 
 				new Object[]{trainingRequest.getTrainingRequestId()}, new ExecutiveWorkflowStatusMapper());
 	}
 	
 	public ExecutiveWorkflowStatus getExecutiveWorkflowStatusByTrainingRequest(int trainingRequestId){
-		return DAOJDBCTemplate.getJdbcTemplate().queryForObject("SELECT * FROM executive_workflow_status "
+		return new DAOJDBCTemplate().getJdbcTemplate().queryForObject("SELECT * FROM executive_workflow_status "
 				+ "WHERE training_request_id=?", 
 				new Object[]{trainingRequestId}, new ExecutiveWorkflowStatusMapper());
 	}
@@ -47,44 +47,44 @@ public class ExecutiveWorkflowStatusCRUD {
 	}
 	
 	public List<ExecutiveWorkflowStatus> getAllExecutiveWorkflowStatusByExec(int execId){
-		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM executive_workflow_status "
+		return new DAOJDBCTemplate().getJdbcTemplate().query("SELECT * FROM executive_workflow_status "
 				+ "WHERE executive_id=?", new Object[]{execId},
 				new ExecutiveWorkflowStatusMapper());
 	}
 	
 	public List<ExecutiveWorkflowStatus> getExecutiveWorkflowStatusBySkillportEnrollmentCompleted(int skillportEnrollmentCompleted){
-		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM executive_workflow_status "
+		return new DAOJDBCTemplate().getJdbcTemplate().query("SELECT * FROM executive_workflow_status "
 				+ "WHERE sent_invitations=?", 
 				new Object[]{skillportEnrollmentCompleted}, new ExecutiveWorkflowStatusMapper());
 	}
 	
 	public List<ExecutiveWorkflowStatus> getExecutiveWorkflowStatusByAssessmentsRecorded(int assessmentRecorded){
-		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM executive_workflow_status "
+		return new DAOJDBCTemplate().getJdbcTemplate().query("SELECT * FROM executive_workflow_status "
 				+ "WHERE assessments_recorded=?", 
 				new Object[]{assessmentRecorded}, new ExecutiveWorkflowStatusMapper());
 	}
 	
 	public List<ExecutiveWorkflowStatus> getExecutiveWorkflowStatusByVendorTrainingClearance(int vendorTrainingClearance){
-		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM executive_workflow_status "
+		return new DAOJDBCTemplate().getJdbcTemplate().query("SELECT * FROM executive_workflow_status "
 				+ "WHERE vendor_training_clearance=?", 
 				new Object[]{vendorTrainingClearance}, new ExecutiveWorkflowStatusMapper());
 	}
 	
 	public List<ExecutiveWorkflowStatus> getExecutiveWorkflowStatusByFeedbackCompleted(int feedbackCompleted){
-		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM executive_workflow_status "
+		return new DAOJDBCTemplate().getJdbcTemplate().query("SELECT * FROM executive_workflow_status "
 				+ "WHERE completed_feedback=?", 
 				new Object[]{feedbackCompleted}, new ExecutiveWorkflowStatusMapper());
 	}
 	
 	public List<ExecutiveWorkflowStatus> getExecutiveWorkflowStatusByTrainingCompleted(int trainingCompleted){
-		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM executive_workflow_status "
+		return new DAOJDBCTemplate().getJdbcTemplate().query("SELECT * FROM executive_workflow_status "
 				+ "WHERE training_completed=?", 
 				new Object[]{trainingCompleted}, new ExecutiveWorkflowStatusMapper());
 	}
 		
 	
 	public int ExecutiveWorkflowStatus(ExecutiveWorkflowStatus executiveWorkflowStatus) {
-		return DAOJDBCTemplate.getJdbcTemplate().update("INSERT INTO executive_workflow_status VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
+		return new DAOJDBCTemplate().getJdbcTemplate().update("INSERT INTO executive_workflow_status VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
 				new Object[]{"executive_workflow_status_seq.nextval",
 						executiveWorkflowStatus.getTrainingRequest().getTrainingRequestId(),
 						executiveWorkflowStatus.getInvitationsSent(),
@@ -97,7 +97,7 @@ public class ExecutiveWorkflowStatusCRUD {
 	}
 	
 	public int updateExecutiveWorkflowStatus(ExecutiveWorkflowStatus executiveWorkflowStatus) {
-		return DAOJDBCTemplate.getJdbcTemplate().update("UPDATE executive_workflow_status "
+		return new DAOJDBCTemplate().getJdbcTemplate().update("UPDATE executive_workflow_status "
 				+ "SET sent_invitations=?, "
 				+ "completed_skillport_enrollment=?, "
 				+ "assessments_recorded=?, "
@@ -115,7 +115,7 @@ public class ExecutiveWorkflowStatusCRUD {
 	}
 	
 	public int updateInvitationsSent(ExecutiveWorkflowStatus executiveWorkflowStatus) {
-		return DAOJDBCTemplate.getJdbcTemplate().update("UPDATE executive_workflow_status "
+		return new DAOJDBCTemplate().getJdbcTemplate().update("UPDATE executive_workflow_status "
 				+ "SET sent_invitations=? "
 				+ " WHERE executive_workflow_status_id= ?",
 				new Object[]{executiveWorkflowStatus.getInvitationsSent(),
@@ -123,7 +123,7 @@ public class ExecutiveWorkflowStatusCRUD {
 	}
 	
 	public int updateSkillportEnrollment(ExecutiveWorkflowStatus executiveWorkflowStatus) {
-		return DAOJDBCTemplate.getJdbcTemplate().update("UPDATE executive_workflow_status "
+		return new DAOJDBCTemplate().getJdbcTemplate().update("UPDATE executive_workflow_status "
 				+ "SET completed_skillport_enrollment=? "
 				+ " WHERE executive_workflow_status_id= ?",
 				new Object[]{executiveWorkflowStatus.getSkillportEnrollmentsCompleted(),
@@ -131,7 +131,7 @@ public class ExecutiveWorkflowStatusCRUD {
 	}
 	
 	public int updateAssessmentsRecorded(ExecutiveWorkflowStatus executiveWorkflowStatus) {
-		return DAOJDBCTemplate.getJdbcTemplate().update("UPDATE executive_workflow_status "
+		return new DAOJDBCTemplate().getJdbcTemplate().update("UPDATE executive_workflow_status "
 				+ "SET assessments_recorded=? "
 				+ " WHERE executive_workflow_status_id= ?",
 				new Object[]{executiveWorkflowStatus.getAssessmentsRecorded(),
@@ -139,7 +139,7 @@ public class ExecutiveWorkflowStatusCRUD {
 	}
 	
 	public int updateVendorTrainingClearance(ExecutiveWorkflowStatus executiveWorkflowStatus) {
-		return DAOJDBCTemplate.getJdbcTemplate().update("UPDATE executive_workflow_status "
+		return new DAOJDBCTemplate().getJdbcTemplate().update("UPDATE executive_workflow_status "
 				+ "SET vendor_training_clearance=? "
 				+ " WHERE executive_workflow_status_id= ?",
 				new Object[]{executiveWorkflowStatus.getVendorTrainingClearance(),
@@ -147,7 +147,7 @@ public class ExecutiveWorkflowStatusCRUD {
 	}
 	
 	public int updateFeedbackCompleted(ExecutiveWorkflowStatus executiveWorkflowStatus) {
-		return DAOJDBCTemplate.getJdbcTemplate().update("UPDATE executive_workflow_status "
+		return new DAOJDBCTemplate().getJdbcTemplate().update("UPDATE executive_workflow_status "
 				+ "SET completed_feedback=? "
 				+ " WHERE executive_workflow_status_id= ?",
 				new Object[]{executiveWorkflowStatus.getFeedbackCompleted(),
@@ -155,7 +155,7 @@ public class ExecutiveWorkflowStatusCRUD {
 	}
 	
 	public int updateTrainingCompleted(ExecutiveWorkflowStatus executiveWorkflowStatus) {
-		return DAOJDBCTemplate.getJdbcTemplate().update("UPDATE executive_workflow_status "
+		return new DAOJDBCTemplate().getJdbcTemplate().update("UPDATE executive_workflow_status "
 				+ "SET training_completed=? "
 				+ " WHERE executive_workflow_status_id= ?",
 				new Object[]{executiveWorkflowStatus.getTrainingCompleted(),
@@ -163,42 +163,42 @@ public class ExecutiveWorkflowStatusCRUD {
 	}
 	
 	public int updateInvitationsSent(int invitationsSent, int executiveWorkflowStatusId) {
-		return DAOJDBCTemplate.getJdbcTemplate().update("UPDATE executive_workflow_status "
+		return new DAOJDBCTemplate().getJdbcTemplate().update("UPDATE executive_workflow_status "
 				+ "SET sent_invitations=? "
 				+ " WHERE executive_workflow_status_id= ?",
 				new Object[]{invitationsSent,	executiveWorkflowStatusId});
 	}
 	
 	public int updateSkillportEnrollment(int skillportEnrollmentsCompleted, int executiveWorkflowStatusId) {
-		return DAOJDBCTemplate.getJdbcTemplate().update("UPDATE executive_workflow_status "
+		return new DAOJDBCTemplate().getJdbcTemplate().update("UPDATE executive_workflow_status "
 				+ "SET completed_skillport_enrollment=? "
 				+ " WHERE executive_workflow_status_id= ?",
 				new Object[]{skillportEnrollmentsCompleted,	executiveWorkflowStatusId});
 	}
 	
 	public int updateAssessmentsRecorded(int assessmentsRecorded, int executiveWorkflowStatusId) {
-		return DAOJDBCTemplate.getJdbcTemplate().update("UPDATE executive_workflow_status "
+		return new DAOJDBCTemplate().getJdbcTemplate().update("UPDATE executive_workflow_status "
 				+ "SET assessments_recorded=? "
 				+ " WHERE executive_workflow_status_id= ?",
 				new Object[]{assessmentsRecorded,	executiveWorkflowStatusId});
 	}
 	
 	public int updateVendorTrainingClearance(int vendorClearanceTraining, int executiveWorkflowStatusId) {
-		return DAOJDBCTemplate.getJdbcTemplate().update("UPDATE executive_workflow_status "
+		return new DAOJDBCTemplate().getJdbcTemplate().update("UPDATE executive_workflow_status "
 				+ "SET vendor_training_clearance=? "
 				+ " WHERE executive_workflow_status_id= ?",
 				new Object[]{vendorClearanceTraining,	executiveWorkflowStatusId});
 	}
 	
 	public int updateFeedbackCompleted(int feedbackCompleted, int executiveWorkflowStatusId) {
-		return DAOJDBCTemplate.getJdbcTemplate().update("UPDATE executive_workflow_status "
+		return new DAOJDBCTemplate().getJdbcTemplate().update("UPDATE executive_workflow_status "
 				+ "SET completed_feedback=? "
 				+ " WHERE executive_workflow_status_id= ?",
 				new Object[]{feedbackCompleted,	executiveWorkflowStatusId});
 	}
 	
 	public int updateTrainingCompleted(int trainingCompleted, int executiveWorkflowStatusId) {
-		return DAOJDBCTemplate.getJdbcTemplate().update("UPDATE executive_workflow_status "
+		return new DAOJDBCTemplate().getJdbcTemplate().update("UPDATE executive_workflow_status "
 				+ "SET training_completed=? "
 				+ " WHERE executive_workflow_status_id= ?",
 				new Object[]{trainingCompleted,	executiveWorkflowStatusId});
@@ -207,7 +207,7 @@ public class ExecutiveWorkflowStatusCRUD {
 
 	
 	public int deleteExecutiveWorkflowStatus(int executiveWorkflowStatusId) {
-		return DAOJDBCTemplate.getJdbcTemplate().update("DELETE FROM executive_workflow_status"
+		return new DAOJDBCTemplate().getJdbcTemplate().update("DELETE FROM executive_workflow_status"
 				+ " WHERE executive_workflow_status_id=?",
 				new Object[] {executiveWorkflowStatusId});
 	}
