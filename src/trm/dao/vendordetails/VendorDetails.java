@@ -1,24 +1,60 @@
 package trm.dao.vendordetails;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class VendorDetails {
 	
+	/*
+	 *  VENDOR_ID        NOT NULL NUMBER(5)    
+		VENDOR_NAME      NOT NULL VARCHAR2(20) 
+		VENDOR_PHONE     NOT NULL VARCHAR2(20) 
+		VENDOR_EMAIL     NOT NULL VARCHAR2(40) 
+		VENDOR_CITY      NOT NULL VARCHAR2(20) 
+		VENDOR_STATE     NOT NULL VARCHAR2(10) 
+		VENDOR_COUNTRY   NOT NULL VARCHAR2(10) 
+		VENDOR_ZIPCODE   NOT NULL VARCHAR2(10) 
+		VENDOR_TIME_ZONE NOT NULL VARCHAR2(10) 
+	 * 
+	 * 
+	 */
 	
+	
+	  @NotNull
 	  private int vendor_id;
 	  
+	  @NotNull
+	  @Size(max=20)
 	  private String vendor_name;
 	  
+	  @NotNull
+	  @Size(max=20)
 	  private String vendor_phone;
 	  
+	  @NotNull
+	  @Size(max=40)
+	  @Email
 	  private String vendor_email;
 	  
+	  @NotNull
+	  @Size(max=20)
 	  private String vendor_city;
 	  
+	  @NotNull
+	  @Size(max=10)
 	  private String vendor_state;
 	  
+	  @NotNull
+	  @Size(max=10)
 	  private String vendor_country;
 	  
+	  @NotNull
+	  @Size(max=10)
 	  private String vendor_zipcode;
 	  
+	  @NotNull
+	  @Size(max=10)
 	  private String vendor_time_zone;
 	  
 	  

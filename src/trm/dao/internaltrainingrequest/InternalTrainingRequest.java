@@ -4,6 +4,7 @@ import trm.dao.trainingrequest.TrainingRequest;
 import trm.dao.trainingschedule.TrainingSchedule;
 import trm.dao.employee.Employee;
 
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -30,7 +31,7 @@ public class InternalTrainingRequest {
 	
 	@NotNull
 	@Min(0)
-	@Max(99999)
+	@Digits(integer=5, fraction=0)
 	private int itrId;
 	
 	@NotNull
@@ -43,8 +44,7 @@ public class InternalTrainingRequest {
 	private Employee itrExecutive;
 	
 	@NotNull
-	@Min(-10)
-	@Max(99)
+	@Digits(integer=2, fraction=0)
 	private int itrStatus;
 	
 	@Size(max=30) 

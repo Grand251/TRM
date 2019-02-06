@@ -408,8 +408,6 @@ public class InternalTrainingCRUD {
 		trainer.setEmployee_id(1000004);
 		//System.out.println(itCRUD.getAllItr().size());
 		//System.out.println(itCRUD.getItrById(1000000));
-		//System.out.println(itCRUD.getAllItrBySPOC(1000006).size());
-		//System.out.println(itCRUD.getAllItrBySPOC(spoc).size());
 		//System.out.println(itCRUD.getAllItrByTrainer(1000004).size());
 		//System.out.println(itCRUD.getAllItrByTrainer(trainer).size());
 		TrainingRequest tr = new TrainingRequest();
