@@ -90,9 +90,15 @@ public class ExecutiveWorkflowStatusCRUD {
 		
 	
 	public int ExecutiveWorkflowStatus(ExecutiveWorkflowStatus executiveWorkflowStatus) {
+		
+		int requestId = 0;
+		
+		if(executiveWorkflowStatus.getTrainingRequest()!=null)
+			requestId = executiveWorkflowStatus.getTrainingRequest().getTrainingRequestId();
+		
 		return DAOJDBCTemplate.getJdbcTemplate().update("INSERT INTO executive_workflow_status VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
 				new Object[]{"executive_workflow_status_seq.nextval",
-						executiveWorkflowStatus.getTrainingRequest().getTrainingRequestId(),
+						((requestId!=0) ? requestId : null),
 						executiveWorkflowStatus.getInvitationsSent(),
 						executiveWorkflowStatus.getSkillportEnrollmentsCompleted(),
 						executiveWorkflowStatus.getAssessmentsRecorded(),

@@ -3,30 +3,41 @@ package trm.dao.internaltrainingrequest;
 import trm.dao.trainingrequest.TrainingRequest;
 import trm.dao.trainingschedule.TrainingSchedule;
 import trm.dao.employee.Employee;
-import trm.dao.trainingschedule.TrainingSchedule;
-import trm.dao.employee.Employee;
-import trm.dao.trainingrequest.TrainingRequest;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 
 
 public class InternalTrainingRequest {
 	/*CREATE TABLE INTERNAL_TRAINING_REQUEST
 	(
-	  internal_training_id number(7) primary key,
+	  internal_training_id number(5) primary key,
+	  training_request_id number(5) CONSTRAINT itr_tr_fk references training_request(training_request_id) unique not null,
+	  schedule_id number(5) CONSTRAINT itr_sched_fk references training_schedule(training_schedule_id) unique,
+	  confirmed_trainer_id number(7) CONSTRAINT itr_train_fk references internal_trainer(it_trainer_id),
+	  executive_id number(7) CONSTRAINT tr_exec_fk references employee(employee_id),
 	  status number(2) not null,
-	  confirmed_trainer_id number(7) references internal_trainer(it_trainer_id),
-	  training_request_id number(5) references training_request(training_request_id) unique not null,
-	  training_spoc_id number(7) references employee(employee_id),
-	  internal_training_mode varchar(10),
-	  schedule_id varchar(10) references training_schedule(training_schedule_id),
 	  description_of_status varchar(30)
 	);*/
 	
+	@NotNull
 	private int itrId;
+	
+	@NotNull
 	private TrainingRequest itrTrainingRequest;
+	
 	private TrainingSchedule itrSchedule;
+	
 	private Employee itrTrainer;
+	
 	private Employee itrExecutive;
+	
+	@NotNull
+	@Size(max=2)
 	private int itrStatus;
+	
+	@Size(max=30) 
 	private String itrStatusDescription;
 	
 	
