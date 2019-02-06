@@ -24,6 +24,14 @@ import trm.dao.trainingschedule.TrainingSchedule;
 
 public class InternalTrainingCRUD {
 	
+    	public List<InternalTrainingRequest> getAllItrBySPOC(int spocId)
+    	{
+    	    	return DAOJDBCTemplate.getJdbcTemplate().query("Select * from internal_training_request it" 
+    	    								+" left outer join training_request tr" 
+    	    								+ " on it.training_request_id = tr.training_request_id"
+    	    								+ " AND tr.request_project_spoc = ?", new Object[]{spocId},
+    	    		new InternalTrainingRequestMapper());
+    	}
 	/**
 		Get all InternalTrainingRequest objects in database
 	*/
@@ -400,6 +408,17 @@ public class InternalTrainingCRUD {
 	public static void main(String[] args) {
 	 
 		InternalTrainingCRUD itCRUD = new InternalTrainingCRUD();
+		
+		List<InternalTrainingRequest> itList = itCRUD.getAllItrBySPOC(1000019);
+		
+		for(InternalTrainingRequest request: itList)
+		{
+		    System.out.println(request.getItrId() + " " + request.getItrTrainingRequest().getTrainingRequestId() + " " + request.getItrSchedule().getTraining_schedule_id() + " " 
+			    		+ request.getItrTrainer().getEmployee_id() + " " + request.getItrExecutive().getEmployee_id() + " " + request.getItrStatus() + " " +request.getItrStatusDescription());
+		}
+		
+		
+		/*
 		Employee spoc = new Employee();
 		spoc.setEmployee_id(1000006);
 		Employee trainer = new Employee();
@@ -434,19 +453,21 @@ public class InternalTrainingCRUD {
 		System.out.println("INSERT2 " + itCRUD.insertItr(itr));*/
 		
 
-		InternalTrainingRequest itr = itCRUD.getItrById(1000015);
+		//InternalTrainingRequest itr = itCRUD.getItrById(1000015);
 		//itr.setItrMode("great test");
 		//System.out.println("mode: " + itCRUD.updateItrMode(itr));
-		System.out.println("mode2: " + itCRUD.updateItrMode("greatest test", itr.getItrId()));
+		//System.out.println("mode2: " + itCRUD.updateItrMode("greatest test", itr.getItrId()));
 
-		itr.setItrStatus(2);
-		System.out.println("Stat: " + itCRUD.updateStatus(itr));
-		System.out.println("stat2: " + itCRUD.updateStatus(4, itr.getItrId()));
-		itr.setItrStatusDescription("great status");
+		//itr.setItrStatus(2);
+		//System.out.println("Stat: " + itCRUD.updateStatus(itr));
+		//System.out.println("stat2: " + itCRUD.updateStatus(4, itr.getItrId()));
+		//itr.setItrStatusDescription("great status");
 		//System.out.println("desc: " + itCRUD.updateItrMode(itr));
-		System.out.println("desc2: " + itCRUD.updateItrMode("what a description", itr.getItrId()));
+		//System.out.println("desc2: " + itCRUD.updateItrMode("what a description", itr.getItrId()));
 		
 		//System.out.println(itCRUD.updateItr(itr));
+		
+		
 	}
 }
 
