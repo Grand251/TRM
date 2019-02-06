@@ -3,39 +3,26 @@ package trm.controllers;
 
 
 import java.util.List;
-import java.util.Map;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-
-import javax.websocket.server.PathParam;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-
-
+import org.springframework.web.bind.annotation.ResponseBody;
 import trm.dao.employee.Employee;
 import trm.dao.employee.EmployeeCRUDService;
-import trm.dao.internaltrainer.InternalTrainer;
-import trm.dao.internaltrainer.InternalTrainerCRUD;
 import trm.dao.internaltrainingrequest.InternalTrainingCRUD;
-
 import trm.dao.internaltrainingrequest.*;
 import trm.dao.trainingrequest.*;
 import trm.dao.trainingschedule.TrainingSchedule;
 import trm.dao.trainingschedule.TrainingScheduleCRUDService;
-
 import trm.editors.EmployeeEditor;
 import trm.editors.TrainingRequestEditor;
 import trm.editors.TrainingScheduleEditor;
@@ -58,13 +45,13 @@ public class SpocController {
 	{
 		List<TrainingRequest> newTR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(0);
 		List<TrainingRequest> TR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(1);
-		List<TrainingRequest> inProgressTR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(2);
-		List<TrainingRequest> pendingTR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(3);
+//		List<TrainingRequest> inProgressTR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(2);
+//		List<TrainingRequest> pendingTR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(3);
 		List<TrainingRequest> trList = new ArrayList<TrainingRequest>();
 		
 		trList.addAll(TR);
-		trList.addAll(inProgressTR);
-		trList.addAll(pendingTR);
+//		trList.addAll(inProgressTR);
+//		trList.addAll(pendingTR);
 		
 		map.addAttribute("ntrList", newTR);
 		map.addAttribute("trList", trList);
@@ -72,12 +59,43 @@ public class SpocController {
 		return "spocdashboard";
 	}
 	
-	@RequestMapping(value = "/selecttrainingrequest", method = RequestMethod.GET)
-    public String selectedTrainingRequest(@RequestParam("userName") String userName, ModelMap map) {
+	@RequestMapping(value="selectNewRequest")
+    public @ResponseBody String selectedTrainingRequest(@RequestBody String json, ModelMap map) 
+	{
+        Pattern p = Pattern.compile("\\d+");
+        Matcher m = p.matcher(json);
+        List<Integer> idList = new ArrayList<>();
         
+        while(m.find()) {
+            idList.add(Integer.parseInt(m.group()));
+        }
+        
+        Boolean reqPassed = false;
+        
+        for(Integer id : idList)
+        {        	
+        	int ret = new TrainingRequestCRUD().updateTrainingRequestByAttribute(id, "status", 1);
+        	if (ret > 0)
+        		reqPassed = true;
+        	else
+        	{
+        		reqPassed = false;
+        		break;
+        	}
+        }
 		
-		return null;
+        if (reqPassed==true)
+        	return "success";
+        else
+        	return "error";
     }
+	
+	@RequestMapping(value="followupSelection")
+	public String followupSelection() throws InterruptedException
+	{
+		Thread.sleep(6000);
+		return  "redirect:/viewspocdashboard";
+	}
 	
 	//initBinder allows Spring forms to map user input to attributes of type Employee, TrainingRequest, and TrainingSchedule
 	@InitBinder

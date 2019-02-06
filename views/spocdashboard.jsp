@@ -6,6 +6,7 @@
 <%@taglib prefix="f" uri="http://www.springframework.org/tags/form"%>
 
 <html lang="en">
+<title>SPOC Dashboard</title>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,9 +22,9 @@
   <link rel="stylesheet" href="resources/CSS/trm.css">
   <link rel="stylesheet" href="resources/CSS/custom.css">
 
-  <script src="resources/spocJquery.js"></script>
-</head>
+	<script src="resources/spocJquery.js"></script> 
 
+</head>
 <body>
 
   <!-- Top navigation -->
@@ -49,19 +50,23 @@
   <!--Some space between navigation bar and actual content-->
   <div class="row* space"></div>
 
-
   <div class="row" style="height: 65vh;">
+  
     <!--New Request Box-->
     <div id="newRequestBox" class="border">
+    <f:form action="followupSelection" >
       <!--Start Button Send selected new reqests to be ongoing requests-->
-      <button id="startButton" class="row* sticky-top">
+      <button id="startButton" class="row* sticky-top" onclick="submitTR()">
         Start
         <span id="right_arrow" class="glyphicon glyphicon-arrow-right"></span>
       </button>
-
+      
+	 </f:form>
       <!--New Requests would be added here-->
       <div class="col">
       <c:forEach items="${ntrList}" var="ntr">
+      	<c:if test="${ntr.status == 0}">
+      	
         <!-- 1 card -->
         <div class="center-block newRequest">
           <div class="card" id="card">
@@ -75,6 +80,7 @@
                     aria-haspopup="true"><span class="glyphicon glyphicon-th-list"></span>
                   </button>
                   <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a href="#">${ntr.trainingRequestId }</a></li>
                     <li><a href="#">${ntr.requestTrainingModuleScope }</a></li>
                     <li><a href="#"><span class="glyphicon glyphicon-home"></span>${btr.requestTrainingType }</a></li>
                     <!--internal or vender -->
@@ -98,12 +104,19 @@
               <table id="Info">
                 <tr></tr>
                 <tr>
+                  <td><input type="hidden" id="tRId" name="trainingRequestId" value="${ntr.trainingRequestId}"></td>
+                </tr>
+                <tr>
+                  <td>
+                    ${ntr.trainingRequestId }</td>
+                </tr>
+                <tr>
                   <td>
                     Start Date</td>
                 </tr>
                 <tr>
                   <td>
-                    ${btr.requestTrainingType }</td>
+                    ${ntr.requestTrainingType }</td>
                 </tr>
                 <tr>
                   <td>
@@ -120,6 +133,7 @@
             </div>
           </div>
         </div>
+        </c:if>
         <!--end card -->
 		</c:forEach>
       </div>
