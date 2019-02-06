@@ -189,19 +189,19 @@ public class InternalTrainingCRUD {
 		return DAOJDBCTemplate.getJdbcTemplate().update(
 				"UPDATE internal_training_request SET status=?, "
 												   + "confirmed_trainer_id=?, "
-												   + "training_spoc_id=?, "
-												   + "internal_training_mode=?, "
 												   + "description_of_status=?, "
-												   + "schedule_id = ? "
+												   + "schedule_id = ?, "
+												   + "training_request_id = ?,"
+												   + "executive_id = ?"
 												   + "WHERE internal_training_id=?",
 				new Object[] {itr.getItrStatus(),
-
-				      itr.getItrTrainingRequest().getTrainingRequestId(),
-				      itr.getItrSchedule().getTraining_schedule_id(),
-				      itr.getItrTrainer().getEmployee_id(),
-				      itr.getItrExecutive().getEmployee_id(),
-				      itr.getItrStatus(),
-				      itr.getItrStatusDescription()});
+					      itr.getItrTrainer().getEmployee_id(),
+					      itr.getItrStatusDescription(),
+            				      itr.getItrSchedule().getTraining_schedule_id(),
+            				      itr.getItrTrainingRequest().getTrainingRequestId(),
+            				      itr.getItrExecutive().getEmployee_id(),
+            				      itr.getItrId()
+            				      });
 	}
 	
 	/**
@@ -270,6 +270,11 @@ public class InternalTrainingCRUD {
 	}
 	
 	/**
+<<<<<<< HEAD
+=======
+	
+	/**
+>>>>>>> master
 	 * Update an ITR's SPOC with an ITR ID and Employee object containing new SPOC's id.
 	 * 
 	 * @param spoc Employee object for new SPOC which must contain SPOC's 7 digit employee id.
@@ -432,6 +437,7 @@ public class InternalTrainingCRUD {
 		
 
 		InternalTrainingRequest itr = itCRUD.getItrById(1000015);
+
 		System.out.println("mode2: " + itCRUD.updateItrMode("greatest test", itr.getItrId()));
 
 		itr.setItrStatus(2);
