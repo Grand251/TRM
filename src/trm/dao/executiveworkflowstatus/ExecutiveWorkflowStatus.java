@@ -1,5 +1,6 @@
 package trm.dao.executiveworkflowstatus;
 
+import trm.dao.employee.Employee;
 import trm.dao.trainingrequest.TrainingRequest;
 
 public class ExecutiveWorkflowStatus {
@@ -24,6 +25,7 @@ public class ExecutiveWorkflowStatus {
 	int vendorTrainingClearance;
 	int feedbackCompleted;
 	int trainingCompleted;
+	Employee executiveWorkflowStatusExecutive;
 	
 	
 	public int getExecutiveWorkflowStatusId() {
@@ -73,6 +75,12 @@ public class ExecutiveWorkflowStatus {
 	}
 	public void setTrainingCompleted(int trainingCompleted) {
 		this.trainingCompleted = trainingCompleted;
+	}
+	public Employee getExecutiveWorkflowStatusExecutive() {
+		return executiveWorkflowStatusExecutive;
+	}
+	public void setExecutiveWorkflowStatusExecutive(Employee executiveWorkflowStatusExecutive) {
+		this.executiveWorkflowStatusExecutive = executiveWorkflowStatusExecutive;
 	}
 	
 	

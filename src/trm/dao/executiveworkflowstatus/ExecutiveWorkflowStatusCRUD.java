@@ -3,6 +3,7 @@ package trm.dao.executiveworkflowstatus;
 import java.util.List;
 
 import trm.dao.DAOJDBCTemplate;
+import trm.dao.employee.Employee;
 import trm.dao.trainingrequest.TrainingRequest;
 
 
@@ -18,17 +19,7 @@ public class ExecutiveWorkflowStatusCRUD {
 				new Object[]{executiveWorkflowStatusId}, new ExecutiveWorkflowStatusMapper());
 	}
 	
-	/*
-	 *  CREATE TABLE EXECUTIVE_WORKFLOW_STATUS ( 
-	   	executive_workflow_status_id number(5) primary key, 
-	   	training_request_id number(5) CONSTRAINT ews_tr_fk references training_request(training_request_id) unique not null, 
-	   	sent_invitations number(2), 
-	   	completed_skillport_enrollment number(2), 
-		assessments_recorded number(2), 
-		vendor_training_clearance number(2), 
-		completed_feedback number(2), 
-		training_completed number(2) );
-	 */	
+
 	
 	public List<ExecutiveWorkflowStatus> getExecutiveWorkflowStatusByInvitationsSent(int invitationsSent){
 		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM executive_workflow_status "
@@ -46,6 +37,19 @@ public class ExecutiveWorkflowStatusCRUD {
 		return DAOJDBCTemplate.getJdbcTemplate().queryForObject("SELECT * FROM executive_workflow_status "
 				+ "WHERE training_request_id=?", 
 				new Object[]{trainingRequestId}, new ExecutiveWorkflowStatusMapper());
+	}
+	
+	
+	
+	
+	public List<ExecutiveWorkflowStatus> getAllExecutiveWorkflowStatusByExec(Employee exec){
+		return getAllExecutiveWorkflowStatusByExec(exec.getEmployee_id());
+	}
+	
+	public List<ExecutiveWorkflowStatus> getAllExecutiveWorkflowStatusByExec(int execId){
+		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM executive_workflow_status "
+				+ "WHERE executive_id=?", new Object[]{execId},
+				new ExecutiveWorkflowStatusMapper());
 	}
 	
 	public List<ExecutiveWorkflowStatus> getExecutiveWorkflowStatusBySkillportEnrollmentCompleted(int skillportEnrollmentCompleted){
