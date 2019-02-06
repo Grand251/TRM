@@ -3,6 +3,11 @@ package trm.dao.trainingschedule;
 import java.sql.Date;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import trm.dao.DAOJDBCTemplate;
 
@@ -122,7 +127,7 @@ public class TrainingScheduleCRUDService {
 	 */
 	public int insertTrainingSchedule(TrainingSchedule schedule) {
 		jtemp = DAOJDBCTemplate.getJdbcTemplate();
-		int ret = jtemp.update("insert into TRAINING_SCHEDULE values (training_schedule_id_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		/*int ret = jtemp.update("insert into TRAINING_SCHEDULE values (training_schedule_id_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 								new Object[] {
 										schedule.getTraining_schedule_id(),
 										schedule.getTraining_city(),
@@ -135,8 +140,38 @@ public class TrainingScheduleCRUDService {
 										schedule.getTraining_start_date(),
 										schedule.getTraining_end_date(),
 										schedule.getTraining_url(),
-										schedule.getTraining_audio()});
-		return ret;
+										schedule.getTraining_audio()});*/
+		
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		
+		NamedParameterJdbcTemplate j = new NamedParameterJdbcTemplate(jtemp);
+		
+		SqlParameterSource parameters = new MapSqlParameterSource()
+				.addValue("city", schedule.getTraining_city())
+    			.addValue("state",schedule.getTraining_state())
+    			.addValue("country",schedule.getTraining_country())
+    			.addValue("zip",schedule.getTraining_zipcode())
+    			.addValue("time",schedule.getTraining_time_zone())
+    			.addValue("loc",schedule.getTraining_location())
+    			.addValue("room",schedule.getTraining_room_number())
+    			.addValue("start",schedule.getTraining_start_date())
+    			.addValue("end",schedule.getTraining_end_date())
+    			.addValue("url",schedule.getTraining_url())
+    			.addValue("audio",schedule.getTraining_audio());
+											
+		
+		j.update("insert into TRAINING_SCHEDULE(TRAINING_SCHEDULE_ID, TRAINING_CITY, TRAINING_STATE, TRAINING_COUNTRY, "
+				+ "TRAINING_ZIPCODE,TRAINING_TIME_ZONE, TRAINING_LOCATION, TRAINING_ROOM_NUMBER, TRAINING_START_DATE, TRAINING_END_DATE, "
+				+ "TRAINING_URL,TRAINING_AUDIO) values (training_schedule_id_seq.nextval, :city, :state, :country, :zip, :time, :loc, :room"
+				+ ", :start, :end, :url, :audio)", 
+				 parameters,
+				  keyHolder, new String[]{"TRAINING_SCHEDULE_ID"}
+				 );
+		
+		int key = keyHolder.getKey().intValue();
+		System.out.println(key);
+		
+		return key;
 	}
 	
 	/**
