@@ -6,7 +6,6 @@ import java.util.List;
 
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import trm.dao.DAOJDBCTemplate;
 
 import trm.dao.DAOJDBCTemplate;
 
@@ -24,7 +23,7 @@ public class EmployeeCRUDService {
 	 * @return List<Employee>
 	 */
 	public List<Employee> getAllEmployee(){
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		List<Employee> custlist = jtemp.query("Select * from employee order by 1", new EmployeeMapper());
 		return custlist;
 	}
@@ -35,7 +34,7 @@ public class EmployeeCRUDService {
 	 */
 	public List<Employee> getAllEmployeeByTitle(String jobTitle)
 	{
-	    jtemp = DAOJDBCTemplate.getJdbcTemplate();
+	    jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 	    List<Employee> employeeList = jtemp.query("Select * from employee where job_title = ?", new Object[]{jobTitle}, new EmployeeMapper());
 	    
 	    return employeeList;
@@ -46,7 +45,7 @@ public class EmployeeCRUDService {
 	 * @return int(bollean)
 	 */
 	public int deleteEmployee(int empid) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("delete from employee where employee_id = ?", 
 				new Object[] {empid});
 		return ret;
@@ -58,7 +57,7 @@ public class EmployeeCRUDService {
 	 * @return Employee
 	 */
 	public Employee getEmployeeById(int employee_id) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		Employee employee = jtemp.queryForObject("Select * from employee where employee_id = ?",
 									new Object[]{employee_id},
 									new EmployeeMapper());
@@ -100,7 +99,7 @@ public class EmployeeCRUDService {
 			 String vertical,
 			 String project,
 			 int pid){
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("UPDATE employee SET last_name = ?, first_name = ?, user_name = ?, password = ?, phone_number = ?, email = ?, street = ?, city = ?, state = ?, country = ?, job_title = ?, vertical = ?, project = ?, pid = ? where employee_id = ?",
 							new Object[] {last_name, first_name, user_name, password, 
 									  	  phone_number, email, street, city, state, 
@@ -115,7 +114,7 @@ public class EmployeeCRUDService {
 	 * @return int(boolean)
 	 */
 	public int insertCustomer(Employee employee) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("insert into employee values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 								new Object[] {employee.getEmployee_id(),
 										employee.getLast_name(),
@@ -142,7 +141,7 @@ public class EmployeeCRUDService {
 	 * @return int(boolean)
 	 */
 	public int updateEmployeeLastNameById(int employee_id, String last_name) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("UPDATE employee SET last_name = ? where employee_id = ?",
 							new Object[] {last_name, employee_id});
 		return ret;
@@ -155,7 +154,7 @@ public class EmployeeCRUDService {
 	 * @return int(boolean)
 	 */
 	public int updateEmployeeFirstNameById(int employee_id, String first_name) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("UPDATE employee SET first_name = ? where employee_id = ?",
 							new Object[] {first_name, employee_id});
 		return ret;
@@ -168,7 +167,7 @@ public class EmployeeCRUDService {
 	 * @return int(boolean)
 	 */
 	public int updateEmployeeUserNameById(int employee_id, String user_name) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("UPDATE employee SET user_name = ? where employee_id = ?",
 							new Object[] {user_name, employee_id});
 		return ret;
@@ -181,7 +180,7 @@ public class EmployeeCRUDService {
 	 * @return int(boolean)
 	 */
 	public int updateEmployeePasswordById(int employee_id, String password) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("UPDATE employee SET password = ? where employee_id = ?",
 							new Object[] {password, employee_id});
 		return ret;
@@ -194,7 +193,7 @@ public class EmployeeCRUDService {
 	 * @return int(boolean)
 	 */
 	public int updateEmployeePhoneNumberById(int employee_id, String phone_number) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("UPDATE employee SET phone_number = ? where employee_id = ?",
 							new Object[] {phone_number, employee_id});
 		return ret;
@@ -207,7 +206,7 @@ public class EmployeeCRUDService {
 	 * @return int(boolean)
 	 */
 	public int updateEmployeeEmailById(int employee_id, String email) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("UPDATE employee SET email = ? where employee_id = ?",
 							new Object[] {email, employee_id});
 		return ret;
@@ -220,7 +219,7 @@ public class EmployeeCRUDService {
 	 * @return int(boolean)
 	 */
 	public int updateEmployeeAddressStreetById(int employee_id, String street) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("UPDATE employee SET street = ? where employee_id = ?",
 							new Object[] {street, employee_id});
 		return ret;
@@ -233,7 +232,7 @@ public class EmployeeCRUDService {
 	 * @return int(boolean)
 	 */
 	public int updateEmployeeAddressCityById(int employee_id, String city) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("UPDATE employee SET city = ? where employee_id = ?",
 							new Object[] {city, employee_id});
 		return ret;
@@ -246,7 +245,7 @@ public class EmployeeCRUDService {
 	 * @return int(boolean)
 	 */
 	public int updateEmployeeAddressStateById(int employee_id, String state) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("UPDATE employee SET state = ? where employee_id = ?",
 							new Object[] {state, employee_id});
 		return ret;
@@ -259,7 +258,7 @@ public class EmployeeCRUDService {
 	 * @return int(boolean)
 	 */
 	public int updateEmployeeAddressCountryById(int employee_id, String country) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("UPDATE employee SET country = ? where employee_id = ?",
 							new Object[] {country, employee_id});
 		return ret;
@@ -272,7 +271,7 @@ public class EmployeeCRUDService {
 	 * @return int(boolean)
 	 */
 	public int updateEmployeeJobTitleById(int employee_id, String job_title) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("UPDATE employee SET job_title = ? where employee_id = ?",
 							new Object[] {job_title, employee_id});
 		return ret;
@@ -285,7 +284,7 @@ public class EmployeeCRUDService {
 	 * @return int(boolean)
 	 */
 	public int updateEmployeeVerticalById(int employee_id, String vertical) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("UPDATE employee SET vertical = ? where employee_id = ?",
 							new Object[] {vertical, employee_id});
 		return ret;
@@ -298,7 +297,7 @@ public class EmployeeCRUDService {
 	 * @return int(boolean)
 	 */
 	public int updateEmployeeProjectNameById(int employee_id, String project) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("UPDATE employee SET project = ? where employee_id = ?",
 							new Object[] {project, employee_id});
 		return ret;
@@ -311,7 +310,7 @@ public class EmployeeCRUDService {
 	 * @return int(boolean)
 	 */
 	public int updateEmployeeProjectIdById(int employee_id, int pid) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("UPDATE employee SET pid = ? where employee_id = ?",
 							new Object[] {pid, employee_id});
 		return ret;

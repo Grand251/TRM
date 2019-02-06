@@ -35,7 +35,7 @@ public class VendorTrainerCRUDService {
 	
 	
 	public List<VendorTrainer> getAllVendorTrainer(){
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		List<VendorTrainer> custlist = jtemp.query("Select * from vendor_trainer order by 1", new VendorTrainerMapper());
 		return custlist;
 	}
@@ -46,7 +46,7 @@ public class VendorTrainerCRUDService {
 	 * @return int(bollean)
 	 */
 	public int deleteVendorTrainer(int vendor_trainer_id) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("delete from vendor_trainer where vendor_trainer_id = ?", 
 				new Object[] {vendor_trainer_id});
 		return ret;
@@ -58,7 +58,7 @@ public class VendorTrainerCRUDService {
 	 * @return Vendor
 	 */
 	public VendorTrainer getVendorTrainerById(int vendor_trainer_id) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		VendorTrainer vendorTrainer = jtemp.queryForObject("Select * from vendor_trainer where vendor_trainer_id = ?",
 									new Object[]{vendor_trainer_id},
 									new VendorTrainerMapper());
@@ -73,7 +73,7 @@ public class VendorTrainerCRUDService {
 			 String profile,
 			 String evaulation_status,
 			 String vendor_trainer_log) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("UPDATE vendor_trainer SET vendor_trainer_name= ?, phone= ?, email= ?, profile= ?, evaulation_status= ?, vendor_trainer_log= ? where vendor_trainer_id= ?",
 							new Object[] { vendor_trainer_name,
 										  phone,
@@ -86,7 +86,7 @@ public class VendorTrainerCRUDService {
 	}
 	
 	public int insertVendorTrainer(VendorTrainer vendorTrainer) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("insert into vendor_trainer values (?, ?, ?, ?, ?, ?, ?)",
 								new Object[] {vendorTrainer.getVendor_trainer_id(),
 										vendorTrainer.getVendor_trainer_name(),

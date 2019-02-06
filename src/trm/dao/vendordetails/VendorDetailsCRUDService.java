@@ -31,14 +31,14 @@ public class VendorDetailsCRUDService {
 	}
 	
 	public List<VendorDetails> getAllVendorDetails(){
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		List<VendorDetails> custlist = jtemp.query("Select * from vendor_Details order by 1", new VendorDetailsMapper());
 		return custlist;
 	}
 	
 
 	public int deleteVendorDetails(int vendor_trainer_id) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("delete from vendor_Details where vendor_id = ?", 
 				new Object[] {vendor_trainer_id});
 		return ret;
@@ -46,7 +46,7 @@ public class VendorDetailsCRUDService {
 	
 
 	public VendorDetails getVendorDetailsById(int vendor_id) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		VendorDetails vendor = jtemp.queryForObject("Select * from vendor_details where vendor_id = ?",
 									new Object[]{vendor_id},
 									new VendorDetailsMapper());
@@ -63,7 +63,7 @@ public class VendorDetailsCRUDService {
 			 String vendor_country,
 			 String vendor_zipcode,
 			 String vendor_time_zone) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("UPDATE vendor_Details SET vendor_name= ?, vendor_phone= ?, vendor_email= ?, vendor_city= ?, vendor_state= ?, vendor_country= ?, vendor_zipcode =?, vendor_time_zone =? where vendor_id= ?",
 							new Object[] {  
 									  vendor_name, 
@@ -79,7 +79,7 @@ public class VendorDetailsCRUDService {
 	}
 	
 	public int insertVendorDetails(VendorDetails vendorDetails) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("insert into vendor_Details values (?, ?, ?, ?, ?, ?, ?,?,?)",
 								new Object[] {vendorDetails.getVendor_id(),
 										vendorDetails.getVendor_name(),
