@@ -77,7 +77,9 @@ public class SpocController {
 	@RequestMapping(value="steponeform/{itrId}")
 	public String stepOneForm(@PathVariable("itrId") int itrId, ModelMap map) {
 		map.addAttribute("itrId", itrId);
-		
+		EmployeeCRUDService empCrud = new EmployeeCRUDService();
+		List<Employee> trainers = empCrud.getAllEmployeeByTitle("Trainer");
+		map.addAttribute("trainers", trainers);
 		return "steponeform";
 	}
 	
@@ -91,17 +93,20 @@ public class SpocController {
 		TrainingSchedule ts = itr.getItrSchedule();
 		
 		itr.setItrMode(request.getParameter("mode"));
+		int trainerId = Integer.parseInt(request.getParameter("trainerId"));
+		Employee trainer = new EmployeeCRUDService().getEmployeeById(trainerId);
+		itr.setItrTrainer(trainer);
 		//Selected Trainer
 		itrCrud.updateItr(itr);
 		
 		Date startDate = null;
 		Date endDate = null;
 		try {
-			//System.out.println(request.getParameter("startDate"));
+			System.out.println(request.getParameter("startDate"));
 			String temp;
-			startDate = (Date) new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("startDate"));
-			endDate = (Date) new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("endDate"));
-		} catch (Exception e) {return "error";}
+			startDate = new Date(new SimpleDateFormat("yyyy-MM-dd").parse((String)request.getParameter("startDate")).getTime());
+			endDate = new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse((String)request.getParameter("endDate")).getTime());
+		} catch (Exception e) {System.out.println(e.getMessage()); return "error";}
 		
 		ts.setTraining_start_date(startDate);
 		ts.setTraining_end_date(endDate);
