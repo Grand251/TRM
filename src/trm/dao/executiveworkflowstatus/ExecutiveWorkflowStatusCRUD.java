@@ -158,6 +158,48 @@ public class ExecutiveWorkflowStatusCRUD {
 						executiveWorkflowStatus.getExecutiveWorkflowStatusId()});
 	}
 	
+	public int updateInvitationsSent(int invitationsSent, int executiveWorkflowStatusId) {
+		return DAOJDBCTemplate.getJdbcTemplate().update("UPDATE executive_workflow_status "
+				+ "SET sent_invitations=? "
+				+ " WHERE executive_workflow_status_id= ?",
+				new Object[]{invitationsSent,	executiveWorkflowStatusId});
+	}
+	
+	public int updateSkillportEnrollment(int skillportEnrollmentsCompleted, int executiveWorkflowStatusId) {
+		return DAOJDBCTemplate.getJdbcTemplate().update("UPDATE executive_workflow_status "
+				+ "SET completed_skillport_enrollment=? "
+				+ " WHERE executive_workflow_status_id= ?",
+				new Object[]{skillportEnrollmentsCompleted,	executiveWorkflowStatusId});
+	}
+	
+	public int updateAssessmentsRecorded(int assessmentsRecorded, int executiveWorkflowStatusId) {
+		return DAOJDBCTemplate.getJdbcTemplate().update("UPDATE executive_workflow_status "
+				+ "SET assessments_recorded=? "
+				+ " WHERE executive_workflow_status_id= ?",
+				new Object[]{assessmentsRecorded,	executiveWorkflowStatusId});
+	}
+	
+	public int updateVendorTrainingClearance(int vendorClearanceTraining, int executiveWorkflowStatusId) {
+		return DAOJDBCTemplate.getJdbcTemplate().update("UPDATE executive_workflow_status "
+				+ "SET vendor_training_clearance=? "
+				+ " WHERE executive_workflow_status_id= ?",
+				new Object[]{vendorClearanceTraining,	executiveWorkflowStatusId});
+	}
+	
+	public int updateFeedbackCompleted(int feedbackCompleted, int executiveWorkflowStatusId) {
+		return DAOJDBCTemplate.getJdbcTemplate().update("UPDATE executive_workflow_status "
+				+ "SET completed_feedback=? "
+				+ " WHERE executive_workflow_status_id= ?",
+				new Object[]{feedbackCompleted,	executiveWorkflowStatusId});
+	}
+	
+	public int updateTrainingCompleted(int trainingCompleted, int executiveWorkflowStatusId) {
+		return DAOJDBCTemplate.getJdbcTemplate().update("UPDATE executive_workflow_status "
+				+ "SET training_completed=? "
+				+ " WHERE executive_workflow_status_id= ?",
+				new Object[]{trainingCompleted,	executiveWorkflowStatusId});
+	}
+	
 
 	
 	public int deleteExecutiveWorkflowStatus(int executiveWorkflowStatusId) {
