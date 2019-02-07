@@ -427,6 +427,13 @@ public class InternalTrainingCRUD {
 	 
 		InternalTrainingCRUD itCRUD = new InternalTrainingCRUD();
 		
+		for(InternalTrainingRequest itr: itCRUD.getAllItr())
+		{
+		    System.out.println(itr.getItrId());
+		}
+		
+		/*
+		
 		List<InternalTrainingRequest> itList = itCRUD.getAllItrBySPOC(1000019);
 		
 		for(InternalTrainingRequest request: itList)

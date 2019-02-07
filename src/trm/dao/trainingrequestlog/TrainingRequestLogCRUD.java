@@ -86,4 +86,8 @@ public class TrainingRequestLogCRUD
 		List<TrainingRequestLog> custList = jTemp.query("Select * from training_request_log" , new TrainingRequestLogMapper());
 		return custList;
 	}
+	
+	public static void main(String[] args)
+	{
+	}
 }

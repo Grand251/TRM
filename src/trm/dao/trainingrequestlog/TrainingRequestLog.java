@@ -2,9 +2,6 @@ package trm.dao.trainingrequestlog;
 
 import java.sql.Timestamp;
 
-import javax.validation.constraints.NotNull;
-
-import org.springframework.validation.*;
 
 /*
  * @author Ian Nielsen
@@ -20,15 +17,12 @@ public class TrainingRequestLog
 	private int requestLogId;
 	
 	//The training request the log is for.
-	@NotNull
 	private int trainingRequestId;
 	
 	//The status the request was changed to.
-	@NotNull
 	private String status;
 	
 	//The time at which the status of the request was changed.
-	@NotNull
 	private Timestamp statusChangeTime;
 	
 	//A description of the status, why the status was changed etc.
