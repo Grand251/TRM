@@ -253,6 +253,13 @@
             <p class="alignleft">Trainer: ${itr.itrTrainer.first_name } ${itr.itrTrainer.last_name }</p>
           </div>
         </div>
+        
+        <!--Field and output row-->
+        <div class="row summary-text">
+          <div class="col-sm-6">
+            <p class="alignleft">Mode: ${itr.itrTrainingRequest.requestTrainingMode }</p>
+          </div>
+        </div>
 
         <!--Field and output row-->
         <div class="row summary-text">

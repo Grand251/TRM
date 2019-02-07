@@ -38,9 +38,11 @@ public class SpocController {
 	@RequestMapping(value="viewspocdashboard")
 	public String showDashboard(ModelMap map)
 	{
-		List<TrainingRequest> trs = new TrainingRequestCRUD().getAllRequestBySPOCStatus(1000037, 0);
-		List<TrainingRequest> tr = new TrainingRequestCRUD().getAllRequestBySPOCStatus(1000037, 1);
-		List<InternalTrainingRequest> itr = new InternalTrainingCRUD().getAllItrBySPOC(1000037);
+		int spocId = 1000037;
+		
+		List<TrainingRequest> trs = new TrainingRequestCRUD().getAllRequestBySPOCStatus(spocId, 0);
+		List<TrainingRequest> tr = new TrainingRequestCRUD().getAllRequestBySPOCStatus(spocId, 1);
+		List<InternalTrainingRequest> itr = new InternalTrainingCRUD().getAllItrBySPOC(spocId);
 		
 		
 		map.addAttribute("ntrList", trs);
@@ -154,7 +156,9 @@ public class SpocController {
 		//TrainingSchedule ts = tsCrud.getTrainingScheduleById(itr.get);
 		TrainingSchedule ts = itr.getItrSchedule();
 		
-//		itr.setItrMode(request.getParameter("mode"));
+		itr.getItrTrainingRequest().setRequestTrainingMode(request.getParameter("mode"));
+		new TrainingRequestCRUD().updateTrainingRequest(itr.getItrTrainingRequest());
+
 		int trainerId = Integer.parseInt(request.getParameter("trainerId"));
 		Employee trainer = new EmployeeCRUDService().getEmployeeById(trainerId);
 		itr.setItrTrainer(trainer);
