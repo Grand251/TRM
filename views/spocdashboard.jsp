@@ -73,7 +73,7 @@
   <div class="row" style="height: 65vh;">
     <!--New Request Box-->
     <div id="newRequestBox" class="border">
-    <form action="selectNewRequest" >
+    <form action="selectNewRequest">
       <!--Start Button Send selected new requests to be ongoing requests-->
       <button id="startButton" class="row* sticky-top" onclick="submitTR()">
         Start
