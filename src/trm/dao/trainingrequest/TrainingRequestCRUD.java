@@ -76,15 +76,16 @@ public class TrainingRequestCRUD
 	{
 		jTemp = DAOJDBCTemplate.getJdbcTemplate();
 		int numberOfRowsEffected = jTemp.update("Update training_request set request_training_type = ?, request_training_module = ?, request_training_module_scope = ?,"
-							 + " request_training_mode = ?, request_start_time = ?, request_end_time = ?, request_location = ?, request_time_zone = ?, request_approx_participant = ?, request_project_spoc = ?,"
-				                         + " executive_id = ?, time_requested = ?, status = ? where training_request_id = ?",
+							 + " request_start_time = ?, request_end_time = ?, request_location = ?, request_time_zone = ?, request_approx_participant = ?, request_project_spoc = ?,"
+				                         + " time_requested = ?, status = ?, justification_of_request = ? where training_request_id = ?",
 												  new Object[] {trainingRequest.getRequestTrainingType(),
 														  		trainingRequest.getRequestTrainingModule(), trainingRequest.getRequestTrainingModuleScope(),
-														  		trainingRequest.getRequestTrainingMode(), trainingRequest.getRequestStartTime(),
+														  		trainingRequest.getRequestStartTime(),
 														  		trainingRequest.getRequestEndTime(), trainingRequest.getRequestLocation(),
 														  		trainingRequest.getRequestTimeZone(), trainingRequest.getApproxNumberOfParticipants(),
 														  		trainingRequest.getRequestProjectSpoc().getEmployee_id(),
-														  		trainingRequest.getTimeRequested(), trainingRequest.getTrainingRequestId(), trainingRequest.getStatus(), trainingRequest.getJustificationOfRequest()});
+														  		trainingRequest.getTimeRequested(), trainingRequest.getStatus(), trainingRequest.getJustificationOfRequest(),
+														  		trainingRequest.getTrainingRequestId()});
 		return numberOfRowsEffected;
 	}
 	
@@ -189,6 +190,22 @@ public class TrainingRequestCRUD
 		return numberOfRowsEffected;
 	}
 	
+	public int updateTrainingRequestByAttribute(int trainingRequestId, String trainingRequestAttribute, double attributeNewValue)
+	{
+		jTemp = DAOJDBCTemplate.getJdbcTemplate();
+		
+		String sqlPreparedStatement = "Update training_request set ";
+		sqlPreparedStatement = sqlPreparedStatement.concat(trainingRequestAttribute);
+		sqlPreparedStatement = sqlPreparedStatement.concat(" = ");
+		sqlPreparedStatement = sqlPreparedStatement.concat("" + attributeNewValue);
+		sqlPreparedStatement = sqlPreparedStatement.concat(" where training_request_id = ");
+		sqlPreparedStatement = sqlPreparedStatement.concat("" + trainingRequestId);
+		
+		int numberOfRowsEffected = jTemp.update(sqlPreparedStatement);
+		
+		return numberOfRowsEffected;
+	}
+	
 	public int updateTrainingRequestScopeTypeModeParticip(int trainingRequestId, String requestScope, String requestType, String requestMode, int requestNumberOfParticipants)
 	{
 	    jTemp = DAOJDBCTemplate.getJdbcTemplate();
@@ -270,6 +287,8 @@ public class TrainingRequestCRUD
 	public static void main(String[] args)
 	{
 		TrainingRequestCRUD crud = new TrainingRequestCRUD();
+		
+		crud.updateTrainingRequestByAttribute(10000, "Status", 3.1);
 		
 		/*
 		TrainingRequest tr = new TrainingRequest();
