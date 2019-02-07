@@ -1,7 +1,12 @@
 package trm.dao.trainingrequest;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import trm.dao.DAOJDBCTemplate;
@@ -33,6 +38,8 @@ public class TrainingRequestCRUD
 	 */
 	public int insertTrainingRequest(TrainingRequest trainingRequest)
 	{
+	    	//ConfigurableApplicationContext context = new DAOJDBCTemplate().getApplicationContext();
+	    	//JdbcTemplate jTemp = (JdbcTemplate)context.getBean("jTemp");
 		int numberOfRowsEffected = jTemp.update("Insert into training_Request values(training_id_request_seq.nextval,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" , 
 												  new Object[] {trainingRequest.getRequesterId(), trainingRequest.getRequestTrainingType(),
 														  		trainingRequest.getRequestTrainingModule(), trainingRequest.getRequestTrainingModuleScope(),
@@ -41,6 +48,8 @@ public class TrainingRequestCRUD
 														  		trainingRequest.getRequestTimeZone(), trainingRequest.getApproxNumberOfParticipants(),
 														  		trainingRequest.getRequestProjectSpoc().getEmployee_id(),
 														  		trainingRequest.getTimeRequested(), trainingRequest.getStatus(), trainingRequest.getJustificationOfRequest()});
+		
+		//context.close();
 		return numberOfRowsEffected;
 	}
 	
@@ -228,7 +237,7 @@ public class TrainingRequestCRUD
 	public TrainingRequest getTrainingRequestById(int trainingRequestId)
 	{
 		TrainingRequest trainingRequest = jTemp.queryForObject("Select * from training_request where training_request_id = ? AND status >= 0",
-												   				new Object[]{trainingRequestId}, new TrainingRequestMapper());
+											   				new Object[]{trainingRequestId}, new TrainingRequestMapper());
 		return trainingRequest;
 	}
 	
@@ -240,34 +249,38 @@ public class TrainingRequestCRUD
 	 * @return List of training request objects that represents all of the training
 	 * 		   requests in the training_request table.
 	 */
-	public List<TrainingRequest> getAllTrainingRequest()
+	public List<TrainingRequest> getAllTrainingRequest() throws SQLException
 	{
 		List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request where status >= 0" , new TrainingRequestMapper());
-
+		
+		jTemp.getDataSource().getConnection().close();
+		
 		return trainingRequestList;
 	}
 	
-	public List<TrainingRequest> getAllTrainingRequestForPM(int projectManagerId)
+	public List<TrainingRequest> getAllTrainingRequestForPM(int projectManagerId) throws SQLException
 	{
 	        List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request where requester_id = ? AND status >= 0",
 	        	new Object[] {projectManagerId}, new TrainingRequestMapper());
 	        
+	        jTemp.getDataSource().getConnection().close();
 	        return trainingRequestList;
 	}
 	
-	public List<TrainingRequest> getAllRequestBySPOCStatus(int spocId, int status)
+	public List<TrainingRequest> getAllRequestBySPOCStatus(int spocId, int status) throws SQLException
 	{
 	        List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request where request_project_spoc = ? AND status = ?",
 	        	new Object[] {spocId, status}, new TrainingRequestMapper());
 	        
+	        jTemp.getDataSource().getConnection().close();
 	        return trainingRequestList;
 	}
 	
-	public List<TrainingRequest> getAllTrainingRequestByStatus(double status)
+	public List<TrainingRequest> getAllTrainingRequestByStatus(double status) throws SQLException
 	{
 	    	List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request where status = ?",
 	    								new Object[] {status}, new TrainingRequestMapper());
-	    	
+	    	jTemp.getDataSource().getConnection().close();
 	    	return trainingRequestList;
 	}
 	
@@ -276,9 +289,22 @@ public class TrainingRequestCRUD
 	{
 		TrainingRequestCRUD crud = new TrainingRequestCRUD();
 		
-		crud.updateTrainingRequestByAttribute(10000, "Status", 3.1);
-		
 		/*
+		List<TrainingRequest> list;
+		try
+		{
+		    List<>list = crud.getAllTrainingRequestByStatus(3);
+		} catch (SQLException e)
+		{
+		    // TODO Auto-generated catch block
+		    e.printStackTrace();
+		}
+		
+		for(TrainingRequest request:list)
+		{
+		    System.out.println(request.getRequesterId());
+		}
+		*/
 
 		TrainingRequest tr = new TrainingRequest();
 		tr.setRequesterId(1000057);
@@ -294,13 +320,15 @@ public class TrainingRequestCRUD
 		tr.setRequestTimeZone("EST");
 		tr.setApproxNumberOfParticipants(15);
 		
-		Employee spoc = new EmployeeCRUDService().getEmployeeById(1000032);
+		Employee spoc = new EmployeeCRUDService().getEmployeeById(1000035);
 		tr.setRequestProjectSpoc(spoc);
 		
 		Timestamp timeR = Timestamp.valueOf("2019-01-18 03:00:00");
 		tr.setTimeRequested(timeR);
 		tr.setStatus(1);
 		tr.setJustificationOfRequest("Needed");
+		
+		crud.insertTrainingRequest(tr);
 		
 		/*
 		TrainingRequest tr = new TrainingRequest();
@@ -341,12 +369,12 @@ public class TrainingRequestCRUD
 		//List<TrainingRequest> list = crud.getAllRequest;
 		
 		
-		List<TrainingRequest> list = crud.getAllTrainingRequest();
+		//List<TrainingRequest> list = crud.getAllTrainingRequest();
 		
-		for(TrainingRequest trainerRequest : list)
-		{
-			System.out.println(trainerRequest.getTrainingRequestId());
-		}
+		//for(TrainingRequest trainerRequest : list)
+		//{
+		//	System.out.println(trainerRequest.getTrainingRequestId());
+		//}
 		
 		
 	}
