@@ -1,5 +1,7 @@
 package trm.controllers;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -7,6 +9,8 @@ import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,10 +69,27 @@ public class VendorDetailsController {
 			}
 			
 			@RequestMapping(value = "insertVendorDetails")
-			public String insertVendorDetails(@Valid @ModelAttribute("vendorDetails") VendorDetails vendorDetails, BindingResult result) {
+			public String insertVendorDetails(@Valid @ModelAttribute("vendorDetails") VendorDetails vendorDetails, ModelMap model, BindingResult result) {
 				System.out.println(result);
-				if(result!=null)
-					System.out.println(result.getErrorCount());
+				for(FieldError error : result.getFieldErrors()) {
+					System.out.println(error.getField());
+					System.out.println(error.getRejectedValue());
+					System.out.println(error.getDefaultMessage());
+				}
+				
+				if(result.equals(null)) {
+					ArrayList<LinkedHashMap<String, String>> errorReport = new ArrayList<LinkedHashMap<String, String>>();
+					for(FieldError error : result.getFieldErrors()) {
+						LinkedHashMap<String, String> errorValues = new LinkedHashMap<String, String>();
+						errorValues.put("Field: ", error.getField());
+						errorValues.put("Rejected Value: ", error.getRejectedValue().toString());
+						errorValues.put("Error: ", error.getDefaultMessage());
+						errorReport.add(errorValues);
+					}
+					model.addAttribute(errorReport);
+					return "redirect:/insertVendorDetailsForm";
+				}
+				
 				int ret = new VendorDetailsCRUDService().insertVendorDetails(vendorDetails);
 				if(ret > 0) return "redirect:/showallVendorDetails";
 				else return "error";
