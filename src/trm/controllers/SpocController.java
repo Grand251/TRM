@@ -1,5 +1,6 @@
 package trm.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
@@ -13,7 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import trm.dao.employee.Employee;
 import trm.dao.employee.EmployeeCRUDService;
+import trm.dao.executiveworkflowstatus.ExecutiveWorkflowStatus;
+import trm.dao.executiveworkflowstatus.ExecutiveWorkflowStatusCRUD;
 import trm.dao.internaltrainingrequest.InternalTrainingCRUD;
+import trm.dao.trainingparticipant.TrainingParticipant;
+import trm.dao.trainingparticipant.TrainingParticipantCRUD;
 import trm.dao.internaltrainingrequest.*;
 import trm.dao.trainingrequest.*;
 import trm.dao.trainingschedule.TrainingSchedule;
@@ -47,7 +52,22 @@ public class SpocController {
 		
 		map.addAttribute("ntrList", trs);
 		map.addAttribute("trList", tr);
-		map.addAttribute("itrList", itr);
+		
+		List<InternalTrainingRequest> rightOnes = new ArrayList<InternalTrainingRequest>();
+		for (InternalTrainingRequest i : itr){
+			if (i.getItrStatus() < 5) {
+				rightOnes.add(i);
+				if (i.getItrStatus() == 2)
+					i.setItrStatusDescription("New");
+				if (i.getItrStatus() == 3)
+					i.setItrStatusDescription("Pending PM Approval");
+				if (i.getItrStatus() == 4)
+					i.setItrStatusDescription("PM Approval Recieved");
+			}
+		}
+		map.addAttribute("itrList", rightOnes);
+		
+		
 
 		
 		return "spocdashboard";
@@ -105,7 +125,7 @@ public class SpocController {
 			
 		InternalTrainingRequest itr = new InternalTrainingRequest();
 		itr.setItrTrainingRequest(tr);
-		itr.setItrStatus(1);
+		itr.setItrStatus(2);
 		itr.setItrTrainer(new EmployeeCRUDService().getEmployeeById(1000000));
 		itr.setItrExecutive(new EmployeeCRUDService().getEmployeeById(1000038));
 		itr.setItrStatusDescription("ONE");
@@ -181,7 +201,52 @@ public class SpocController {
 		return "redirect:/edititr/" + itrId;
 	}
 	
-	
+	//Function that inserts an ExecutiveWorkFlowStatus and updates the statuses of the InternalTrainingRequest and the TrainingRequest that corresponds with it
+		@RequestMapping(value="submitsteptwo/{itrId}")
+		public String submitStepTwo(@PathVariable("itrId") int itrId, @ModelAttribute("execWorkflowStatus") ExecutiveWorkflowStatus execWorkflowStatus, ModelMap map)
+		{
+			System.out.println(itrId);
+			InternalTrainingCRUD itrCrud = new InternalTrainingCRUD();
+			TrainingRequestCRUD trCrud = new TrainingRequestCRUD();
+			ExecutiveWorkflowStatusCRUD ewfsCrud = new ExecutiveWorkflowStatusCRUD();
+			InternalTrainingRequest itr = itrCrud.getItrById(itrId);
+			
+			System.out.println(itr.getItrId());
+			
+			
+			itr.setItrStatus(5);
+			itrCrud.updateItr(itr);
+			itr.getItrTrainingRequest().setStatus(5);
+			trCrud.updateTrainingRequest(itr.getItrTrainingRequest());
+			
+			
+			itr.setItrExecutive(execWorkflowStatus.getExecutiveWorkflowStatusExecutive());
+			
+			//update corresponding ITR with correct statuses and executives
+			int ret = new InternalTrainingCRUD().updateItr(itr);
+			
+			Employee executive = itr.getItrExecutive();
+			
+			
+			
+			//insert ExecutiveWorkflowStatus into database for executive to see on their end once the SPOC is finished
+			
+			execWorkflowStatus.setTrainingRequest(itr.getItrTrainingRequest());
+			execWorkflowStatus.setExecutiveWorkflowStatusExecutive(executive);
+			int ret2 = ewfsCrud.insertExecutiveWorkflowStatus(execWorkflowStatus);
+			
+			
+			
+			
+			map.addAttribute("executiveWorkflowStatus", execWorkflowStatus);
+
+			if(ret > 0 && ret2 > 0)
+				return "redirect:/viewspocdashboard";
+			else
+				return "error";
+			
+				
+		}
 	//initBinder allows Spring forms to map user input to attributes of type Employee, TrainingRequest, and TrainingSchedule
 	@InitBinder
 	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder ) {
@@ -254,8 +319,7 @@ public class SpocController {
 		//change from internalTrainingRequest to InternalTraining
 		InternalTrainingRequest itr = new InternalTrainingCRUD().getItrById(itrId);
 		List<Employee> execList = new EmployeeCRUDService().getAllEmployeeByTitle("Executive");
-		//------------Important code to be written---------------------
-		//command is a keyword
+		
 		map.addAttribute("execList", execList);
 		map.addAttribute("itrId", itrId);
 		map.addAttribute("itr", itr);
@@ -263,6 +327,20 @@ public class SpocController {
 		List<Employee> trainers = empCrud.getAllEmployeeByTitle("Trainer");
 		map.addAttribute("trainers", trainers);
 		
+		int trid = itr.getItrTrainingRequest().getTrainingRequestId();
+		
+		List<TrainingParticipant> partList = new TrainingParticipantCRUD().getAllParticipantsByRequest(trid);
+		List<String> partNameList = new ArrayList<String>();
+		for(TrainingParticipant part: partList)
+		{
+			Employee partEmployee = part.getParticipantEmployee();
+			partNameList.add(partEmployee.getFirst_name() + " " + partEmployee.getLast_name());
+		}
+		ExecutiveWorkflowStatus execWorkflowStatus = new ExecutiveWorkflowStatus();
+		map.addAttribute("command", execWorkflowStatus);
+		map.addAttribute("partNameList", partNameList);
+		
+
 		if (itr.getItrStatus() > 3)
 			map.addAttribute("approvalStatus", "Confirmed");
 		else

@@ -142,10 +142,7 @@
                 <div class="row">
                   <div class="col">
                     <div class="text-right">
-                      <button type="submit" class="btn btn-info">
-                        Save
-                        <i class="fa fa-save" aria-hidden="true"></i>
-                      </button>
+
                       <button type="submit" class="btn btn-info">
                         Submit
                         <i class="fa fa-save" aria-hidden="true"></i>
@@ -159,7 +156,7 @@
           </div>
           <!--End of detail-->
 
-          <!--Detail with collapse-->
+         <!--Detail with collapse-->
           <div class="detail-container border">
             <div class="detail-header" id="headingTwo">
               <button class="detailBtn" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
@@ -171,7 +168,9 @@
 
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
               <div class="card-body">
-                <form class="form" style="margin-left:20px;">
+              	<f:form action="../submitsteptwo/${itrId}" class ="form" style="margin-left:20px;">
+              	
+                <!-- <form class="form" style="margin-left:20px;"> -->
                   <br>
                   <div class="row">
                     <div class="col-xs-2">
@@ -180,8 +179,10 @@
                       </label>
                     </div>
                     <div class="col-xs-10">
-                      <textarea class="form-control" rows="5" cols="52" id="comment" name="textarea" placeholder="Write here....."
-                        required></textarea>
+                      <textarea class="form-control" rows="5" cols="52" id="comment" name="textarea" readonly="true" id="partList">
+						<c:forEach items="${partNameList}" var="partName">${partName}&#13;&#10;</c:forEach>
+						</textarea>
+					<!-- might have to add placeholder tag to textarea above^ -->
                     </div>
                   </div>
                   <br>
@@ -192,29 +193,27 @@
                       </label>
                     </div>
                     <div class="col-xs-10">
-                      <select name="exec">
-                        <option value="name1">Mike</option>
-                        <option value="name2">Sabin</option>
-                        <option value="name3">Nick</option>
-                      </select>
+                    <!--  come back here if the spring form doesnt work -->
+					  		<f:select path="executiveWorkflowStatusExecutive"> 
+							 	<c:forEach items="${execList}" var="exec">
+							 		<f:option value="${exec.employee_id}" label="${exec.first_name} ${exec.last_name}"/>
+							 	</c:forEach>
+							</f:select><br>
+							
                     </div>
                   </div>
                   <br>
                   <div class="row">
                     <div class="col">
                       <div class="text-center">
-                        <button type="submit" class="btn btn-info">
-                          Save
-                          <i class="fa fa-save" aria-hidden="true"></i>
-                        </button>
-                        <button type="submit" class="btn btn-info">
+                        <f:button type="submit" class="btn btn-info">
                           Submit
                           <i class="fa fa-save" aria-hidden="true"></i>
-                        </button>
+                        </f:button>
                       </div>
                     </div>
                   </div>
-                </form>
+                </f:form>
               </div>
             </div>
 
@@ -275,19 +274,7 @@
           </div>
         </div>
 
-        <!--After the field and output rows are buttons to submit, save, or cancel-->
-        <div class="flex-container downCenter">
-          <div>
-            <button type="button" class="btn btn-lg btn-success toSpocDashboard">Submit</button>
-          </div>
-          <div>
-            <button type="button" class="btn btn-lg btn-primary toSpocDashboard">Save changes</button>
-          </div>
-          <div>
-            <button type="button" class="btn btn-lg btn-secondary toSpocDashboard" data-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
+        
       <!--End of Summary-->
 
     </div>

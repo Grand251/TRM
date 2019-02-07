@@ -22,19 +22,9 @@
   <script>
   	function submitTT(){
     	$(".toProgress").click(function(){
-    	    var trainingRequestId =$(this).find('#ongoingId').val();
-    	    var status =$(this).find('#ongoingStatus').val();
-    	    console.log(trainingRequestId);
-    	    console.log(status);
-    		if(status == 1.0)
-    		{
-    			$("#selectTT").get(0).setAttribute('action', "selectTrainingType/"+trainingRequestId);
-    			$( "#selectTT" ).submit();
-    		}else
-    		{
-    			$("#selectTT").get(0).setAttribute('action', "edititr/"+trainingRequestId);
-    			$( "#selectTT" ).submit();
-    		}
+			var trainingRequestId = $(this).find('#ongoingId').val();
+    		$("#selectITR").get(0).setAttribute('action', "selectTrainingType/"+trainingRequestId);
+    		$("#selectITR").submit();
     	})	
 	}
   	
@@ -232,11 +222,9 @@
             </table>
 
             <!--card body -->
-            <div class="card-body pointer toProgress">
-              <f:form id="selectTT" action="">
-                <div class="card-body pointer toType" onclick="submitTT()">
+            <div class="card-body pointer toModal">
+                <div class="card-body pointer toProgress" onclick="submitTT()">
                 <input type="hidden" id="ongoingId" value="${tr.trainingRequestId}">
-               	<input type="hidden" id="ongoingStatus" value="${tr.status}"> 
               <table id="Info">
                 <tr>
                   <td> <span class="glyphicon glyphicon-pencil"></span>
@@ -248,7 +236,6 @@
                   <!--Where the training is in development -->
                 </tr>
               </table>
-              </f:form>
               <a href="selectTrainingType/${tr.trainingRequestId }">Pick Type</a>
               
 			</div>
@@ -282,7 +269,7 @@
             <!--card body -->
             <div class="card-body pointer toInternal">
               <f:form id="selectITR" action="edititrform/${itr.itrId}">
-                <div class="card-body pointer toInternal" onclick="selectITR()">
+                <div class="card-body pointer toInternal" onclick="submitITR()">
                 <input type="hidden" id="internalId" value="${itr.itrId}">
               <table id="Info">
                 <tr>
@@ -304,7 +291,8 @@
                 <tr></tr>
                 <tr>
                   <td> <span class="glyphicon glyphicon-asterisk"></span>
-                     ${itr.itrStatus}</td>
+                  	
+                     ${itr.itrStatusDescription}</td>
                   <!--Where the training is in development -->
                 </tr>
               </table>
