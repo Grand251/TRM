@@ -52,7 +52,7 @@ public class DevelopmentTeamTrainingRequestCRUD
     public DevelopmentTeamTrainingRequest getDevelopmentTeamTrainingRequestById(int dttRequestId)
     {
 	jtemp = new DAOJDBCTemplate().getJdbcTemplate();
-	DevelopmentTeamTrainingRequest dttRequest = jtemp.queryForObject("Select * from develop_team_training_request where dtt_training_id = ?",
+	DevelopmentTeamTrainingRequest dttRequest = jtemp.queryForObject("Select * from develop_team_training_request where dtt_training_id = ? AND status >= 0",
 								new Object[] {dttRequestId}, new DevelopmentTeamTrainingRequestMapper());
 	return dttRequest;
     }
@@ -60,7 +60,7 @@ public class DevelopmentTeamTrainingRequestCRUD
     public List<DevelopmentTeamTrainingRequest> getAllDTTRequestForExecutive(Employee executive)
     {
 	jtemp = new DAOJDBCTemplate().getJdbcTemplate();
-	List<DevelopmentTeamTrainingRequest> dttRequestList = jtemp.query("Select * from develop_team_training_request where esecutive_id = ?",
+	List<DevelopmentTeamTrainingRequest> dttRequestList = jtemp.query("Select * from develop_team_training_request where esecutive_id = ? and status >= 0",
 								new Object[] {executive.getEmployee_id()}, new DevelopmentTeamTrainingRequestMapper());
 	return dttRequestList;
     }
