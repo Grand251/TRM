@@ -1,0 +1,190 @@
+
+body{
+    background: url(../images/atos-syntel.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+#topnav {
+    overflow: hidden;
+    background-color:#e7e7e7;
+    margin-left:auto;
+    margin-right:auto;
+    width:100%;
+    height:75px;
+}
+.header-container{
+    width:100%;
+    height:100%;
+}
+.left-header{
+    height:75px;
+    color: #f2f2f2;
+    width:30%;
+    vertical-align:middle;
+    float:left;
+    padding-left:12px;
+    padding-right:12px;
+}
+.logo-content{
+    vertical-align: middle;
+    height:50px !important;
+    width:150px !important;
+}
+
+#right-header{
+    width:70%;
+    vertical-align:middle;
+    height:75px;
+    text-align:right;
+    float:right;
+    padding-left: 12px;
+    padding-right:12px;
+}
+
+.about{
+    vertical-align: middle;
+    font-size:x-large;
+}
+
+.link{
+    padding-left:15px;
+}
+
+
+#topnav a:hover {
+    color: black;
+    
+}
+  
+.my-first-div{
+    margin-top: 60px;
+    border: 1px solid red;
+    color: black;
+}
+
+.div-separator{
+    border: 1px solid blue;
+    margin:1px;
+    height:200px;
+}
+#wel{
+    padding:10px;
+}
+.container-fluid{
+    height:600px;
+    border-color: blue;
+    margin-top:120px;
+}
+.wrapper{
+    height:600px;
+    border-color: blue;
+    margin-top:170px;
+    color:mintcream;
+    margin-left:20px;
+}
+
+.search{
+    width:60%;
+    position: relative;
+}
+
+form.searchName input[type=text]{
+    font-size: 17px;
+    border: 1px solid grey;
+    float: left;
+    width: 80%;
+    background: #f1f1f1;
+}
+
+form.searchName button{
+    float: left;
+  width: 20%;
+  background: #2196F3;
+  color: white;
+  font-size: 17px;
+  border: 1px solid grey;
+  border-left: none;
+  cursor: pointer;
+}
+form.searchName button:hover{
+    background: #200bda;
+}
+ 
+#mainimage{
+    width:100%;
+    margin-top:20px;
+}
+  /* Pattern styles */
+.login {
+      background-color:lightskyblue;
+      border-radius:5px;
+      width:30%;
+      margin:100px;
+      align-content: center;
+      margin-left:60%;
+      top:50%;
+      
+}
+.input-group{
+    padding-bottom:30px;
+}
+ /* modal css */
+ .fade{
+    width:100%;
+    position:absolute;
+    top:0;
+    color:black; 
+    display:flex;
+    /* justify-content:center;*/
+    align-items:center;  
+    display:none;
+
+}
+
+.modaldialog{
+    width:600px; 
+    border-radius:4px;
+    text-align:center;
+    position:relative;
+
+}
+
+.modalcontent{
+    background-color:white;
+    width:100%;
+}
+#footer{
+    background-color:31708f;
+    color:white;
+    height:55px;
+    bottom:0;
+    position:absolute;
+    clear:both;
+    width:100%;
+    text-align:center;
+}
+.para{
+    margin-top: calc(27.5px - 0.5em);
+    height: auto;
+}
+/* #login-modal{
+    position:fixed;
+    top:calc(50% - 150px);
+    left:calc(50% - 300px);
+} */
+
+input[type=text]:focus(){
+    border-color:dodgerblue;
+    box-shadow:0 0 8px dodgerblue;
+}
+@media (max-width: 768px) {
+    .about{
+        position: relative;
+        top: 15px;
+    }
+
+    
+ }
+

@@ -47,7 +47,10 @@ public class LoginController {
 			case "Project Manager":
 				return "redirect:/pmdashboard";
 			case "SPOC":
-				return "redirect:/viewspocdashboard";
+				return "redirect:/spocdashboard";
+			case "Executive":
+				return "redirect:/execdashboard";
+
 			default:
 				return "";
 		

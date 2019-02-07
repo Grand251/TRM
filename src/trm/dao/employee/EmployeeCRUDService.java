@@ -1,8 +1,11 @@
 package trm.dao.employee;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+
 import trm.dao.DAOJDBCTemplate;
 
 /**
@@ -10,7 +13,7 @@ import trm.dao.DAOJDBCTemplate;
  * @author Kei Ng
  */
 public class EmployeeCRUDService {
-	private JdbcTemplate jtemp;
+	private JdbcTemplate jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 	
 
 
@@ -19,7 +22,6 @@ public class EmployeeCRUDService {
 	 * @return List<Employee>
 	 */
 	public List<Employee> getAllEmployee(){
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
 		List<Employee> custlist = jtemp.query("Select * from employee order by 1", new EmployeeMapper());
 		return custlist;
 	}
@@ -30,7 +32,6 @@ public class EmployeeCRUDService {
 	 */
 	public List<Employee> getAllEmployeeByTitle(String jobTitle)
 	{
-	    jtemp = DAOJDBCTemplate.getJdbcTemplate();
 	    List<Employee> employeeList = jtemp.query("Select * from employee where job_title = ?", new Object[]{jobTitle}, new EmployeeMapper());
 	    
 	    return employeeList;
@@ -41,7 +42,6 @@ public class EmployeeCRUDService {
 	 * @return int(bollean)
 	 */
 	public int deleteEmployee(int empid) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
 		int ret = jtemp.update("delete from employee where employee_id = ?", 
 				new Object[] {empid});
 		return ret;
@@ -53,7 +53,6 @@ public class EmployeeCRUDService {
 	 * @return Employee
 	 */
 	public Employee getEmployeeById(int employee_id) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
 		Employee employee = jtemp.queryForObject("Select * from employee where employee_id = ?",
 									new Object[]{employee_id},
 									new EmployeeMapper());
@@ -95,7 +94,6 @@ public class EmployeeCRUDService {
 			 String vertical,
 			 String project,
 			 int pid){
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
 		int ret = jtemp.update("UPDATE employee SET last_name = ?, first_name = ?, user_name = ?, password = ?, phone_number = ?, email = ?, street = ?, city = ?, state = ?, country = ?, job_title = ?, vertical = ?, project = ?, pid = ? where employee_id = ?",
 							new Object[] {last_name, first_name, user_name, password, 
 									  	  phone_number, email, street, city, state, 
@@ -110,7 +108,6 @@ public class EmployeeCRUDService {
 	 * @return int(boolean)
 	 */
 	public int insertCustomer(Employee employee) {
-		jtemp = DAOJDBCTemplate.getJdbcTemplate();
 		int ret = jtemp.update("insert into employee values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 								new Object[] {employee.getEmployee_id(),
 										employee.getLast_name(),
@@ -130,21 +127,199 @@ public class EmployeeCRUDService {
 		return ret;
 	}
 
-
+	/**
+	 * Update employee last name
+	 * @param employee_id
+	 * @param last_name
+	 * @return int(boolean)
+	 */
+	public int updateEmployeeLastNameById(int employee_id, String last_name) {
+		int ret = jtemp.update("UPDATE employee SET last_name = ? where employee_id = ?",
+							new Object[] {last_name, employee_id});
+		return ret;
+	}
+	
+	/**
+	 * Update employee first name
+	 * @param employee_id
+	 * @param first_name
+	 * @return int(boolean)
+	 */
+	public int updateEmployeeFirstNameById(int employee_id, String first_name) {
+		int ret = jtemp.update("UPDATE employee SET first_name = ? where employee_id = ?",
+							new Object[] {first_name, employee_id});
+		return ret;
+	}
+	
+	/**
+	 * Update employee user name
+	 * @param employee_id
+	 * @param user_name
+	 * @return int(boolean)
+	 */
+	public int updateEmployeeUserNameById(int employee_id, String user_name) {
+		int ret = jtemp.update("UPDATE employee SET user_name = ? where employee_id = ?",
+							new Object[] {user_name, employee_id});
+		return ret;
+	}
+	
+	/**
+	 * Update employee password
+	 * @param employee_id
+	 * @param password
+	 * @return int(boolean)
+	 */
+	public int updateEmployeePasswordById(int employee_id, String password) {
+		int ret = jtemp.update("UPDATE employee SET password = ? where employee_id = ?",
+							new Object[] {password, employee_id});
+		return ret;
+	}
+	
+	/**
+	 * Update employee phone number
+	 * @param employee_id
+	 * @param phone_number
+	 * @return int(boolean)
+	 */
+	public int updateEmployeePhoneNumberById(int employee_id, String phone_number) {
+		int ret = jtemp.update("UPDATE employee SET phone_number = ? where employee_id = ?",
+							new Object[] {phone_number, employee_id});
+		return ret;
+	}
+	
+	/**
+	 * Update employee emile address
+	 * @param employee_id
+	 * @param email
+	 * @return int(boolean)
+	 */
+	public int updateEmployeeEmailById(int employee_id, String email) {
+		int ret = jtemp.update("UPDATE employee SET email = ? where employee_id = ?",
+							new Object[] {email, employee_id});
+		return ret;
+	}
+	
+	/**
+	 * Update employee street
+	 * @param employee_id
+	 * @param street
+	 * @return int(boolean)
+	 */
+	public int updateEmployeeAddressStreetById(int employee_id, String street) {
+		int ret = jtemp.update("UPDATE employee SET street = ? where employee_id = ?",
+							new Object[] {street, employee_id});
+		return ret;
+	}
+	
+	/**
+	 * Update employee city
+	 * @param employee_id
+	 * @param city
+	 * @return int(boolean)
+	 */
+	public int updateEmployeeAddressCityById(int employee_id, String city) {
+		int ret = jtemp.update("UPDATE employee SET city = ? where employee_id = ?",
+							new Object[] {city, employee_id});
+		return ret;
+	}
+	
+	/**
+	 * Update employee state
+	 * @param employee_id
+	 * @param state
+	 * @return int(boolean)
+	 */
+	public int updateEmployeeAddressStateById(int employee_id, String state) {
+		int ret = jtemp.update("UPDATE employee SET state = ? where employee_id = ?",
+							new Object[] {state, employee_id});
+		return ret;
+	}
+	
+	/**
+	 * Update employee country
+	 * @param employee_id
+	 * @param country
+	 * @return int(boolean)
+	 */
+	public int updateEmployeeAddressCountryById(int employee_id, String country) {
+		int ret = jtemp.update("UPDATE employee SET country = ? where employee_id = ?",
+							new Object[] {country, employee_id});
+		return ret;
+	}
+	
+	/**
+	 * Update employee job title
+	 * @param employee_id
+	 * @param job_title
+	 * @return int(boolean)
+	 */
+	public int updateEmployeeJobTitleById(int employee_id, String job_title) {
+		int ret = jtemp.update("UPDATE employee SET job_title = ? where employee_id = ?",
+							new Object[] {job_title, employee_id});
+		return ret;
+	}
+	
+	/**
+	 * Update employee vertical name
+	 * @param employee_id
+	 * @param vertical
+	 * @return int(boolean)
+	 */
+	public int updateEmployeeVerticalById(int employee_id, String vertical) {
+		int ret = jtemp.update("UPDATE employee SET vertical = ? where employee_id = ?",
+							new Object[] {vertical, employee_id});
+		return ret;
+	}
+	
+	/**
+	 * Update employee project name
+	 * @param employee_id
+	 * @param project
+	 * @return int(boolean)
+	 */
+	public int updateEmployeeProjectNameById(int employee_id, String project) {
+		int ret = jtemp.update("UPDATE employee SET project = ? where employee_id = ?",
+							new Object[] {project, employee_id});
+		return ret;
+	}
+	
+	/**
+	 * Update employee project id
+	 * @param employee_id
+	 * @param pid
+	 * @return int(boolean)
+	 */
+	public int updateEmployeeProjectIdById(int employee_id, int pid) {
+		int ret = jtemp.update("UPDATE employee SET pid = ? where employee_id = ?",
+							new Object[] {pid, employee_id});
+		return ret;
+	}
+	
+	
 	public static void main(String[] args) {
 	    	/*
 		System.out.println("hello");
+	//	int i = new EmployeeCRUDService().updateEmployee(1111111, "Moran", "Inaaya", "IM1111111", "123", "7759294432","Inaaya_Moran@syntelinc.com","122 St",
+    //            "Boston", "MA", "US","SPOC", "BNFS","spoc", 12345);
+		new EmployeeCRUDService().updateEmployeeLastNameById(1212121, "MON");
+		new EmployeeCRUDService().updateEmployeeFirstNameById(1212121, "first");
+		new EmployeeCRUDService().updateEmployeeUserNameById(1212121, "user");
+		new EmployeeCRUDService().updateEmployeePasswordById(1212121, "pd");
+		new EmployeeCRUDService().updateEmployeePhoneNumberById(1212121, "phone");
+		new EmployeeCRUDService().updateEmployeeEmailById(1212121, "email");
+		new EmployeeCRUDService().updateEmployeeAddressStreetById(1212121, "st");
+		new EmployeeCRUDService().updateEmployeeAddressCityById(1212121, "city");
+		new EmployeeCRUDService().updateEmployeeAddressStateById(1212121, "state");
+		new EmployeeCRUDService().updateEmployeeAddressCountryById(1212121, "country");
+		new EmployeeCRUDService().updateEmployeeJobTitleById(1212121, "title");
+		new EmployeeCRUDService().updateEmployeeVerticalById(1212121, "ver");
+		new EmployeeCRUDService().updateEmployeeProjectNameById(1212121, "PNAme");
+		new EmployeeCRUDService().updateEmployeeProjectIdById(1212121, 12);
 		int i = new EmployeeCRUDService().updateEmployee(1111111, "Moran", "Inaaya", "IM1111111", "123", "7759294432","Inaaya_Moran@syntelinc.com","122 St",
                 "Boston", "MA", "US","SPOC", "BNFS","spoc", 12345);
 		System.out.println(i);
 		*/
-	    
-	    	List<Employee> spocList = new EmployeeCRUDService().getAllEmployeeByTitle("SPOC");
-	    	
-	    	for(Employee spoc:spocList)
-	    	{
-	    	    System.out.println(spoc.getEmployee_id());
-	    	}
+
 	}
 	
 }

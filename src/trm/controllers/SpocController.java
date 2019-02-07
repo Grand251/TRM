@@ -1,10 +1,7 @@
 package trm.controllers;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import org.springframework.stereotype.Controller;
@@ -12,9 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import trm.dao.employee.Employee;
 import trm.dao.employee.EmployeeCRUDService;
@@ -43,51 +38,103 @@ public class SpocController {
 	@RequestMapping(value="viewspocdashboard")
 	public String showDashboard(ModelMap map)
 	{
-		List<TrainingRequest> newTR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(0);
-		List<TrainingRequest> TR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(1);
-		//List<TrainingRequest> inProgressTR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(2);
-		//List<TrainingRequest> pendingTR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(3);
-		List<TrainingRequest> trList = new ArrayList<TrainingRequest>();
+		List<TrainingRequest> trs = new TrainingRequestCRUD().getAllRequestBySPOCStatus(1000037, 0);
+		List<TrainingRequest> tr = new TrainingRequestCRUD().getAllRequestBySPOCStatus(1000037, 1);
+		List<InternalTrainingRequest> itr = new InternalTrainingCRUD().getAllItrBySPOC(1000037);
 		
-		trList.addAll(TR);
-		//trList.addAll(inProgressTR);
-		//trList.addAll(pendingTR);
 		
-		map.addAttribute("ntrList", newTR);
-		map.addAttribute("trList", trList);
+		map.addAttribute("ntrList", trs);
+		map.addAttribute("trList", tr);
+		map.addAttribute("itrList", itr);
+
 		
 		return "spocdashboard";
 	}
 	
 	@RequestMapping(value="selectNewRequest")
-    public @ResponseBody String selectedTrainingRequest(@RequestBody String json, ModelMap map) 
+    public String selectedTrainingRequest(HttpServletRequest request, ModelMap map) 
 	{
-        Pattern p = Pattern.compile("\\d+");
-        Matcher m = p.matcher(json);
-        List<Integer> idList = new ArrayList<>();
-        
-        while(m.find()) {
-            idList.add(Integer.parseInt(m.group()));
-        }
-        
+		String[] ids = request.getParameterValues(("trainingRequestId"));
         Boolean reqPassed = false;
-        for(Integer id : idList)
-        {        	
-        	int ret = new TrainingRequestCRUD().updateTrainingRequestByAttribute(id, "status", 1);
-        	if (ret > 0)
-        		reqPassed = true;
-        	else
-        	{
-        		reqPassed = false;
-        		break;
-        	}
-        }
-		
+
+        String prev = null;
+		for(String curr : ids)
+		{
+			if(prev != null){
+				if(curr.contains("on")) {
+					System.out.println(prev);
+		        	int ret = new TrainingRequestCRUD().updateTrainingRequestByAttribute(Integer.parseInt(prev), "status", 1);
+		        	if (ret > 0)
+		        		reqPassed = true;
+		        	else
+		        	{
+		        		reqPassed = false;
+		        		break;
+		        	}
+				}
+			}
+			prev = curr;
+		}
         if (reqPassed==true)
-        	return "success";
+        	return "redirect:/viewspocdashboard";
         else
         	return "error";
     }
+	
+	@RequestMapping(value="selectTrainingType/{trainingRequestId}")
+	public String selectTrainingType(@PathVariable("trainingRequestId") int trId, ModelMap map)
+	{
+		System.out.println(trId);
+		
+		TrainingRequest treq = new TrainingRequestCRUD().getTrainingRequestById(trId);
+		map.addAttribute("command", treq);
+		
+		return "spocrequesttype";
+	}
+	
+	@RequestMapping(value="createItr/{trId}")
+	public String creatItr(@PathVariable("trId") int trId, HttpServletRequest request, ModelMap model) {
+		
+			
+		TrainingRequest tr = new TrainingRequestCRUD().getTrainingRequestById(trId);
+		tr.setStatus(2);
+		new TrainingRequestCRUD().updateTrainingRequest(tr);
+			
+			
+		InternalTrainingRequest itr = new InternalTrainingRequest();
+		itr.setItrTrainingRequest(tr);
+		itr.setItrStatus(1);
+		itr.setItrTrainer(new EmployeeCRUDService().getEmployeeById(1000000));
+		itr.setItrExecutive(new EmployeeCRUDService().getEmployeeById(1000038));
+		itr.setItrStatusDescription("ONE");
+			
+			
+		TrainingSchedule sch = new TrainingSchedule();
+		sch = new TrainingScheduleCRUDService().insertTrainingSchedule(sch);
+		itr.setItrSchedule(sch);
+		
+		new InternalTrainingCRUD().insertItr(itr);
+		
+		return "redirect:/viewspocdashboard";
+	}
+	
+	@RequestMapping(value="saveTrainingType")
+	public String saveTrainingType(@ModelAttribute("treq") TrainingRequest treq, ModelMap map)
+	{
+
+		int type = new TrainingRequestCRUD().updateTrainingRequestByAttribute(treq.getTrainingRequestId(), 
+				"request_training_type", treq.getRequestTrainingType());
+		if(type > 0)
+		{
+			int status = new TrainingRequestCRUD().updateTrainingRequestByAttribute(treq.getTrainingRequestId(), "status", 2);
+			if(status > 0)
+				return "redirect:/createItr/" + treq.getTrainingRequestId();
+			else
+				return "error";
+		}
+		else
+			return "error";
+	}
 
 	@RequestMapping(value="steponeform/{itrId}")
 	public String stepOneForm(@PathVariable("itrId") int itrId, ModelMap map) {
@@ -107,7 +154,7 @@ public class SpocController {
 		//TrainingSchedule ts = tsCrud.getTrainingScheduleById(itr.get);
 		TrainingSchedule ts = itr.getItrSchedule();
 		
-		itr.setItrMode(request.getParameter("mode"));
+//		itr.setItrMode(request.getParameter("mode"));
 		int trainerId = Integer.parseInt(request.getParameter("trainerId"));
 		Employee trainer = new EmployeeCRUDService().getEmployeeById(trainerId);
 		itr.setItrTrainer(trainer);
@@ -125,19 +172,11 @@ public class SpocController {
 		
 		ts.setTraining_start_date(startDate);
 		ts.setTraining_end_date(endDate);
-		tsCrud.updateTrainingSchedule(ts.getTraining_schedule_id(), "", "", "", "", "", "", "", 
-				ts.getTraining_start_date(), ts.getTraining_end_date());
+//		tsCrud.updateTrainingSchedule(ts.getTraining_schedule_id(), "", "", "", "", "", "", "", 
+//				ts.getTraining_start_date(), ts.getTraining_end_date());
 		return "redirect:/edititr/" + itrId;
 	}
 	
-
-	
-	@RequestMapping(value="followupSelection")
-	public String followupSelection() throws InterruptedException
-	{
-		Thread.sleep(6000);
-		return  "redirect:/viewspocdashboard";
-	}
 	
 	//initBinder allows Spring forms to map user input to attributes of type Employee, TrainingRequest, and TrainingSchedule
 	@InitBinder
