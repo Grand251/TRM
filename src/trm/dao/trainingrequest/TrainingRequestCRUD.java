@@ -9,6 +9,7 @@ import trm.dao.employee.Employee;
 import trm.dao.employee.EmployeeCRUDService;
 
 
+
 /*
  * @author Ian Nielsen
  * Last changed: February 4th 2019 12:46PM
@@ -242,6 +243,7 @@ public class TrainingRequestCRUD
 	public List<TrainingRequest> getAllTrainingRequest()
 	{
 		List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request where status >= 0" , new TrainingRequestMapper());
+
 		return trainingRequestList;
 	}
 	
