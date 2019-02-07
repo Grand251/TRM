@@ -60,31 +60,31 @@ public class SpocController {
 	}
 	
 	@RequestMapping(value="selectNewRequest")
-    public @ResponseBody String selectedTrainingRequest(@RequestBody String json, ModelMap map) 
+    public String selectedTrainingRequest(HttpServletRequest request, ModelMap map) 
 	{
-        Pattern p = Pattern.compile("\\d+");
-        Matcher m = p.matcher(json);
-        List<Integer> idList = new ArrayList<>();
-        
-        while(m.find()) {
-            idList.add(Integer.parseInt(m.group()));
-        }
-        
+		String[] ids = request.getParameterValues(("trainingRequestId"));
         Boolean reqPassed = false;
-        for(Integer id : idList)
-        {        	
-        	int ret = new TrainingRequestCRUD().updateTrainingRequestByAttribute(id, "status", 1);
-        	if (ret > 0)
-        		reqPassed = true;
-        	else
-        	{
-        		reqPassed = false;
-        		break;
-        	}
-        }
-		
+
+        String prev = null;
+		for(String curr : ids)
+		{
+			if(prev != null){
+				if(curr.contains("on")) {
+					System.out.println(prev);
+		        	int ret = new TrainingRequestCRUD().updateTrainingRequestByAttribute(Integer.parseInt(prev), "status", 1);
+		        	if (ret > 0)
+		        		reqPassed = true;
+		        	else
+		        	{
+		        		reqPassed = false;
+		        		break;
+		        	}
+				}
+			}
+			prev = curr;
+		}
         if (reqPassed==true)
-        	return "success";
+        	return "redirect:/viewspocdashboard";
         else
         	return "error";
     }
@@ -159,14 +159,6 @@ public class SpocController {
 		return "redirect:/edititr/" + itrId;
 	}
 	
-
-	
-	@RequestMapping(value="followupSelection")
-	public String followupSelection() throws InterruptedException
-	{
-		Thread.sleep(6000);
-		return  "redirect:/viewspocdashboard";
-	}
 	
 	//initBinder allows Spring forms to map user input to attributes of type Employee, TrainingRequest, and TrainingSchedule
 	@InitBinder

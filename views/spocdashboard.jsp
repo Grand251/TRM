@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="f" uri="http://www.springframework.org/tags/form"%>
-
 <html lang="en">
 
 <head>
@@ -17,12 +16,12 @@
 
   <link rel="stylesheet" href="resources/customcss/spoc.css">
   <link rel="stylesheet" href="resources/CSS/trm.css">
-  <link rel="stylesheet" href="resources/CSS/custom.css">
+  <link rel="stylesheet" href="resources/customcss/custom.css">
 
   <script src="resources/spocJquery.js"></script>
   <script>
   	function submitTT(){
-    	$(".toModal").click(function(){
+    	$(".toProgress").click(function(){
     	    var trainingRequestId =$(this).find('#ongoingId').val();
     	    var status =$(this).find('#ongoingStatus').val();
     	    console.log(trainingRequestId);
@@ -38,8 +37,11 @@
     		}
     	})	
 	}
+  	
+  	function submitTR(){
+  		$("#submiTR").submit();
+  	}
   </script>
-  
 </head>
 
 <body>
@@ -67,153 +69,199 @@
   <!--Some space between navigation bar and actual content-->
   <div class="row* space"></div>
 
+
   <div class="row" style="height: 65vh;">
     <!--New Request Box-->
     <div id="newRequestBox" class="border">
-    <f:form action="followupSelection" >
+    <form action="selectNewRequest" >
       <!--Start Button Send selected new requests to be ongoing requests-->
       <button id="startButton" class="row* sticky-top" onclick="submitTR()">
         Start
         <span id="right_arrow" class="glyphicon glyphicon-arrow-right"></span>
       </button>
-      
-	 </f:form>
+
       <!--New Requests would be added here-->
       <div class="col">
 	<c:forEach items="${ntrList}" var="ntr">
       	<c:if test="${ntr.status == 0}">
-        <!-- 1 card -->
-        <div class="center-block newRequest">
-          <div class="card" id="card">
+
+        <div class="portfolio-item cardSpacing" style="float:left">
+          <div class="card h-100" id="card">
             <table>
               <td>
-                <h3 align="left" style="margin-top: 0px">${ntr.requestTrainingModule}</h3>
+                <h3 align="left" style="margin-top: 0px">${ntr.trainingRequestId}</h3>
               </td>
               <td>
+                <!--card Drop down -->
                 <div class="dropdown" align="right" style="margin-top: 0px" id="moreInfo">
                   <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
                     aria-haspopup="true"><span class="glyphicon glyphicon-th-list"></span>
                   </button>
                   <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                    <li><a href="#">${ntr.trainingRequestId }</a></li>
-                    <li><a href="#">${ntr.requestTrainingModuleScope }</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-pencil"></span>${ntr.requestTrainingModuleScope }</a></li>
                     <li><a href="#"><span class="glyphicon glyphicon-home"></span>${ntr.requestTrainingType }</a></li>
                     <!--internal or vender -->
-                    <li><a href="#">${ntr.requestTrainingMode }</a></li>
+                    <li><a href="#"> <span class="glyphicon glyphicon-modal-window"></span>${ntr.requestTrainingMode }</a></li>
                     <!--"mode" of training -->
+                    <li><a href="#"><span>&#35;</span> ${ntr.approxNumberOfParticipants }</a></li>
+                    <!--Edit button 1 popover-->
+                    <li> <button type="button" class="center-block" data-toggle="modal" data-target="#myModal">Edit</button></li>
+                    </li>
+
                     <li role="separator" class="divider"></li>
                     <li><a href="#"><span class="glyphicon glyphicon-calendar"></span>${ntr.requestStartTime }</a></li>
                     <li><a href="#"><span class="glyphicon glyphicon-calendar"></span>${ntr.requestEndTime }</a></li>
-                    <li><a href="#">${ntr.requestTimeZone }</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-time"> </span>${ntr.requestTimeZone }</a></li>
                     <li><a href="#"><span class="glyphicon glyphicon-globe"></span>${ntr.requestLocation }</a></li>
                     <!--Where it is taking place if not online (IF ONLINE DONT SHOW)-->
+                    <!--Edit button 1 popover-->
+                    <li> <button type="button" class="center-block" data-toggle="modal" data-target="#myModal1">Edit</button></li>
+                    </li>
+
                     <li role="separator" class="divider"></li>
-                    <li><a href="#"><span>&#35;</span>${ntr.approxNumberOfParticipants }</a></li>
-                    <li><a href="#">Log</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#Log" style="color: blue;"><span class="glyphicon glyphicon-list-alt"></span>
+                        Log</a></li>
 
                   </ul>
                 </div>
+                <!--card Drop down end  -->
               </td>
             </table>
-            <div class="card-body blueCard pointer">
+            <!--card body -->
+            <div class="blueCard card-body pointer">
               <table id="Info">
-                <tr></tr>
                 <tr>
                   <td><input type="hidden" id="ntRId" name="trainingRequestId" value="${ntr.trainingRequestId}"></td>
                 </tr>
                 <tr>
-                  <td>
-                    ${ntr.trainingRequestId }</td>
+                  <td> <span class="glyphicon glyphicon-pencil"></span>
+                   ${ntr.requestTrainingModuleScope} </td>
                 </tr>
                 <tr>
-                  <td>
-                    Start Date</td>
+                  <td> <span class="glyphicon glyphicon-calendar"></span>
+                    ${ntr.requestStartTime }</td>
                 </tr>
                 <tr>
-                  <td>
+                  <td><span class="glyphicon glyphicon-home"></span>
                     ${ntr.requestTrainingType }</td>
                 </tr>
                 <tr>
-                  <td>
-                    approvals</td>
+                  <td> <span class="glyphicon glyphicon-check"></span>
+                    Approvals</td>
                 </tr>
                 <tr></tr>
                 <tr>
                   <td> <span class="glyphicon glyphicon-asterisk"></span>
-                    ${ntr.status}</td>
+                   ${ntr.status}</td>
                   <!--Where the training is in development -->
                 </tr>
               </table>
-              <input id="select" type="checkbox" class="selectBox" />
+                <input id="select" name = "trainingRequestId" type="checkbox" class="selectBox" />
+
             </div>
+            <!--card body end -->
           </div>
         </div>
-        </c:if>
         <!--end card -->
-		</c:forEach>
+        </c:if>
+</c:forEach>
+
       </div>
     </div>
     <!--End of New Request Box-->
-    
+
     <!--Ongoing Request Box-->
     <div id="ongoingRequestBox" class="border">
       <!-- Insert orange requests here-->
-                   <!-- 1 card -->
-           <c:forEach items="${trList}" var="trainingRequest">
-           	<c:if test="${trainingRequest.status > 0 && trainingRequest.status < 4}">
-           <div class="ongoingRequest">
-              <div class="card orangeCard" id="card"> 
-                <table>
-                  <th>
-                    <td>
-                <h4 class="orangeCardTitle">Trainer ID: ${trainingRequest.trainingRequestId} </h4> 
+
+      <div class="" style="margin-left: 7vw;">
+       <c:forEach items="${trList}" var="tr">
+        <c:if test="${tr.status > 0 && tr.status < 4}">
+        <!-- 1 card -->
+        <div class="portfolio-item cardSpacing" style="float:left">
+          <div class="card h-100" id="card">
+            <table>
+              <td>
+                <h3 align="left" style="margin-top: 0px">${tr.trainingRequestId} </h3>
               </td>
               <td>
-                 <div class="dropdown" align="right">
-                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true">
+                <!--card Drop down -->
+                <div class="dropdown" align="right" style="margin-top: 0px" id="moreInfo">
+                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+                    aria-haspopup="true"><span class="glyphicon glyphicon-th-list"></span>
                   </button>
                   <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                    <li><a href="#">Manager Name </a></li><!--Spoc in charge of training --> 
-                    <li><a href="#">Manager Email </a></li><!--Spoc's email--> 
-                    <li><a href="#"> Trainer </a></li>
-                    <li><a href="#">Trainer Email </a></li><!--Spoc's email-->  
-                    <li><a href="#"> online or class</a></li><!--"mode" of training --> 
-                    <li><a href="#"> Training type </a></li><!--internal or vender --> 
-                    <li><a href="#">Training subject </a></li> <!--type of trainig -module- (java,sql ect)-->
-                    <li><a href="#"> Number of participants </a></li>                     
-                    <li><a href="#"><span class="glyphicon glyphicon-calendar"></span>Start Time</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-calendar"></span>End Time </a></li>
-                    <li><a href="#"> location  </a></li><!--Where it is taking place if not online (IF ONLINE DONT SHOW)-->
+                    <li><a href="#"><span class="glyphicon glyphicon-pencil"></span>${tr.requestTrainingModuleScope }</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-home"></span>${tr.requestTrainingType }</a></li>
+                    <!--internal or vender -->
+                    <li><a href="#"> <span class="glyphicon glyphicon-modal-window"></span> Training Mode</a></li>
+                    <!--"mode" of training -->
+                    <li><a href="#"><span>&#35;</span> Number of participants </a></li>
+                    <!--Edit button 1 popover-->
+                    <li> <button type="button" class="center-block" data-toggle="modal" data-target="#myModal">Edit</button></li>
+                    </li>
+
+                    <li role="separator" class="divider"></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-calendar"></span> Start Date and Time</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-calendar"></span> End Date and Time </a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-time"> </span>Time Zone</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-globe"></span> location </a></li>
+                    <!--Where it is taking place if not online (IF ONLINE DONT SHOW)-->
+                    <!--Edit button 1 popover-->
+                    <li> <button type="button" class="center-block" data-toggle="modal" data-target="#myModal1">Edit</button></li>
+                    </li>
+
+                    <li role="separator" class="divider"></li>
+                    <li><a href="#" data-toggle="modal" data-target="#Log" style="color: blue;"><span class="glyphicon glyphicon-list-alt"></span>
+                        Log</a></li>
+
                   </ul>
-              </div> 
-            </td>
-            </th> 
-            </table>
-            <f:form id="selectTT" action="">
-                <div class="card-body pointer toModal" onclick="submitTT()">
-                <input type="hidden" id="ongoingId" value="${trainingRequest.trainingRequestId}">
-               	<input type="hidden" id="ongoingStatus" value="${trainingRequest.status}"> 
-                  <table> 
-                      <tr>
-                        <td> <span class="glyphicon glyphicon-briefcase"></span>   Vertical </td> <!--What Vertical -->
-                      </tr>
-                      <tr>
-                         <td><span class="glyphicon glyphicon-user"></span>   Trainer</td>
-                      </tr>
-                      <tr>
-                          <td> <span class="glyphicon glyphicon-asterisk"></span>   ${trainingRequest.status}                   
-                          </td> <!--Where the training is in development -->
-                      </tr>
-                  </table>
                 </div>
-          </f:form>
-              </div>
+                <!--card Drop down end  -->
+              </td>
+            </table>
+
+            <!--card body -->
+            <div class="card-body pointer toProgress">
+              <f:form id="selectTT" action="">
+                <div class="card-body pointer toModal" onclick="submitTT()">
+                <input type="hidden" id="ongoingId" value="${tr.trainingRequestId}">
+               	<input type="hidden" id="ongoingStatus" value="${tr.status}"> 
+              <table id="Info">
+                <tr>
+                  <td> <span class="glyphicon glyphicon-pencil"></span>
+                    Training Module </td>
+                </tr>
+                <tr>
+                  <td> <span class="glyphicon glyphicon-calendar"></span>
+                    Start Date</td>
+                </tr>
+                <tr>
+                  <td><span class="glyphicon glyphicon-home"></span>
+                    Training Type</td>
+                </tr>
+                <tr>
+                  <td> <span class="glyphicon glyphicon-check"></span>
+                    Approvals</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                  <td> <span class="glyphicon glyphicon-asterisk"></span>
+                     ${tr.status}</td>
+                  <!--Where the training is in development -->
+                </tr>
+              </table>
+              </f:form>
+			</div>
             </div>
-            <!--end card -->
-             <!-- 1 card -->
-           </c:if>
-            <!--end card -->
-        </c:forEach>
+            <!--card body end -->
+          </div>
+        </div>
+        <!--end card -->
+        </c:if>
+		</c:forEach>
+
+      </div>
     </div>
   </div>
   <!--End of ongoing request box-->
