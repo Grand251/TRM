@@ -32,6 +32,7 @@ public class InternalTrainingCRUD {
     	public List<InternalTrainingRequest> getAllItrBySPOC(int spocId)
     	{
     	    	return jTemp.query("Select * from internal_training_request it" 
+
     	    								+" join training_request tr" 
     	    								+ " on it.training_request_id = tr.training_request_id"
     	    								+ " AND tr.request_project_spoc = ?", new Object[]{spocId},
