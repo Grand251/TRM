@@ -50,6 +50,7 @@ public class LoginController {
 				return "redirect:/spocdashboard";
 			case "Executive":
 				return "redirect:/execdashboard";
+
 			default:
 				return "";
 		
