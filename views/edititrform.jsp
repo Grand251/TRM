@@ -236,13 +236,6 @@
         <!--Field and output row-->
         <div class="row summary-text">
           <div class="col-sm-6">
-            <p class="alignleft">Training Mode: ${itr.itrMode }</p>
-          </div>
-        </div>
-
-        <!--Field and output row-->
-        <div class="row summary-text">
-          <div class="col-sm-6">
             <p class="alignleft">Training Start Date: ${itr.itrSchedule.training_start_date }</p>
           </div>
         </div>
@@ -258,6 +251,13 @@
         <div class="row summary-text">
           <div class="col-sm-6">
             <p class="alignleft">Trainer: ${itr.itrTrainer.first_name } ${itr.itrTrainer.last_name }</p>
+          </div>
+        </div>
+        
+        <!--Field and output row-->
+        <div class="row summary-text">
+          <div class="col-sm-6">
+            <p class="alignleft">Mode: ${itr.itrTrainingRequest.requestTrainingMode }</p>
           </div>
         </div>
 
