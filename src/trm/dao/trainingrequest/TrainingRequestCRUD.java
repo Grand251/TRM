@@ -73,7 +73,7 @@ public class TrainingRequestCRUD
 	public int updateTrainingRequest(TrainingRequest trainingRequest)
 	{
 		int numberOfRowsEffected = jTemp.update("Update training_request set request_training_type = ?, request_training_module = ?, request_training_module_scope = ?,"
-							 + " request_start_time = ?, request_end_time = ?, request_location = ?, request_time_zone = ?, request_approx_participant = ?, request_project_spoc = ?,"
+							 + " request_start_date = ?, request_end_date = ?, request_location = ?, request_time_zone = ?, request_approx_participant = ?, request_project_spoc = ?,"
 				                         + " time_requested = ?, status = ?, justification_of_request = ? where training_request_id = ?",
 												  new Object[] {trainingRequest.getRequestTrainingType(),
 														  		trainingRequest.getRequestTrainingModule(), trainingRequest.getRequestTrainingModuleScope(),
