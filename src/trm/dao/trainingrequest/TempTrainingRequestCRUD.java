@@ -27,9 +27,9 @@ public class TempTrainingRequestCRUD {
 	}
 	
 	public int getNumTrainingRequestBySPOCLocationMode(int spocId, String location, String mode, Timestamp start, Timestamp end) { 
-		Integer count = DAOJDBCTemplate.getJdbcTemplate().queryForObject( 
+		Integer count = new DAOJDBCTemplate().getJdbcTemplate().queryForObject( 
 				"Select count(*) from training_request WHERE request_project_spoc = ? "
-				+ "AND request_training_mode = ? AND request_location = ? AND request_start_time >= ? AND request_start_time <= ?", 
+				+ "AND request_training_mode = ? AND request_location = ? AND request_start_date >= ? AND request_end_date <= ?", 
 					new Object[] {spocId, mode, location, start, end}, Integer.class); 
 		
 		if(count==null)
@@ -39,7 +39,7 @@ public class TempTrainingRequestCRUD {
 	
 	
 	public int getSPOCSchedulePerformance(int spocId, Timestamp start, Timestamp end) { 
-		Integer count = DAOJDBCTemplate.getJdbcTemplate().queryForObject( 
+		Integer count = new DAOJDBCTemplate().getJdbcTemplate().queryForObject( 
 				"Select sum(diff) from" + 	
 						"(Select trunc(t.training_start_date) - trunc(tr.request_start_time) as diff from " + 	
 							"(Select s.training_schedule_id, it.training_request_id, s.training_start_date " + 
@@ -57,7 +57,7 @@ public class TempTrainingRequestCRUD {
 	
 	public List<TrainingRequest> getAllTrainingRequestBySpoc(int spocId)
 	{
-		List<TrainingRequest> trainingRequests = DAOJDBCTemplate.getJdbcTemplate().query(
+		List<TrainingRequest> trainingRequests = new DAOJDBCTemplate().getJdbcTemplate().query(
 				"select * FROM training_request WHERE request_project_spoc=?",new Object[]{spocId}, 
 				new TrainingRequestMapper());
 		return trainingRequests;
@@ -65,7 +65,7 @@ public class TempTrainingRequestCRUD {
 	
 	public List<TrainingRequest> getAllTrainingRequestBySpocStartInRange(int spocId, Timestamp start, Timestamp end)
 	{
-		List<TrainingRequest> trainingRequests = DAOJDBCTemplate.getJdbcTemplate().query(
+		List<TrainingRequest> trainingRequests = new DAOJDBCTemplate().getJdbcTemplate().query(
 				"select * FROM training_request WHERE request_project_spoc=? "
 				+ "AND request_start_time >= ? AND request_start_time <= ?",new Object[]{spocId, start, end}, 
 				new TrainingRequestMapper());

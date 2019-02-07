@@ -55,6 +55,25 @@
     </div>
 </div>
 <script>
+
+	var numSets = 0;
+	var backgroundColorChoice = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)','rgba(255, 206, 86, 1)','rgba(75, 192, 192, 1)','rgba(153, 102, 255, 1)',
+	    'rgba(255, 159, 64, 1)'];
+	function getDataSet(label, data){
+		var ret = {
+			label : label,
+			backgroundColor: backgroundColorChoice[numSets],
+			data : data
+		}
+		
+		numSets++;
+		if(numSets==backgroundColorChoice.length)
+			numSets= 0;
+		
+		return ret;
+	}
+
+
 	var labels = [];
 	var datasets = new Map();
 	var first = true;
@@ -73,33 +92,28 @@
 		first = false;
 	</c:forEach>
 	
-	//<c:forEach items="${requests.columnList}" var="column" varStatus="rowStatus">
-    //	<c:forEach items="${column.columnList}" var="mybean" varStatus="rowCount">
-     //   	<div>hello 1..2..3..<c:out value="${mybean.description}"/></div>
-    //	</c:forEach>
-	//</c:forEach>
-	
 	console.log(labels);
 	console.log(datasets);
+	var datasetObjs = [];
+	
+	var mapIter = datasets.keys();
+	
+	let resultKey = mapIter.next();
+	while (!resultKey.done) {
+		 console.log(resultKey.value);
+		 datasetObjs.push(getDataSet(resultKey.value, datasets.get(resultKey.value)));
+		 resultKey = mapIter.next();
+	}
+	
+	console.log(datasetObjs);
+	
 
 	var ctxBarChart = document.getElementById("priceComplianceBarChart").getContext("2d");
 	var priceBarChart = new Chart(ctxBarChart, {
 	    type: 'bar',
 	    data: {
-	        labels: ["Bix Produce", "Capitol City", "Charlies Portland", "Costa Fruit and Produce", "Get Fresh Sales", "Loffredo East", "Loffredo West", "Paragon", "Piazza Produce"],
-	        datasets: [{
-	            label: 'Some Values',
-	            backgroundColor: 'rgba(97, 188, 109, 1)',
-	            borderColor: 'rgba(97, 188, 109, .8)',
-	            data: [7000, 5565, 3806, 5925, 5721, 6635, 14080, 9027, 25553]
-	            //data: [17724, 2565, 1506, 3625, 3721, 4635, 7080, 4027, 12553]
-	        }, {
-	            label: 'Other Values',
-	            backgroundColor: 'rgba(236, 107, 86, 1)',
-	            borderColor: 'rgba(236, 107, 86, .8)',
-	            data: [17724, 2565, 1506, 3625, 3721, 4635, 7080, 4027, 12553]
-	            //data: [17, 1, 18, 14, 3, 1, 5, 10, 1]
-	        }]
+	        labels: labels,
+	        datasets: datasetObjs
 	    },
 	    options: {
 	        tooltips: {
@@ -122,11 +136,11 @@
 	                            var firstModel = firstDataSet._meta[Object.keys(firstDataSet._meta)[0]].data[i]._model;
 	                            var secondModel = secondDataSet._meta[Object.keys(secondDataSet._meta)[0]].data[i]._model;
 	                            var total = firstDataSet.data[i] + secondDataSet.data[i];
-	                            if (firstDataSet.data[i] >= secondDataSet.data[i]) {
+	                            /*if (firstDataSet.data[i] >= secondDataSet.data[i]) {
 	                                ctx.fillText((firstDataSet.data[i] * 100 / total).toFixed(2) + '%', firstModel.x, firstModel.y + 30);
 	                            } else {
 	                                ctx.fillText((secondDataSet.data[i] * 100 / total).toFixed(2) + '%', secondModel.x, secondModel.y + 30);
-	                            }
+	                            }*/
 	                        }
 	                    }
 	                }
