@@ -188,12 +188,20 @@ public class InternalTrainingCRUD {
 		
 		return jTemp.update(
 				"INSERT INTO internal_training_request VALUES(internal_training_id_seq.nextval, "
+<<<<<<< HEAD
 				+ "?, ?, ?, ?, ?, ?, ?)",
 				new Object[] {itr.getItrStatus(),
 						      itr.getItrTrainingRequest().getTrainingRequestId(),
 						      scheduleId,
 						      (trainerId==0) ? null : trainerId,
 						      (executiveId==0) ? null : executiveId,
+=======
+				+ "?, ?, ?, ?, ?, ?)",
+				new Object[] {itr.getItrTrainingRequest().getTrainingRequestId(),
+						      itr.getItrSchedule().getTraining_schedule_id(),
+						      itr.getItrTrainer().getEmployee_id(),
+						      itr.getItrExecutive().getEmployee_id(),
+>>>>>>> ian2
 						      itr.getItrStatus(),
 						      itr.getItrStatusDescription()});
 	}
