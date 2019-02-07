@@ -5,9 +5,21 @@ import java.util.List;
 import trm.dao.DAOJDBCTemplate;
 import trm.dao.employee.Employee;
 import trm.dao.trainingrequest.TrainingRequest;
+import trm.dao.trainingrequest.TrainingRequestCRUD;
 
 
 public class ExecutiveWorkflowStatusCRUD {
+	
+	public static void main(String[] args) {
+		TrainingRequestCRUD trCRUD = new TrainingRequestCRUD();
+		ExecutiveWorkflowStatus ews = new ExecutiveWorkflowStatus();
+		TrainingRequest trainingRequest = trCRUD.getTrainingRequestById(10000);
+		ews.setTrainingRequest(trainingRequest);
+		
+		ExecutiveWorkflowStatusCRUD ewsCRUD = new ExecutiveWorkflowStatusCRUD();
+		ewsCRUD.insertExecutiveWorkflowStatus(ews);
+		
+	}
 
 	public List<ExecutiveWorkflowStatus> getAllExecutiveWorkflowStatus(){
 		return new DAOJDBCTemplate().getJdbcTemplate().query("SELECT * FROM executive_workflow_status", new ExecutiveWorkflowStatusMapper());
@@ -85,24 +97,20 @@ public class ExecutiveWorkflowStatusCRUD {
 	
 	public int insertExecutiveWorkflowStatus(ExecutiveWorkflowStatus executiveWorkflowStatus) {
 		int executiveId = 0;
-		int trainingRequestId = 0;
-		
-		if(executiveWorkflowStatus.getTrainingRequest()!=null)
-			trainingRequestId = executiveWorkflowStatus.getTrainingRequest().getTrainingRequestId();
 		
 		if(executiveWorkflowStatus.getExecutiveWorkflowStatusExecutive()!=null)
 			executiveId = executiveWorkflowStatus.getExecutiveWorkflowStatusExecutive().getEmployee_id();
 		
-		return new DAOJDBCTemplate().getJdbcTemplate().update("INSERT INTO executive_workflow_status VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
-				new Object[]{"executive_workflow_status_seq.nextval",
-						(trainingRequestId!=0) ? trainingRequestId : null,
+		return new DAOJDBCTemplate().getJdbcTemplate().update("INSERT INTO executive_workflow_status VALUES(executive_workflow_status_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?)",
+				new Object[]{
+						executiveWorkflowStatus.getTrainingRequest().getTrainingRequestId(),
 						executiveWorkflowStatus.getInvitationsSent(),
 						executiveWorkflowStatus.getSkillportEnrollmentsCompleted(),
 						executiveWorkflowStatus.getAssessmentsRecorded(),
 						executiveWorkflowStatus.getVendorTrainingClearance(),
 						executiveWorkflowStatus.getFeedbackCompleted(),
 						executiveWorkflowStatus.getTrainingCompleted(),
-						(executiveId!=0) ? executiveId : null
+						((executiveId!=0) ? executiveId : 0)
 		});
 	}
 	
