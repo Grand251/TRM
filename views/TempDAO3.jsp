@@ -49,9 +49,9 @@
 <br>
 <br>
 <div class="topright">
-    <h2 class="sectiontext">Price Compliance</h2>
+    <h2 class="sectiontext">Spoc Training Modes by Location</h2>
     <div class="graph_container">
-        <canvas id="priceComplianceBarChart" width="800" height="400"></canvas>
+        <canvas id="trainingModeLoc" width="800" height="400"></canvas>
     </div>
 </div>
 <script>
@@ -108,7 +108,7 @@
 	console.log(datasetObjs);
 	
 
-	var ctxBarChart = document.getElementById("priceComplianceBarChart").getContext("2d");
+	var ctxBarChart = document.getElementById("trainingModeLoc").getContext("2d");
 	var priceBarChart = new Chart(ctxBarChart, {
 	    type: 'bar',
 	    data: {
@@ -116,46 +116,44 @@
 	        datasets: datasetObjs
 	    },
 	    options: {
+	    	scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true,
+                        stepSize: 1
+                    },
+                    stacked: true,
+                    gridLines: {
+                        display: true,
+                        color: "transparent",
+                        lineWidth: 1,
+                        zeroLineColor: "black",
+                        zeroLineWidth: 1
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Points',
+	                        fontSize: 20
+                      }	                    
+                }],
+        
+        		xAxes: [{
+            		gridLines: {
+                		display: true,
+                		color: "transparent",
+                		zeroLineColor: "black",
+                        zeroLineWidth: 1
+            		},
+            		stacked: true,
+            		scaleLabel: {
+ 	                    display: true,
+ 	                    labelString: "SPOC",
+ 	                    fontSize: 20
+ 	                }	
+        		}],    
+            },
 	        tooltips: {
 	            enabled: false
-	        },
-	        animation: {
-	            duration: 0,
-	            onComplete: function () {
-	                if (this.data.datasets.length === 2) {
-	                    // render the value of the chart above the bar
-	                    var ctx = this.chart.ctx;
-	                    ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
-	                    ctx.fillStyle = this.chart.config.options.defaultFontColor;
-	                    ctx.textAlign = 'center';
-	                    ctx.textBaseline = 'bottom';
-	                    var firstDataSet = this.data.datasets[0];
-	                    var secondDataSet = this.data.datasets[1];
-	                    if (firstDataSet.length === secondDataSet.length) {
-	                        for (var i = 0; i < firstDataSet.data.length; i++) {
-	                            var firstModel = firstDataSet._meta[Object.keys(firstDataSet._meta)[0]].data[i]._model;
-	                            var secondModel = secondDataSet._meta[Object.keys(secondDataSet._meta)[0]].data[i]._model;
-	                            var total = firstDataSet.data[i] + secondDataSet.data[i];
-	                            /*if (firstDataSet.data[i] >= secondDataSet.data[i]) {
-	                                ctx.fillText((firstDataSet.data[i] * 100 / total).toFixed(2) + '%', firstModel.x, firstModel.y + 30);
-	                            } else {
-	                                ctx.fillText((secondDataSet.data[i] * 100 / total).toFixed(2) + '%', secondModel.x, secondModel.y + 30);
-	                            }*/
-	                        }
-	                    }
-	                }
-	            }
-	        },
-	        scales: {
-	            yAxes: [{
-	                ticks: {
-	                    beginAtZero: true
-	                },
-	                stacked: true
-	            }],
-	            xAxes: [{
-	                stacked: true,
-	            }]
 	        },
 	        responsive: false
 	    }
