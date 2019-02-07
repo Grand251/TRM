@@ -187,7 +187,6 @@ public class TrainingRequestCRUD
 	
 	public int updateTrainingRequestByAttribute(int trainingRequestId, String trainingRequestAttribute, double attributeNewValue)
 	{
-		jTemp = DAOJDBCTemplate.getJdbcTemplate();
 		
 		String sqlPreparedStatement = "Update training_request set ";
 		sqlPreparedStatement = sqlPreparedStatement.concat(trainingRequestAttribute);

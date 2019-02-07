@@ -32,7 +32,7 @@
     			$( "#selectTT" ).submit();
     		}else
     		{
-    			$("#selectTT").get(0).setAttribute('action', "viewspocdashboard");
+    			$("#selectTT").get(0).setAttribute('action', "edititr/"+trainingRequestId);
     			$( "#selectTT" ).submit();
     		}
     	})	
@@ -41,7 +41,17 @@
   	function submitTR(){
   		$("#submiTR").submit();
   	}
-  </script>
+  	
+  	function submitITR(){
+  		
+    	$(".toInternal").click(function(){
+      		var trainingRequestId = $(this).find('#internalId').val();
+      		$("#selectITR").get(0).setAttribute('action', "edititr/"+trainingRequestId);
+      		$("#selectITR").submit();
+    	})	
+  	}
+  	
+  	</script>
 </head>
 
 <body>
@@ -224,17 +234,64 @@
             <!--card body -->
             <div class="card-body pointer toProgress">
               <f:form id="selectTT" action="">
-                <div class="card-body pointer toModal" onclick="submitTT()">
+                <div class="card-body pointer toType" onclick="submitTT()">
                 <input type="hidden" id="ongoingId" value="${tr.trainingRequestId}">
                	<input type="hidden" id="ongoingStatus" value="${tr.status}"> 
               <table id="Info">
                 <tr>
                   <td> <span class="glyphicon glyphicon-pencil"></span>
-                    Training Module </td>
+                    New Training Request </td>
+                </tr>
+                <tr>
+                  <td> <span class="glyphicon glyphicon-asterisk"></span>
+                     ${tr.status}</td>
+                  <!--Where the training is in development -->
+                </tr>
+              </table>
+              </f:form>
+              <a href="selectTrainingType/${tr.trainingRequestId }">Pick Type</a>
+              
+			</div>
+            </div>
+            <!--card body end -->
+          </div>
+        </div>
+        <!--end card -->
+        </c:if>
+		</c:forEach>
+       <c:forEach items="${itrList}" var="itr">
+        <!-- 1 card -->
+        <div class="portfolio-item cardSpacing" style="float:left">
+          <div class="card h-100" id="card">
+            <table>
+              <td>
+                <h3 align="left" style="margin-top: 0px">${itr.itrId} </h3>
+              </td>
+              <td>
+                <!--card Drop down -->
+                <div class="dropdown" align="right" style="margin-top: 0px" id="moreInfo">
+                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+                    aria-haspopup="true"><span class="glyphicon glyphicon-th-list"></span>
+                  </button>
+
+                </div>
+                <!--card Drop down end  -->
+              </td>
+            </table>
+
+            <!--card body -->
+            <div class="card-body pointer toInternal">
+              <f:form id="selectITR" action="edititrform/${itr.itrId}">
+                <div class="card-body pointer toInternal" onclick="selectITR()">
+                <input type="hidden" id="internalId" value="${itr.itrId}">
+              <table id="Info">
+                <tr>
+                  <td> <span class="glyphicon glyphicon-pencil"></span>
+                    Internal Training Request </td>
                 </tr>
                 <tr>
                   <td> <span class="glyphicon glyphicon-calendar"></span>
-                    Start Date</td>
+                    ${itr.itrSchedule.training_start_date }</td>
                 </tr>
                 <tr>
                   <td><span class="glyphicon glyphicon-home"></span>
@@ -247,20 +304,21 @@
                 <tr></tr>
                 <tr>
                   <td> <span class="glyphicon glyphicon-asterisk"></span>
-                     ${tr.status}</td>
+                     ${itr.itrStatus}</td>
                   <!--Where the training is in development -->
                 </tr>
               </table>
+              <a href="edititr/${itr.itrId}">Edit</a>
+              
               </f:form>
+              
 			</div>
             </div>
             <!--card body end -->
           </div>
         </div>
         <!--end card -->
-        </c:if>
 		</c:forEach>
-
       </div>
     </div>
   </div>

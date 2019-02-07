@@ -1,10 +1,7 @@
 package trm.controllers;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import org.springframework.stereotype.Controller;
@@ -12,9 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import trm.dao.employee.Employee;
 import trm.dao.employee.EmployeeCRUDService;
@@ -43,18 +38,15 @@ public class SpocController {
 	@RequestMapping(value="viewspocdashboard")
 	public String showDashboard(ModelMap map)
 	{
-		List<TrainingRequest> newTR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(0);
-		List<TrainingRequest> TR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(1);
-		List<TrainingRequest> inProgressTR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(2);
-		//List<TrainingRequest> pendingTR = new TrainingRequestCRUD().getAllTrainingRequestByStatus(3);
-		List<TrainingRequest> trList = new ArrayList<TrainingRequest>();
+		List<TrainingRequest> trs = new TrainingRequestCRUD().getAllRequestBySPOCStatus(1000037, 0);
+		List<TrainingRequest> tr = new TrainingRequestCRUD().getAllRequestBySPOCStatus(1000037, 1);
+		List<InternalTrainingRequest> itr = new InternalTrainingCRUD().getAllItrBySPOC(1000037);
 		
-		trList.addAll(TR);
-		trList.addAll(inProgressTR);
-		//trList.addAll(pendingTR);
 		
-		map.addAttribute("ntrList", newTR);
-		map.addAttribute("trList", trList);
+		map.addAttribute("ntrList", trs);
+		map.addAttribute("trList", tr);
+		map.addAttribute("itrList", itr);
+
 		
 		return "spocdashboard";
 	}
@@ -100,6 +92,32 @@ public class SpocController {
 		return "spocrequesttype";
 	}
 	
+	@RequestMapping(value="createItr/{trId}")
+	public String creatItr(@PathVariable("trId") int trId, HttpServletRequest request, ModelMap model) {
+		
+			
+		TrainingRequest tr = new TrainingRequestCRUD().getTrainingRequestById(trId);
+		tr.setStatus(2);
+		new TrainingRequestCRUD().updateTrainingRequest(tr);
+			
+			
+		InternalTrainingRequest itr = new InternalTrainingRequest();
+		itr.setItrTrainingRequest(tr);
+		itr.setItrStatus(1);
+		itr.setItrTrainer(new EmployeeCRUDService().getEmployeeById(1000000));
+		itr.setItrExecutive(new EmployeeCRUDService().getEmployeeById(1000038));
+		itr.setItrStatusDescription("ONE");
+			
+			
+		TrainingSchedule sch = new TrainingSchedule();
+		sch = new TrainingScheduleCRUDService().insertTrainingSchedule(sch);
+		itr.setItrSchedule(sch);
+		
+		new InternalTrainingCRUD().insertItr(itr);
+		
+		return "redirect:/viewspocdashboard";
+	}
+	
 	@RequestMapping(value="saveTrainingType")
 	public String saveTrainingType(@ModelAttribute("treq") TrainingRequest treq, ModelMap map)
 	{
@@ -110,7 +128,7 @@ public class SpocController {
 		{
 			int status = new TrainingRequestCRUD().updateTrainingRequestByAttribute(treq.getTrainingRequestId(), "status", 2);
 			if(status > 0)
-				return "redirect:/viewspocdashboard";
+				return "redirect:/createItr/" + treq.getTrainingRequestId();
 			else
 				return "error";
 		}
@@ -136,7 +154,7 @@ public class SpocController {
 		//TrainingSchedule ts = tsCrud.getTrainingScheduleById(itr.get);
 		TrainingSchedule ts = itr.getItrSchedule();
 		
-		itr.setItrMode(request.getParameter("mode"));
+//		itr.setItrMode(request.getParameter("mode"));
 		int trainerId = Integer.parseInt(request.getParameter("trainerId"));
 		Employee trainer = new EmployeeCRUDService().getEmployeeById(trainerId);
 		itr.setItrTrainer(trainer);
@@ -154,8 +172,8 @@ public class SpocController {
 		
 		ts.setTraining_start_date(startDate);
 		ts.setTraining_end_date(endDate);
-		tsCrud.updateTrainingSchedule(ts.getTraining_schedule_id(), "", "", "", "", "", "", "", 
-				ts.getTraining_start_date(), ts.getTraining_end_date());
+//		tsCrud.updateTrainingSchedule(ts.getTraining_schedule_id(), "", "", "", "", "", "", "", 
+//				ts.getTraining_start_date(), ts.getTraining_end_date());
 		return "redirect:/edititr/" + itrId;
 	}
 	
