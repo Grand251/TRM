@@ -20,9 +20,9 @@
     crossorigin="anonymous">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <link rel="stylesheet" href="../customcss/createrequest.css">
+  <script src="resources/js/jquery.min.js"></script>
+  <script src="resources/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="resources/stylesheets/createrequest.css">
 
   <style>
     #icon
@@ -43,7 +43,7 @@
       <!-- Left-aligned link -->
       <div class="left-header">
         <a class="logo-content" href="#" title="Home">
-          <img class="logoimage1" src="../img/as-logo.png" alt="Home">
+          <img class="logoimage1" src="resources/images/as-logo.png" alt="Home">
         </a>
       </div>
       <!-- Right-aligned links -->

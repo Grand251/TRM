@@ -2,6 +2,7 @@ package trm.dao.trainingrequestlog;
 
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
+
 import trm.dao.DAOJDBCTemplate;
 
 /*
@@ -12,7 +13,7 @@ import trm.dao.DAOJDBCTemplate;
 public class TrainingRequestLogCRUD 
 {
         //JdbcTemplate object. Will be initialized in every method using the static method
-  	//getJdbcTemplate in the DAOJDBCTemplate class.
+  	//getJdbcTemplate in the new DAOJDBCTemplate() class.
 	private JdbcTemplate jTemp;
 	
 	/*
@@ -28,7 +29,7 @@ public class TrainingRequestLogCRUD
 	 */
 	public int insertTrainingRequestLog(TrainingRequestLog trainingRequestLog)
 	{
-		jTemp = DAOJDBCTemplate.getJdbcTemplate();
+		jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jTemp.update("Insert into training_request_log values(training_request_log_id_seq.nextval,?,?,?,?)" , 
 												  new Object[] {trainingRequestLog.getTrainingRequestId(), trainingRequestLog.getStatus(),
 														  		trainingRequestLog.getStatusChangeTime(), trainingRequestLog.getDescription(),
@@ -46,7 +47,7 @@ public class TrainingRequestLogCRUD
 	 */
 	public int deleteTrainingRequestLog(int trainingRequestLogId)
 	{
-		jTemp = DAOJDBCTemplate.getJdbcTemplate();
+		jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jTemp.update("delete from training_request_log where request_log_id = ?", 
 												  new Object[] {trainingRequestLogId});
 		return ret;
@@ -65,7 +66,7 @@ public class TrainingRequestLogCRUD
 	 */
 	public TrainingRequestLog getTrainingRequestLogById(int trainingRequestLogId)
 	{
-		jTemp = DAOJDBCTemplate.getJdbcTemplate();
+		jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 		TrainingRequestLog trainingRequestLog = jTemp.queryForObject("Select * from training_request_log where request_log_id = ?",
 												   				new Object[]{trainingRequestLogId}, new TrainingRequestLogMapper());
 		return trainingRequestLog;
@@ -81,7 +82,7 @@ public class TrainingRequestLogCRUD
 	 */
 	public List<TrainingRequestLog> getAllTrainingRequestLog()
 	{
-		jTemp = DAOJDBCTemplate.getJdbcTemplate();
+		jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 		List<TrainingRequestLog> custList = jTemp.query("Select * from training_request_log" , new TrainingRequestLogMapper());
 		return custList;
 	}

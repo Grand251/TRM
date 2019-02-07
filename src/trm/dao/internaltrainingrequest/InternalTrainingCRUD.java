@@ -1,7 +1,9 @@
-package trm.dao.internaltrainingrequest;
+ package trm.dao.internaltrainingrequest;
 
 
 import java.util.List;
+
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import trm.dao.DAOJDBCTemplate;
 import trm.dao.employee.Employee;
@@ -24,21 +26,32 @@ import trm.dao.trainingschedule.TrainingSchedule;
 
 public class InternalTrainingCRUD {
 	
+	
+		private JdbcTemplate jTemp = new DAOJDBCTemplate().getJdbcTemplate();
+	
+    	public List<InternalTrainingRequest> getAllItrBySPOC(int spocId)
+    	{
+    	    	return jTemp.query("Select * from internal_training_request it" 
+
+    	    								+" join training_request tr" 
+    	    								+ " on it.training_request_id = tr.training_request_id"
+    	    								+ " AND tr.request_project_spoc = ?", new Object[]{spocId},
+    	    		new InternalTrainingRequestMapper());
+    	}
 	/**
 		Get all InternalTrainingRequest objects in database
 	*/
 	public List<InternalTrainingRequest> getAllItr(){
-		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM internal_training_request",
+		return jTemp.query("SELECT * FROM internal_training_request",
 				new InternalTrainingRequestMapper());
 	}
 	
 	/**
 		Get InternalTrainingRequest object with matching id
-
 		@param requestId 5 digit id to search database with
 	*/
 	public InternalTrainingRequest getItrById(int requestId){
-		return DAOJDBCTemplate.getJdbcTemplate().queryForObject("SELECT * FROM internal_training_request"
+		return jTemp.queryForObject("SELECT * FROM internal_training_request"
 				+ " WHERE internal_training_id=?", new Object[]{requestId},
 				new InternalTrainingRequestMapper());
 	}
@@ -49,7 +62,7 @@ public class InternalTrainingCRUD {
 	 * @return List<InternalTrainingRequest> containing all matching ITRs
 	 */
 	public List<InternalTrainingRequest> getAllItrByStatus(int trainingStatus){
-		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM internal_training_request"
+		return jTemp.query("SELECT * FROM internal_training_request"
 				+ " WHERE status=?", new Object[] {trainingStatus},
 				new InternalTrainingRequestMapper());
 	} 
@@ -60,7 +73,7 @@ public class InternalTrainingCRUD {
 	 * @return List<InternalTrainingRequest> containing all matching ITRs
 	 */
 	public List<InternalTrainingRequest> getAllItrByMode(String trainingMode){
-		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM internal_training_request"
+		return jTemp.query("SELECT * FROM internal_training_request"
 				+ " WHERE internal_training_mode=?", new Object[] {trainingMode},
 				new InternalTrainingRequestMapper());
 	} 
@@ -81,7 +94,7 @@ public class InternalTrainingCRUD {
 	 * @return
 	 */
 	public List<InternalTrainingRequest> getAllItrByTrainer(int trainerId){
-		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM internal_training_request"
+		return jTemp.query("SELECT * FROM internal_training_request"
 				+ " WHERE confirmed_trainer_id=?", new Object[] {trainerId},
 				new InternalTrainingRequestMapper());
 	}
@@ -101,41 +114,29 @@ public class InternalTrainingCRUD {
 	 * @param requestId 5 digit request id to search itrs with
 	 */
 	public InternalTrainingRequest getItrByTrainingRequest(int requestId){
-		return DAOJDBCTemplate.getJdbcTemplate().queryForObject(
+		return jTemp.queryForObject(
 				"SELECT * FROM internal_training_request WHERE training_request_id=?",
 				new Object[] {requestId},
 				new InternalTrainingRequestMapper());
 	}
 	
 	/*
-	 * Get list of InternalTrainingRequest objects with Employee object, which contains employee_id of a SPOC
+	 * Get list of InternalTrainingRequest objects with Employee object, which contains employee_id of an executive
 	 * 
-	 * @param spoc Employee object with 7 digit employee id to search itrs for
+	 * @param executive Employee object with 7 digit employee id to search itrs for
 	 */
-	public List<InternalTrainingRequest> getAllItrBySPOC(Employee spoc){
-		return getAllItrBySPOC(spoc.getEmployee_id());
+	public List<InternalTrainingRequest> getAllItrByExec(Employee exec){
+		return getAllItrByExec(exec.getEmployee_id());
 	}
 	
 	/*
-	 * Get list of InternalTrainingRequest objects with specified spocId
+	 * Get list of InternalTrainingRequest objects with specified execId
 	 * 
-	 * @param spocId 7 digit Employee id to search itrs for
+	 * @param execId 7 digit Employee id to search itrs for
 	 */
-	public List<InternalTrainingRequest> getAllItrBySPOC(int spocId){
-		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM internal_training_request "
-				+ "WHERE training_spoc_id=?", new Object[]{spocId},
-				new InternalTrainingRequestMapper());
-	}
-	
-	public List<InternalTrainingRequest> getAllItrByExec(Employee exec){
-		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM internal_training_request "
-				+ "WHERE EXECUTIVE_ID=?", new Object[]{exec.getEmployee_id()},
-				new InternalTrainingRequestMapper());
-	}
-	
 	public List<InternalTrainingRequest> getAllItrByExec(int execId){
-		return DAOJDBCTemplate.getJdbcTemplate().query("SELECT * FROM internal_training_request "
-				+ "WHERE EXECUTIVE_ID=?", new Object[]{execId},
+		return jTemp.query("SELECT * FROM internal_training_request "
+				+ "WHERE executive_id=?", new Object[]{execId},
 				new InternalTrainingRequestMapper());
 	}
 	
@@ -153,7 +154,7 @@ public class InternalTrainingCRUD {
 	 * @param scheduleId 5 digit schedule id to search itrs for
 	 */
 	public InternalTrainingRequest getItrBySchedule(String scheduleId){
-		return DAOJDBCTemplate.getJdbcTemplate().queryForObject(
+		return jTemp.queryForObject(
 				"SELECT * FROM internal_training_request WHERE schedule_id=?",
 				new Object[] {scheduleId},
 				new InternalTrainingRequestMapper());
@@ -172,15 +173,27 @@ public class InternalTrainingCRUD {
 	 * @param itr TrainingRequest object with fields matching the above descriptions
 	 */	
 	public int insertItr(InternalTrainingRequest itr) {
-		return DAOJDBCTemplate.getJdbcTemplate().update(
+		String scheduleId = null;
+		int trainerId = 0;
+		int executiveId = 0;
+		
+		if(itr.getItrSchedule()!=null)
+			scheduleId = itr.getItrSchedule().getTraining_schedule_id();
+		
+		if(itr.getItrTrainer()!=null)
+			trainerId = itr.getItrTrainer().getEmployee_id();
+		
+		if(itr.getItrExecutive()!=null)
+			executiveId = itr.getItrExecutive().getEmployee_id();
+		
+		return jTemp.update(
 				"INSERT INTO internal_training_request VALUES(internal_training_id_seq.nextval, "
-				+ "?, ?, ?, ?, ?, ?, ?)",
-				new Object[] {itr.getItrStatus(),
-						      itr.getItrTrainer().getEmployee_id(),
-						      itr.getItrTrainingRequest().getTrainingRequestId(),
-						      itr.getItrSpoc().getEmployee_id(),
-						      itr.getItrMode(),
-						      itr.getItrSchedule().getTraining_schedule_id(),
+				+ "?, ?, ?, ?, ?, ?)",
+				new Object[] {itr.getItrTrainingRequest().getTrainingRequestId(),
+						      scheduleId,
+						      (trainerId==0) ? null : trainerId,
+						      (executiveId==0) ? null : executiveId,
+						      itr.getItrStatus(),
 						      itr.getItrStatusDescription()});
 	}
 	
@@ -199,21 +212,22 @@ public class InternalTrainingCRUD {
 	 * @param itr TrainingRequest object with fields matching the above descriptions
 	 */
 	public int updateItr(InternalTrainingRequest itr) {
-		return DAOJDBCTemplate.getJdbcTemplate().update(
+		return jTemp.update(
 				"UPDATE internal_training_request SET status=?, "
 												   + "confirmed_trainer_id=?, "
-												   + "training_spoc_id=?, "
-												   + "internal_training_mode=?, "
 												   + "description_of_status=?, "
-												   + "schedule_id = ? "
+												   + "schedule_id = ?, "
+												   + "training_request_id = ?,"
+												   + "executive_id = ?"
 												   + "WHERE internal_training_id=?",
 				new Object[] {itr.getItrStatus(),
-					      	  itr.getItrTrainer().getEmployee_id(),
-					      	  itr.getItrSpoc().getEmployee_id(),
-					      	  itr.getItrMode(),
-					      	  itr.getItrStatusDescription(),
-					      	  itr.getItrSchedule().getTraining_schedule_id(),
-					      	  itr.getItrId()});
+					      itr.getItrTrainer().getEmployee_id(),
+					      itr.getItrStatusDescription(),
+            				      itr.getItrSchedule().getTraining_schedule_id(),
+            				      itr.getItrTrainingRequest().getTrainingRequestId(),
+            				      itr.getItrExecutive().getEmployee_id(),
+            				      itr.getItrId()
+            				      });
 	}
 	
 	/**
@@ -224,7 +238,7 @@ public class InternalTrainingCRUD {
 	 * @return Number of rows updated
 	 */
 	public int updateStatus(InternalTrainingRequest itr) {
-		return DAOJDBCTemplate.getJdbcTemplate().update(
+		return jTemp.update(
 				"UPDATE internal_training_request SET status=? WHERE internal_training_id=?",
 				new Object[] {itr.getItrStatus(), itr.getItrId()});
 	}
@@ -237,7 +251,7 @@ public class InternalTrainingCRUD {
 	 * @return Number of rows updated
 	 */
 	public int updateStatus(int status, int itrId) {
-		return DAOJDBCTemplate.getJdbcTemplate().update(
+		return jTemp.update(
 				"UPDATE internal_training_request SET status=? WHERE internal_training_id=?",
 				new Object[]{status, itrId});
 	}
@@ -250,7 +264,7 @@ public class InternalTrainingCRUD {
 	 * @return Number of rows updated
 	 */
 	public int updateTrainer(InternalTrainingRequest itr) {
-		return DAOJDBCTemplate.getJdbcTemplate().update(
+		return jTemp.update(
 				"UPDATE internal_training_request SET confirmed_trainer_id=? WHERE internal_training_id=?",
 				new Object[] {itr.getItrTrainer().getEmployee_id(), itr.getItrId()});
 	}
@@ -263,7 +277,7 @@ public class InternalTrainingCRUD {
 	 * @return Number of rows updated
 	 */
 	public int updateTrainer(Employee trainer, int itrId) {
-		return DAOJDBCTemplate.getJdbcTemplate().update(
+		return jTemp.update(
 				"UPDATE internal_training_request SET confirmed_trainer_id=? WHERE internal_training_id=?",
 				new Object[]{trainer.getEmployee_id(), itrId});
 	}
@@ -276,23 +290,12 @@ public class InternalTrainingCRUD {
 	 * @return Number of rows updated
 	 */
 	public int updateTrainer(int trainerId, int itrId) {
-		return DAOJDBCTemplate.getJdbcTemplate().update(
+		return jTemp.update(
 				"UPDATE internal_training_request SET confirmed_trainer_id=? WHERE internal_training_id=?",
 				new Object[]{trainerId, itrId});
 	}
 	
 	/**
-	 * Update an ITR spoc with an object containing updated value. Only updates
-	 * spoc regardless of other changes to object variables.
-	 * 
-	 * @param itr Object containing reference to new ITR SPOC
-	 * @return Number of rows updated
-	 */
-	public int updateSpoc(InternalTrainingRequest itr) {
-		return DAOJDBCTemplate.getJdbcTemplate().update(
-				"UPDATE internal_training_request SET training_spoc_id=? WHERE internal_training_id=?",
-				new Object[] {itr.getItrSpoc().getEmployee_id(), itr.getItrId()});
-	}
 	
 	/**
 	 * Update an ITR's SPOC with an ITR ID and Employee object containing new SPOC's id.
@@ -302,7 +305,7 @@ public class InternalTrainingCRUD {
 	 * @return Number of rows updated
 	 */
 	public int updateSpoc(Employee spoc, int itrId) {
-		return DAOJDBCTemplate.getJdbcTemplate().update(
+		return jTemp.update(
 				"UPDATE internal_training_request SET training_spoc_id=? WHERE internal_training_id=?",
 				new Object[]{spoc.getEmployee_id(), itrId});
 	}
@@ -315,23 +318,11 @@ public class InternalTrainingCRUD {
 	 * @return Number of rows updated
 	 */
 	public int updateSpoc(int spocId, int itrId) {
-		return DAOJDBCTemplate.getJdbcTemplate().update(
+		return jTemp.update(
 				"UPDATE internal_training_request SET training_spoc_id=? WHERE internal_training_id=?",
 				new Object[]{spocId, itrId});
 	}
 	
-	/**
-	 * Update an ITR training mode with an object containing updated value. Only updates
-	 * training mode regardless of other changes to object variables.
-	 * 
-	 * @param itr Object containing updated training mode value.
-	 * @return Number of rows updated
-	 */
-	public int updateItrMode(InternalTrainingRequest itr) {
-		return DAOJDBCTemplate.getJdbcTemplate().update(
-				"UPDATE internal_training_request SET internal_training_mode=? WHERE internal_training_id=?",
-				new Object[] {itr.getItrMode(), itr.getItrId()});
-	}
 	
 	/**
 	 * Update an ITR's trainingMode with a trainingMode string and ITR ID.
@@ -341,7 +332,7 @@ public class InternalTrainingCRUD {
 	 * @return Number of rows updated
 	 */
 	public int updateItrMode(String trainingMode, int itrId) {
-		return DAOJDBCTemplate.getJdbcTemplate().update(
+		return jTemp.update(
 				"UPDATE internal_training_request SET internal_training_mode=? WHERE internal_training_id=?",
 				new Object[]{trainingMode, itrId});
 	}
@@ -354,7 +345,7 @@ public class InternalTrainingCRUD {
 	 * @return Number of rows updated
 	 */
 	public int updateSchedule(InternalTrainingRequest itr) {
-		return DAOJDBCTemplate.getJdbcTemplate().update(
+		return jTemp.update(
 				"UPDATE internal_training_request SET schedule_id=? WHERE internal_training_id=?",
 				new Object[] {itr.getItrSchedule().getTraining_schedule_id(), itr.getItrId()});
 	}
@@ -367,7 +358,7 @@ public class InternalTrainingCRUD {
 	 * @return Number of rows updated
 	 */
 	public int updateSchedule(TrainingSchedule trainingSchedule, int itrId) {
-		return DAOJDBCTemplate.getJdbcTemplate().update(
+		return jTemp.update(
 				"UPDATE internal_training_request SET schedule_id=? WHERE internal_training_id=?",
 				new Object[]{trainingSchedule.getTraining_schedule_id(), itrId});
 	}
@@ -380,7 +371,7 @@ public class InternalTrainingCRUD {
 	 * @return Number of rows updated
 	 */
 	public int updateSchedule(int scheduleId, int itrId) {
-		return DAOJDBCTemplate.getJdbcTemplate().update(
+		return jTemp.update(
 				"UPDATE internal_training_request SET schedule_id=? WHERE internal_training_id=?",
 				new Object[]{scheduleId, itrId});
 	}
@@ -393,7 +384,7 @@ public class InternalTrainingCRUD {
 	 * @return Number of rows updated
 	 */
 	public int updateItrStatusDescription(InternalTrainingRequest itr) {
-		return DAOJDBCTemplate.getJdbcTemplate().update(
+		return jTemp.update(
 				"UPDATE internal_training_request SET description_of_status=? WHERE internal_training_id=?",
 				new Object[] {itr.getItrStatusDescription(), itr.getItrId()});
 	}
@@ -406,7 +397,7 @@ public class InternalTrainingCRUD {
 	 * @return Number of rows updated
 	 */
 	public int updateItrStatusDescription(String itrStatusDescription, int itrId) {
-		return DAOJDBCTemplate.getJdbcTemplate().update(
+		return jTemp.update(
 				"UPDATE internal_training_request SET description_of_status=? WHERE internal_training_id=?",
 				new Object[]{itrStatusDescription, itrId});
 	}
@@ -426,7 +417,7 @@ public class InternalTrainingCRUD {
 	 * @param requestId ITR ID which can be no greater than 7 digits.
 	 */
 	public int deleteItr(int requestId) {
-		return DAOJDBCTemplate.getJdbcTemplate().update("DELETE FROM internal_training_request"
+		return jTemp.update("DELETE FROM internal_training_request"
 				+ " WHERE internal_training_id=?",
 				new Object[] {requestId});
 				
@@ -435,6 +426,17 @@ public class InternalTrainingCRUD {
 	public static void main(String[] args) {
 	 
 		InternalTrainingCRUD itCRUD = new InternalTrainingCRUD();
+		
+		List<InternalTrainingRequest> itList = itCRUD.getAllItrBySPOC(1000019);
+		
+		for(InternalTrainingRequest request: itList)
+		{
+		    System.out.println(request.getItrId() + " " + request.getItrTrainingRequest().getTrainingRequestId() + " " + request.getItrSchedule().getTraining_schedule_id() + " " 
+			    		+ request.getItrTrainer().getEmployee_id() + " " + request.getItrExecutive().getEmployee_id() + " " + request.getItrStatus() + " " +request.getItrStatusDescription());
+		}
+		
+		
+		/*
 		Employee spoc = new Employee();
 		spoc.setEmployee_id(1000006);
 		Employee trainer = new Employee();
@@ -455,9 +457,9 @@ public class InternalTrainingCRUD {
 		//System.out.println(itCRUD.getItrBySchedule("10000"));
 		/*InternalTrainingRequest itr = new InternalTrainingRequest();
 		itr.setItrId(100);
-		itr.setItrMode("test");
+		
 		itr.setItrSchedule(ts);
-		itr.setItrSpoc(spoc);
+		
 		itr.setItrStatus(1);
 		itr.setItrStatusDescription("good status");
 		itr.setItrTrainer(trainer);
@@ -468,17 +470,23 @@ public class InternalTrainingCRUD {
 		System.out.println("DELETE2 " + itCRUD.deleteItr(100));
 		System.out.println("INSERT2 " + itCRUD.insertItr(itr));*/
 		
-		InternalTrainingRequest itr = itCRUD.getItrById(1000015);
-		itr.setItrMode("great test");
-		System.out.println("mode: " + itCRUD.updateItrMode(itr));
-		System.out.println("mode2: " + itCRUD.updateItrMode("greatest test", itr.getItrId()));
-		itr.setItrStatus(2);
-		System.out.println("Stat: " + itCRUD.updateStatus(itr));
-		System.out.println("stat2: " + itCRUD.updateStatus(4, itr.getItrId()));
-		itr.setItrStatusDescription("great status");
-		System.out.println("desc: " + itCRUD.updateItrMode(itr));
-		System.out.println("desc2: " + itCRUD.updateItrMode("what a description", itr.getItrId()));
+
+		//InternalTrainingRequest itr = itCRUD.getItrById(1000015);
+		//itr.setItrMode("great test");
+		//System.out.println("mode: " + itCRUD.updateItrMode(itr));
+		//System.out.println("mode2: " + itCRUD.updateItrMode("greatest test", itr.getItrId()));
+
+		//itr.setItrStatus(2);
+		//System.out.println("Stat: " + itCRUD.updateStatus(itr));
+		//System.out.println("stat2: " + itCRUD.updateStatus(4, itr.getItrId()));
+		//itr.setItrStatusDescription("great status");
+		//System.out.println("desc: " + itCRUD.updateItrMode(itr));
+		//System.out.println("desc2: " + itCRUD.updateItrMode("what a description", itr.getItrId()));
 		
 		//System.out.println(itCRUD.updateItr(itr));
+		
+		
 	}
 }
+
+

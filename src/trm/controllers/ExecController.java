@@ -5,120 +5,61 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import trm.dao.internaltrainingrequest.InternalTrainingCRUD;
-import trm.dao.trainingrequest.TrainingRequest;
+import trm.executive.ExecWorkflowDTO;
+import trm.executive.ExecutiveUtilities;
 import trm.dao.employee.Employee;
-import trm.dao.internaltrainingrequest.*;
+import trm.dao.executiveworkflowstatus.ExecutiveWorkflowStatus;
+import trm.dao.executiveworkflowstatus.ExecutiveWorkflowStatusCRUD;
 
 @Controller
 public class ExecController 
 {
 	@RequestMapping(value="/execdashboard")
-	public String index(ModelMap model)
+	public String index(HttpServletRequest request, ModelMap model)
 	{
-//		ExecCRUD svc = new ExecCRUD();
+		if (request.getSession(false) == null || request.getSession().getAttribute("user") == null)
+			return "redirect:/loginform";
 		
-//		List<InternalTrainingRequest> itrs = new InternalTrainingCRUDExt().getAllItrByExec();
-//		List<InternalTraining> trainings = new ArrayList<InternalTraining>();
+		InternalTrainingCRUD itrSvc = new InternalTrainingCRUD();
+		List<ExecWorkflowDTO> trainings = new ArrayList<ExecWorkflowDTO>();
+		Employee executive = (Employee)request.getSession().getAttribute("user");
 		
-//		for (InternalTrainingRequest itr : itrs)
-//		{
-//			TrainingRequest req = itr.getItrTrainingRequest();
-//			InternalTraining training = svc.GetTrainingByRequestId(req.getTrainingRequestId());
-//			
-//			trainings.add(training);
-//		}
 		
-		List<InternalTraining> trainings = new ArrayList<InternalTraining>();
-		InternalTraining training = new InternalTraining();
-		training.setReqId(10000);
-		trainings.add(training);
+		for (ExecutiveWorkflowStatus status: new ExecutiveWorkflowStatusCRUD().getAllExecutiveWorkflowStatusByExec(executive.getEmployee_id()))
+		{
+			try
+			{
+				trainings.add(new ExecWorkflowDTO(status, itrSvc.getItrByTrainingRequest(status.getTrainingRequest()).getItrSchedule()));
+			}
+			catch (EmptyResultDataAccessException e)
+			{
+				System.out.println(status.getExecutiveWorkflowStatusId() + " : " + e.getMessage());
+			}
+		}
 		
 		model.addAttribute("trainings", trainings);
 		
 		return "execdashboard";
 	}
 	
-	@RequestMapping(value="/exec/status{id}")
-	public String updateStatus(HttpServletRequest request, @PathVariable int id, ModelMap model)
+	@RequestMapping(value="/execdashboard/{id}")
+	public String updateStatus(HttpServletRequest request, @PathVariable int id, ModelMap modelW)
 	{
-		InternalTraining training = new ExecServices().Map(id, request);
-		ExecCRUD svc = new ExecCRUD();
+		if (request.getSession(false) == null || request.getSession().getAttribute("user") == null)
+			return "redirect:/loginform";
+
+		ExecutiveWorkflowStatusCRUD svc = new ExecutiveWorkflowStatusCRUD();
+		int ret = svc.updateExecutiveWorkflowStatus(new ExecutiveUtilities().Map(request, svc.getExecutiveWorkflowStatusById(id)));
 		
-		svc.Update(training);
+		if (ret > 0)
+			return "redirect:/execdashboard";
 		
-		return "execdashboard";
+		return "error";
 	}
-	
-	static class DataStore
-	{
-		static List<InternalTraining> trainings;
-		
-		static void Load()
-		{
-			trainings = new ArrayList<InternalTraining>();
-			InternalTraining training = new InternalTraining();
-			training.setReqId(10000);
-			trainings.add(training);
-		}
-	}
-}
-
-class ExecServices
-{
-	InternalTraining Map(int id, HttpServletRequest request)
-	{
-		Boolean email = Boolean.parseBoolean(request.getParameter("email"));
-		Boolean enrollment = Boolean.parseBoolean(request.getParameter("enrollment"));
-		Boolean assessment = Boolean.parseBoolean(request.getParameter("assessment"));
-		Boolean vendor = Boolean.parseBoolean(request.getParameter("vendor"));
-		Boolean completion = Boolean.parseBoolean(request.getParameter("completion"));
-		
-		return new InternalTraining(id, email, enrollment, assessment, vendor, completion);
-	}
-}
-
-class InternalTrainingCRUDExt extends InternalTrainingCRUD
-{
-	public List<InternalTrainingRequest> getAllItrByExec()
-	{
-		return new ArrayList<InternalTrainingRequest>();
-	}
-}
-
-class ExecCRUD
-{
-	public InternalTraining GetTrainingByRequestId(int id)
-	{
-		return new InternalTraining();
-	}
-	
-	public int Update(InternalTraining training)
-	{
-		return 1;
-	}
-}
-
-class ParticipantCRUD
-{
-	public List<Participant> GetAllParticipantsForRequest(int id)
-	{
-		return new ArrayList<Participant>();
-	}
-}
-
-class Participant
-{
-	public Employee employee;
-	public TrainingRequest request;
-}
-
-class TrainingRequestEx extends TrainingRequest
-{
-	List<Participant> participants;
 }
