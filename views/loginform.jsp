@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="resources/customcss/trm.css" rel="stylesheet">
+    <link href="resources/stylesheets/trm.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -20,14 +20,14 @@
             <!-- Left-aligned link -->
             <div class="left-header">
                 <a class="logo-content" href="#" title="Home">
-                    <img class="logoimage1" src="resources/img/as-logo.png" alt="Home">
+                    <img class="logoimage1" src="resources/images/as-logo.png" alt="Home">
                 </a>
             </div>
             <!-- Right-aligned links -->
             <div id="right-header">
                 <a href="#" class="about">About</a>
                 <a href="#" class="logolink" title="Home">
-                    <img class="logoimage2" src="resources/img/as-logo.png" alt="Home">
+                    <img class="logoimage2" src="resources/images/as-logo.png" alt="Home">
                 </a>
             </div>
         </div>

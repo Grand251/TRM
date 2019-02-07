@@ -83,16 +83,26 @@ public class ExecutiveWorkflowStatusCRUD {
 	}
 		
 	
-	public int ExecutiveWorkflowStatus(ExecutiveWorkflowStatus executiveWorkflowStatus) {
+	public int insertExecutiveWorkflowStatus(ExecutiveWorkflowStatus executiveWorkflowStatus) {
+		int executiveId = 0;
+		int trainingRequestId = 0;
+		
+		if(executiveWorkflowStatus.getTrainingRequest()!=null)
+			trainingRequestId = executiveWorkflowStatus.getTrainingRequest().getTrainingRequestId();
+		
+		if(executiveWorkflowStatus.getExecutiveWorkflowStatusExecutive()!=null)
+			executiveId = executiveWorkflowStatus.getExecutiveWorkflowStatusExecutive().getEmployee_id();
+		
 		return new DAOJDBCTemplate().getJdbcTemplate().update("INSERT INTO executive_workflow_status VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
 				new Object[]{"executive_workflow_status_seq.nextval",
-						executiveWorkflowStatus.getTrainingRequest().getTrainingRequestId(),
+						(trainingRequestId!=0) ? trainingRequestId : null,
 						executiveWorkflowStatus.getInvitationsSent(),
 						executiveWorkflowStatus.getSkillportEnrollmentsCompleted(),
 						executiveWorkflowStatus.getAssessmentsRecorded(),
 						executiveWorkflowStatus.getVendorTrainingClearance(),
 						executiveWorkflowStatus.getFeedbackCompleted(),
 						executiveWorkflowStatus.getTrainingCompleted(),
+						(executiveId!=0) ? executiveId : null
 		});
 	}
 	
@@ -103,7 +113,8 @@ public class ExecutiveWorkflowStatusCRUD {
 				+ "assessments_recorded=?, "
 				+ "vendor_training_clearance=?, "
 				+ "completed_feedback=?, "
-				+ "training_completed=? "
+				+ "training_completed=?, "
+				+ "executive_id=?"
 				+ " WHERE executive_workflow_status_id= ?",
 				new Object[]{executiveWorkflowStatus.getInvitationsSent(),
 						executiveWorkflowStatus.getSkillportEnrollmentsCompleted(),
@@ -111,6 +122,7 @@ public class ExecutiveWorkflowStatusCRUD {
 						executiveWorkflowStatus.getVendorTrainingClearance(),
 						executiveWorkflowStatus.getFeedbackCompleted(),
 						executiveWorkflowStatus.getTrainingCompleted(),
+						executiveWorkflowStatus.getExecutiveWorkflowStatusExecutive().getEmployee_id(),
 						executiveWorkflowStatus.getExecutiveWorkflowStatusId()});
 	}
 	
