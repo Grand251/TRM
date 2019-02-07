@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,8 +67,25 @@ public class VendorDetailsController {
 				return "newVendorDetailsForm";	
 			}
 			
+			/*
+			 * 
+			 * CREATE TABLE VENDOR_DETAILS
+				(
+				  vendor_id number(5) primary key,
+				  vendor_name varchar(20) unique not null,
+				  vendor_phone varchar(20) unique not null,
+				  vendor_email varchar(40) unique not null,
+				  vendor_city varchar(20) not null,
+				  vendor_state varchar(10) not null,
+				  vendor_country varchar(10) not null,
+				  vendor_zipcode varchar(10) not null,
+				  vendor_time_zone varchar(10) not null
+				);
+			 */
+			
+			
 			@RequestMapping(value = "insertVendorDetails")
-			public String insertVendorDetails(@Valid @ModelAttribute("vendorDetails") VendorDetails vendorDetails, ModelMap model, BindingResult result) {
+			public String insertVendorDetails(@Valid @ModelAttribute("vendorDetails") VendorDetails vendorDetails, BindingResult result, ModelMap model) {
 				System.out.println(result);
 				for(FieldError error : result.getFieldErrors()) {
 					System.out.println(error.getField());
@@ -77,7 +93,7 @@ public class VendorDetailsController {
 					System.out.println(error.getDefaultMessage());
 				}
 				
-				if(result.equals(null)) {
+				if(!result.equals(null)) {
 					ArrayList<LinkedHashMap<String, String>> errorReport = new ArrayList<LinkedHashMap<String, String>>();
 					for(FieldError error : result.getFieldErrors()) {
 						LinkedHashMap<String, String> errorValues = new LinkedHashMap<String, String>();
@@ -86,8 +102,9 @@ public class VendorDetailsController {
 						errorValues.put("Error: ", error.getDefaultMessage());
 						errorReport.add(errorValues);
 					}
-					model.addAttribute(errorReport);
-					return "redirect:/insertVendorDetailsForm";
+					model.addAttribute("command", vendorDetails);
+					model.addAttribute("errorReport", errorReport);
+					return "newVendorDetailsForm";
 				}
 				
 				int ret = new VendorDetailsCRUDService().insertVendorDetails(vendorDetails);
