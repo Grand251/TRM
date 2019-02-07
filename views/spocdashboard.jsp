@@ -6,19 +6,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <link rel="stylesheet" href="resources/Bootstrap/bootstrap-4.2.1-dist\css\bootstrap.min.css">
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
-  <link rel="stylesheet" href="resources/customcss/spoc.css">
-  <link rel="stylesheet" href="resources/CSS/trm.css">
-  <link rel="stylesheet" href="resources/customcss/custom.css">
-
-  <script src="resources/spocJquery.js"></script>
+  <meta charset="utf-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="resources/stylesheets/spoc.css">
+  <link  rel="stylesheet" href="resources/stylesheets/custom.css" >
+  <link  rel="stylesheet" href="resources/stylesheets/trm.css" >
+  <script src="resources/js/spocJquery.js"></script>
   <script>
   	function submitTT(){
     	$(".toProgress").click(function(){
