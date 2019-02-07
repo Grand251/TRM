@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +41,7 @@ public class VendorDetailsController {
 			}
 			
 			@RequestMapping(value = "saveUpdateVendorDetailsData")
-			public String editVendorDetails(@Valid @ModelAttribute("vendorDetails") VendorDetails vendorDetails) {
+			public String editVendorDetails(@ModelAttribute("vendorDetails") VendorDetails vendorDetails) {
 				int ret = new VendorDetailsCRUDService().updateVendorDetails(
 						vendorDetails.getVendor_id(),
 						vendorDetails.getVendor_name(),
@@ -64,7 +65,10 @@ public class VendorDetailsController {
 			}
 			
 			@RequestMapping(value = "insertVendorDetails")
-			public String insertVendorDetails(@ModelAttribute("vendorDetails") VendorDetails vendorDetails) {
+			public String insertVendorDetails(@Valid @ModelAttribute("vendorDetails") VendorDetails vendorDetails, BindingResult result) {
+				System.out.println(result);
+				if(result!=null)
+					System.out.println(result.getErrorCount());
 				int ret = new VendorDetailsCRUDService().insertVendorDetails(vendorDetails);
 				if(ret > 0) return "redirect:/showallVendorDetails";
 				else return "error";
