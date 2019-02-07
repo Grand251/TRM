@@ -8,18 +8,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="stylesheet" href="resources/bootstrap-4.2.1-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="resources/stylesheets/bootstrap.min.css">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
-  <link rel="stylesheet" href="resources/spoc.css">
-  <link rel="stylesheet" href="resources/CSS/trm.css">
-  <link rel="stylesheet" href="resources/customcss/custom.css">
+  <link rel="stylesheet" href="resources/stylesheets/spoc.css">
+  <link rel="stylesheet" href="resources/stylesheets/trm.css">
+  <link rel="stylesheet" href="resources/stylesheets/custom.css">
 
-  <script src="resources/executiveJquery.js"></script>
+  <script src="resources/js/executiveJquery.js"></script>
 </head>
 
 <body>
@@ -29,14 +29,14 @@
       <!-- Left-aligned link -->
       <div class="left-header">
         <a class="logo-content" href="#" title="Home">
-          <img class="logoimage1" src="resources/img/as-logo.png" alt="Home">
+          <img class="logoimage1" src="resources/images/as-logo.png" alt="Home">
         </a>
       </div>
       <!-- Right-aligned links -->
       <div id="right-header">
         <a href="about.html" class="about">About</a>
         <a href="#" class="logolink" title="Home">
-          <img class="logoimage2" src="resources/img/as-logo.png" alt="Home">
+          <img class="logoimage2" src="resources/images/as-logo.png" alt="Home">
         </a>
       </div>
     </div>
@@ -63,10 +63,10 @@
                 aria-haspopup="true"><span class="glyphicon glyphicon-th-list"></span>
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                <li><a href="#"><span class="glyphicon glyphicon-pencil"></span> ${training.workflow.trainingRequest.requestTrainingModuleScope} </a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-home"></span> ${training.workflow.trainingRequest.requestTrainingType}</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-pencil"></span> Scope: ${training.workflow.trainingRequest.requestTrainingModuleScope} </a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-home"></span> Type: ${training.workflow.trainingRequest.requestTrainingType}</a></li>
                 <!--internal or vender -->
-                <li><a href="#"> <span class="glyphicon glyphicon-modal-window"></span> ${training.workflow.trainingRequest.requestTrainingMode}</a></li>
+                <li><a href="#"> <span class="glyphicon glyphicon-modal-window"></span> Mode: ${training.workflow.trainingRequest.requestTrainingMode}</a></li>
                 <!--"mode" of training -->
                 <li><a href="#"><span>&#35;</span> ${training.workflow.trainingRequest.approxNumberOfParticipants} Participants </a></li>
                 <!--Edit button 1 popover-->
@@ -93,7 +93,8 @@
           </td>
         </table>
         <!--card body -->
-        <div class="card-body pointer toExecutiveProgress">
+        <form class="toExecutiveProgress" action="execdashboard/${training.workflow.executiveWorkflowStatusId}">
+        <div class="card-body pointer">
           <table id="Info">
             <tr>
               <td> <span class="glyphicon glyphicon-pencil"></span>
@@ -116,6 +117,7 @@
           </table>
 
         </div>
+        </form>
         <!--card body end -->
       </div>
     </div>
