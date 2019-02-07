@@ -34,7 +34,7 @@ public class VendorTrainingRequestMapper implements RowMapper<VendorTrainingRequ
 	VendorTrainer vendorTrainer = new VendorTrainerCRUDService().getVendorTrainerById(resultSet.getInt(4));
 	vendorTrainingRequest.setVendorTrainer(vendorTrainer);
 	
-	TrainingSchedule schedule = new TrainingScheduleCRUDService().getTrainingScheduleById(resultSet.getInt(5));
+	TrainingSchedule schedule = new TrainingScheduleCRUDService().getTrainingScheduleById(resultSet.getString(5));
 	vendorTrainingRequest.setSchedule(schedule);
 	
 	Employee executive = new EmployeeCRUDService().getEmployeeById(resultSet.getInt(6));
