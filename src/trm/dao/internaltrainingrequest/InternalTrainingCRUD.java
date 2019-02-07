@@ -169,9 +169,8 @@ public class InternalTrainingCRUD {
 	public int insertItr(InternalTrainingRequest itr) {
 		return DAOJDBCTemplate.getJdbcTemplate().update(
 				"INSERT INTO internal_training_request VALUES(internal_training_id_seq.nextval, "
-				+ "?, ?, ?, ?, ?, ?, ?)",
-				new Object[] {itr.getItrStatus(),
-						      itr.getItrTrainingRequest().getTrainingRequestId(),
+				+ "?, ?, ?, ?, ?, ?)",
+				new Object[] {itr.getItrTrainingRequest().getTrainingRequestId(),
 						      itr.getItrSchedule().getTraining_schedule_id(),
 						      itr.getItrTrainer().getEmployee_id(),
 						      itr.getItrExecutive().getEmployee_id(),
