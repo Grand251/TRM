@@ -89,6 +89,15 @@ public class TempTrainingRequestCRUD {
 		return trainingRequests;
 	}
 	
+	public List<TrainingRequest> getAllTrainingRequestBySpocInRange(int spocId, Timestamp start, Timestamp end)
+	{
+		List<TrainingRequest> trainingRequests = new DAOJDBCTemplate().getJdbcTemplate().query(
+				"select * FROM training_request WHERE request_project_spoc=? AND request_start_date >= ? AND request_start_date <= ?",
+				new Object[]{spocId, start, end}, 
+				new TrainingRequestMapper());
+		return trainingRequests;
+	}
+	
 	public List<TrainingRequest> getAllTrainingRequestBySpocStartInRange(int spocId, Timestamp start, Timestamp end)
 	{
 		List<TrainingRequest> trainingRequests = new DAOJDBCTemplate().getJdbcTemplate().query(

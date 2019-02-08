@@ -27,8 +27,24 @@ import trm.dao.trainingrequest.TrainingRequestCRUD;
 public class ChartController {
 	TrainingRequestCRUD trCRUD = new TrainingRequestCRUD();
 	
-	@RequestMapping(value="daotest")
-	public String chartRequestsByVert(ModelMap model) {
+	@RequestMapping(value="chartverticalrequests")
+	public String chartRequestsByVert(HttpServletRequest req, ModelMap model) {
+			
+		if(req.getParameter("period")!=null) {
+			int period = Integer.parseInt(req.getParameter("period"));
+			
+			model.addAttribute("requests",  getRequestsByVertical(period));
+			model.addAttribute("period", period);
+		}
+		else {
+			model.addAttribute("requests",  getRequestsByVertical(30));
+			model.addAttribute("period", 30);
+		}
+		
+		return "ChartVerticalRequests";
+	}
+	
+	private HashMap<String, Integer> getRequestsByVertical(int period){
 		TempTrainingRequestCRUD ttrCRUD = new TempTrainingRequestCRUD();
 		EmployeeCRUDService eCRUD = new EmployeeCRUDService();
 		
@@ -40,18 +56,16 @@ public class ChartController {
 			spocs.put(emp.getEmployee_id(), emp);
 		}
 		
-		HashMap<String, Integer> requestsBySPOC = new HashMap<String, Integer>();
+		HashMap<String, Integer> requestsByVertical = new HashMap<String, Integer>();
+		ArrayList<Timestamp> dateRange = getDateRange(period);
 		for(Integer key : spocs.keySet()) {
-			requestsBySPOC.put(spocs.get(key).getVertical(), 
-					ttrCRUD.getAllTrainingRequestBySpoc(key).size());
+			requestsByVertical.put(spocs.get(key).getVertical(), 
+					ttrCRUD.getAllTrainingRequestBySpocInRange(key, dateRange.get(0), dateRange.get(1)).size());
 		}
-
-		model.addAttribute("requests", requestsBySPOC);
-		
-		return "TempDAO";
+		return requestsByVertical;
 	}
 	
-	@RequestMapping(value="chartspoc")
+	@RequestMapping(value="chartspoclocation")
 	public String chartSpocRequestByLocationandMode(HttpServletRequest req, ModelMap model) {
 		EmployeeCRUDService eCRUD = new EmployeeCRUDService();
 		List<Employee> spocs = eCRUD.getAllEmployeeByTitle("SPOC");
@@ -71,14 +85,13 @@ public class ChartController {
 			System.out.println(period);
 			System.out.println(spocId);
 			model.addAttribute("requests", getSpocRequestByModeAndLocation(spocId, period));
-			model.addAttribute("timeRequests", getSpocRequestByRanges(spocId, period));
 			model.addAttribute("period", period);
 			model.addAttribute("spoc", spocId);
 		}		
-		return "ChartSpoc";
+		return "ChartSingleSpocLocation";
 	}
 	
-	@RequestMapping(value="daotest2")
+	@RequestMapping(value="chartsinglespocrequests")
 	public String chartSpocRequestByRange(HttpServletRequest req, ModelMap model) {
 		
 		EmployeeCRUDService eCRUD = new EmployeeCRUDService();
@@ -101,7 +114,7 @@ public class ChartController {
 			model.addAttribute("spoc", spocId);
 		}
 		
-		return "TempDAO2";
+		return "ChartSingleSpocRequests";
 	}
 	
 	private LinkedHashMap<String, LinkedHashMap<String, Integer>> getSpocRequestByModeAndLocation(int spocId, int period) {
@@ -157,7 +170,7 @@ public class ChartController {
 			model.addAttribute("period", 30);
 		}
 		
-		return "ChartTrainingManager";
+		return "ChartTrainingPerformance";
 	}
 	
 	/*@RequestMapping(value="trainingmgrcharts")
@@ -227,6 +240,7 @@ public class ChartController {
 		model.addAttribute("reqOptions", reqOptions);
 		
 		if(req.getParameter("reqChoice")!=null && req.getParameter("period")!=null) {
+
 			int period = Integer.parseInt(req.getParameter("period"));
 			int requesterId = Integer.parseInt(req.getParameter("reqChoice"));
 			
@@ -236,7 +250,7 @@ public class ChartController {
 			model.addAttribute("req", requesterId);
 		}
 		
-		return "RequesterCharts";
+		return "ChartRequesters";
 	}
 	
 	//status values are arbitrary to produce output
@@ -245,9 +259,9 @@ public class ChartController {
 		TempTrainingRequestCRUD ttrCRUD = new TempTrainingRequestCRUD();
 		ArrayList<Timestamp> range = getDateRange(period);
 		
-		int canceled = ttrCRUD.getNumRequestsByRequesterInStatusAndDateRange(requesterId, 1, 1, range.get(0), range.get(1));
-		int inProgress = ttrCRUD.getNumRequestsByRequesterInStatusAndDateRange(requesterId, 2, 2, range.get(0), range.get(1));
-		int complete = ttrCRUD.getNumRequestsByRequesterInStatusAndDateRange(requesterId, 3, 3, range.get(0), range.get(1));
+		int canceled = ttrCRUD.getNumRequestsByRequesterInStatusAndDateRange(requesterId, 1, 3, range.get(0), range.get(1));
+		int inProgress = ttrCRUD.getNumRequestsByRequesterInStatusAndDateRange(requesterId, 4, 6, range.get(0), range.get(1));
+		int complete = ttrCRUD.getNumRequestsByRequesterInStatusAndDateRange(requesterId, 7, 10, range.get(0), range.get(1));
 		statusCounts.add(canceled);
 		statusCounts.add(inProgress);
 		statusCounts.add(complete);
