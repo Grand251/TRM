@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import trm.dao.employee.Employee;
 import trm.dao.employee.EmployeeCRUDService;
 import trm.dao.trainingparticipant.TrainingParticipantCRUD;
-import trm.dao.trainingrequest.TempTrainingRequestCRUD;
 import trm.dao.trainingrequest.TrainingRequest;
 import trm.dao.trainingrequest.TrainingRequestCRUD;
 
@@ -45,7 +44,7 @@ public class ChartController {
 	}
 	
 	private HashMap<String, Integer> getRequestsByVertical(int period){
-		TempTrainingRequestCRUD ttrCRUD = new TempTrainingRequestCRUD();
+		TrainingRequestCRUD trCRUD = new TrainingRequestCRUD();
 		EmployeeCRUDService eCRUD = new EmployeeCRUDService();
 		
 		List<Employee> employees = eCRUD.getAllEmployeeByTitle("SPOC");
@@ -60,7 +59,7 @@ public class ChartController {
 		ArrayList<Timestamp> dateRange = getDateRange(period);
 		for(Integer key : spocs.keySet()) {
 			requestsByVertical.put(spocs.get(key).getVertical(), 
-					ttrCRUD.getAllTrainingRequestBySpocInRange(key, dateRange.get(0), dateRange.get(1)).size());
+					trCRUD.getAllTrainingRequestBySpocInRange(key, dateRange.get(0), dateRange.get(1)).size());
 		}
 		return requestsByVertical;
 	}
@@ -118,9 +117,9 @@ public class ChartController {
 	}
 	
 	private LinkedHashMap<String, LinkedHashMap<String, Integer>> getSpocRequestByModeAndLocation(int spocId, int period) {
-		TempTrainingRequestCRUD ttrCRUD = new TempTrainingRequestCRUD();
+		TrainingRequestCRUD trCRUD = new TrainingRequestCRUD();
 		
-		List<TrainingRequest> spocTrainingRequests = ttrCRUD.getAllTrainingRequestBySpoc(spocId);
+		List<TrainingRequest> spocTrainingRequests = trCRUD.getAllTrainingRequestBySpoc(spocId);
 		
 		LinkedHashSet<String> modes = new LinkedHashSet<String>();
 		LinkedHashSet<String> locations = new LinkedHashSet<String>();
@@ -138,7 +137,7 @@ public class ChartController {
 		for(String location : locations) {
 			requestsByModeAndLocation.put(location, new LinkedHashMap<String, Integer>());
 			for(String mode : modes) {
-				int numTrainings = ttrCRUD.getNumTrainingRequestBySPOCLocationMode(spocId, location, mode, dateRange.get(0), dateRange.get(1));
+				int numTrainings = trCRUD.getNumTrainingRequestBySPOCLocationMode(spocId, location, mode, dateRange.get(0), dateRange.get(1));
 				requestsByModeAndLocation.get(location).put(mode, numTrainings);
 			}
 		}
@@ -156,7 +155,7 @@ public class ChartController {
 	
 	
 	
-	@RequestMapping(value="trainingmgrcharts")
+	@RequestMapping(value="charttrainingperformance")
 	public String chartSpocPerformanceByRange(HttpServletRequest req, ModelMap model) {
 		
 		if(req.getParameter("period")!=null) {
@@ -202,12 +201,12 @@ public class ChartController {
 	}*/
 	
 	private LinkedHashMap<String, Integer> getParticipantsPerTrainingType(int requesterId, int period){
-		TempTrainingRequestCRUD ttrCRUD = new TempTrainingRequestCRUD();
+		TrainingRequestCRUD trCRUD = new TrainingRequestCRUD();
 		TrainingParticipantCRUD tpCRUD = new TrainingParticipantCRUD();
 		LinkedHashMap<String, Integer> results = new LinkedHashMap<String, Integer>();
 		
 		ArrayList<Timestamp> range = getDateRange(period);
-		List<TrainingRequest> trainingRequests = ttrCRUD.getRequestsByRequesterInRange(requesterId, range.get(0), range.get(1));
+		List<TrainingRequest> trainingRequests = trCRUD.getRequestsByRequesterInRange(requesterId, range.get(0), range.get(1));
 		
 		for(TrainingRequest trainingRequest : trainingRequests) {
 			String module = trainingRequest.getRequestTrainingModule();
@@ -256,7 +255,7 @@ public class ChartController {
 	//status values are arbitrary to produce output
 	private ArrayList<Integer> getStatusCountInPeriod(int requesterId, int period){
 		ArrayList<Integer> statusCounts = new ArrayList<Integer>();
-		TempTrainingRequestCRUD ttrCRUD = new TempTrainingRequestCRUD();
+		TrainingRequestCRUD ttrCRUD = new TrainingRequestCRUD();
 		ArrayList<Timestamp> range = getDateRange(period);
 		
 		int canceled = ttrCRUD.getNumRequestsByRequesterInStatusAndDateRange(requesterId, 1, 3, range.get(0), range.get(1));
@@ -280,7 +279,7 @@ public class ChartController {
 		
 		ArrayList<Timestamp> range = getDateRange(period);
 		
-		TempTrainingRequestCRUD ttrCRUD = new TempTrainingRequestCRUD();
+		TrainingRequestCRUD ttrCRUD = new TrainingRequestCRUD();
 		for(Employee spoc: spocs) {
 			String uID = spoc.getFirst_name().charAt(0) + "" + spoc.getLast_name().charAt(0) + "" + spoc.getEmployee_id();
 			int performance = ttrCRUD.getSPOCSchedulePerformance(spoc.getEmployee_id(), range.get(0), range.get(1));
@@ -379,7 +378,7 @@ public class ChartController {
 	}
 	
 	private LinkedHashMap<String, Integer> getQuarterlyTotals(ArrayList<ArrayList<Timestamp>> ranges, int spocId){
-		TempTrainingRequestCRUD ttrCRUD = new TempTrainingRequestCRUD();
+		TrainingRequestCRUD ttrCRUD = new TrainingRequestCRUD();
 		LinkedHashMap<String, Integer> results = new LinkedHashMap<String, Integer>();
 		
 		for(ArrayList<Timestamp> range : ranges) {
@@ -412,14 +411,14 @@ public class ChartController {
 	}
 	
 	private LinkedHashMap<String, Integer> getMonthlyTotals(ArrayList<ArrayList<Timestamp>> ranges, int spocId){
-		TempTrainingRequestCRUD ttrCRUD = new TempTrainingRequestCRUD();
+		TrainingRequestCRUD trCRUD = new TrainingRequestCRUD();
 		LinkedHashMap<String, Integer> results = new LinkedHashMap<String, Integer>();
 		
 		for(ArrayList<Timestamp> range : ranges) {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(range.get(0));
 			String label = cal.get(Calendar.MONTH) + "-" + cal.get(Calendar.YEAR);
-			int value = ttrCRUD.getAllTrainingRequestBySpocStartInRange(spocId, range.get(0), range.get(1)).size();
+			int value = trCRUD.getAllTrainingRequestBySpocStartInRange(spocId, range.get(0), range.get(1)).size();
 			results.put(label, value);
 		}
 		
