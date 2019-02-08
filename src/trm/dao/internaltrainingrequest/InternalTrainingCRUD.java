@@ -422,6 +422,12 @@ public class InternalTrainingCRUD {
 				
 	}
 	
+	public int getActiveConnectionCount()
+	{
+	    Integer numberOfConnections = jTemp.queryForObject("select num from v$parameter where name in ('transactions')", Integer.class);
+	    return numberOfConnections.intValue();
+	}
+	
 	public static void main(String[] args) 
 	{
 	 

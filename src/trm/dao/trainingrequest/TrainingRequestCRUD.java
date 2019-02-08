@@ -286,12 +286,7 @@ public class TrainingRequestCRUD
 	    	return trainingRequestList;
 	}
 
-	public int getActiveConnectionCount()
-	{
-	    Integer numberOfConnections = jTemp.queryForObject("Select count(1) From V$session\r\n" + 
-	    	"where status='ACTIVE'", Integer.class);
-	    return numberOfConnections.intValue();
-	}
+	
 	
 	public static void main(String[] args)
 	{
@@ -376,10 +371,10 @@ public class TrainingRequestCRUD
 		//System.out.println(crud.updateTrainingRequestTimesTimezoneLocation(10000, st, et, "MST", "Phoenix"));
 		
 		//List<TrainingRequest> list = crud.getAllRequest;
-		
-		System.out.println("Connection count before getAll: " + crud.getActiveConnectionCount());
+		System.out.println("Hello");
+		//System.out.println("Connection count before getAll: " + crud.getActiveConnectionCount());
 		List<TrainingRequest> list = crud.getAllTrainingRequest();
-		System.out.println("Connection count after getAll: " + crud.getActiveConnectionCount());
+		//System.out.println("Connection count after getAll: " + crud.getActiveConnectionCount());
 		for(TrainingRequest trainerRequest : list)
 		{
 			System.out.println(trainerRequest.getTrainingRequestId());
