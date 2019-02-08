@@ -29,7 +29,7 @@ public class TrainingRequestCRUD
 {
 	//JdbcTemplate object. Will be initialized in every method using the static method
 	//getJdbcTemplate in the new DAOJDBCTemplate() class.
-	private JdbcTemplate jTemp = new DAOJDBCTemplate().getJdbcTemplate();
+        private JdbcTemplate jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 	
 	/*
 	 * Inserts a new training request into training_request table using 
@@ -44,6 +44,8 @@ public class TrainingRequestCRUD
 	 */
 	public int insertTrainingRequest(TrainingRequest trainingRequest)
 	{
+	        //DAOJDBCTemplate jdbcTemplate = new DAOJDBCTemplate();
+	        //jTemp = jdbcTemplate.getJdbcTemplate();
 	    	//ConfigurableApplicationContext context = new DAOJDBCTemplate().getApplicationContext();
 	    	//JdbcTemplate jTemp = (JdbcTemplate)context.getBean("jTemp");
 		/*int numberOfRowsEffected = jTemp.update("Insert into training_Request values(training_id_request_seq.nextval,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" , 
@@ -258,7 +260,7 @@ public class TrainingRequestCRUD
 	
 	public int updateTrainingRequestTimesTimezoneLocation(int trainingRequestId, Timestamp requestStartTime, Timestamp requestEndTime, String requestTimeZone, String requestLocation)
 	{
-	    int count = jTemp.update("Update training_request set request_start_time = ?, request_end_time = ?, request_time_zone = ?, request_location = ? where training_request_id = ?",
+	    int count = jTemp.update("Update training_request set request_start_date = ?, request_end_date = ?, request_time_zone = ?, request_location = ? where training_request_id = ?",
 		    		      new Object[] { requestStartTime, requestEndTime, requestTimeZone, requestLocation, trainingRequestId});
 	    return count;
 	}
@@ -289,11 +291,11 @@ public class TrainingRequestCRUD
 	 * @return List of training request objects that represents all of the training
 	 * 		   requests in the training_request table.
 	 */
-	public List<TrainingRequest> getAllTrainingRequest() throws SQLException
+	public List<TrainingRequest> getAllTrainingRequest()
 	{
 		List<TrainingRequest> trainingRequestList = jTemp.query("Select * from training_request where status >= 0" , new TrainingRequestMapper());
 		
-		jTemp.getDataSource().getConnection().close();
+		//jTemp.getDataSource().getConnection().close();
 		
 		return trainingRequestList;
 	}
@@ -323,11 +325,18 @@ public class TrainingRequestCRUD
 	    	jTemp.getDataSource().getConnection().close();
 	    	return trainingRequestList;
 	}
-	
+
+	public int getActiveConnectionCount()
+	{
+	    Integer numberOfConnections = jTemp.queryForObject("Select count(1) From V$session\r\n" + 
+	    	"where status='ACTIVE'", Integer.class);
+	    return numberOfConnections.intValue();
+	}
 	
 	public static void main(String[] args)
 	{
 		TrainingRequestCRUD crud = new TrainingRequestCRUD();
+		//crud.deleteTrainingRequest(10115);
 		
 		/*
 		List<TrainingRequest> list;
@@ -345,7 +354,7 @@ public class TrainingRequestCRUD
 		    System.out.println(request.getRequesterId());
 		}
 		*/
-
+		
 		TrainingRequest tr = new TrainingRequest();
 		tr.setRequesterId(1000157);
 		tr.setRequestTrainingType("IT");
@@ -360,7 +369,7 @@ public class TrainingRequestCRUD
 		tr.setRequestTimeZone("EST");
 		tr.setApproxNumberOfParticipants(15);
 		
-		Employee spoc = new EmployeeCRUDService().getEmployeeById(1000035);
+		Employee spoc = new EmployeeCRUDService().getEmployeeById(1000032);
 		tr.setRequestProjectSpoc(spoc);
 		
 		Timestamp timeR = Timestamp.valueOf("2019-01-18 03:00:00");
@@ -369,6 +378,7 @@ public class TrainingRequestCRUD
 		tr.setJustificationOfRequest("Needed");
 		
 		System.out.println(crud.insertTrainingRequest(tr));
+
 		
 		/*
 		TrainingRequest tr = new TrainingRequest();
@@ -408,13 +418,13 @@ public class TrainingRequestCRUD
 		
 		//List<TrainingRequest> list = crud.getAllRequest;
 		
-		
-		//List<TrainingRequest> list = crud.getAllTrainingRequest();
-		
-		//for(TrainingRequest trainerRequest : list)
-		//{
-		//	System.out.println(trainerRequest.getTrainingRequestId());
-		//}
+		System.out.println("Connection count before getAll: " + crud.getActiveConnectionCount());
+		List<TrainingRequest> list = crud.getAllTrainingRequest();
+		System.out.println("Connection count after getAll: " + crud.getActiveConnectionCount());
+		for(TrainingRequest trainerRequest : list)
+		{
+			System.out.println(trainerRequest.getTrainingRequestId());
+		}
 		
 		
 	}

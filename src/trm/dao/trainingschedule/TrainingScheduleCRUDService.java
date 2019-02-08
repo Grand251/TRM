@@ -18,7 +18,7 @@ import trm.dao.DAOJDBCTemplate;
  */
 public class TrainingScheduleCRUDService {
 	
-	JdbcTemplate jtemp = new DAOJDBCTemplate().getJdbcTemplate();
+	private JdbcTemplate jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 	
 	public static void main(String[] args) {
 		/*TrainingScheduleCRUDService tCRUD =  new TrainingScheduleCRUDService();
@@ -122,6 +122,18 @@ public class TrainingScheduleCRUDService {
 									training_schedule_id});
 
 		return ret;
+	}
+	
+	public int updateTrainingSchedule(TrainingSchedule schedule)
+	{
+	    int numOfRowsEffected = jtemp.update("UPDATE TRAINING_SCHEDULE SET training_city = ?, training_state = ?, training_country = ?, training_zipcode = ?, training_time_zone = ?, training_location = ?, training_room_number = ?, training_start_date = ?, training_end_date = ?, training_url = ?, training_audio = ? where training_schedule_id = ?",
+			new Object[] {
+					schedule.getTraining_city(), schedule.getTraining_state(), schedule.getTraining_country(), 
+					schedule.getTraining_zipcode(), schedule.getTraining_time_zone(), schedule.getTraining_location(),
+					schedule.getTraining_room_number(), schedule.getTraining_start_date(), schedule.getTraining_end_date(),
+					schedule.getTraining_url(), schedule.getTraining_audio(),
+					schedule.getTraining_schedule_id()});
+	    return numOfRowsEffected;
 	}
 	
 	
