@@ -8,8 +8,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<<<<<<< HEAD
 <link rel="stylesheet"
 	href="resources/bootstrap-4.2.1-dist/css/bootstrap.min.css">
+=======
+  <link rel="stylesheet" href="resources/stylesheets/bootstrap.min.css">
+>>>>>>> 8d44bc5427638387c1591b6b76552c725d2dbbfd
 
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -20,6 +24,7 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
+<<<<<<< HEAD
 <link rel="stylesheet" href="resources/spoc.css">
 <link rel="stylesheet" href="resources/CSS/trm.css">
 <link rel="stylesheet" href="resources/customcss/custom.css">
@@ -47,10 +52,40 @@
 		</div>
 	</div>
 	<!--End of navigation bar-->
+=======
+  <link rel="stylesheet" href="resources/stylesheets/spoc.css">
+  <link rel="stylesheet" href="resources/stylesheets/trm.css">
+  <link rel="stylesheet" href="resources/stylesheets/custom.css">
+
+  <script src="resources/js/executiveJquery.js"></script>
+</head>
+
+<body>
+  <!--Top navigation -->
+  <div id="topnav" class="navbar navbar-default navbar-fixed-top">
+    <div class="header-container">
+      <!-- Left-aligned link -->
+      <div class="left-header">
+        <a class="logo-content" href="#" title="Home">
+          <img class="logoimage1" src="resources/images/as-logo.png" alt="Home">
+        </a>
+      </div>
+      <!-- Right-aligned links -->
+      <div id="right-header">
+        <a href="about.html" class="about">About</a>
+        <a href="#" class="logolink" title="Home">
+          <img class="logoimage2" src="resources/images/as-logo.png" alt="Home">
+        </a>
+      </div>
+    </div>
+  </div>
+  <!--End of navigation bar-->
+>>>>>>> 8d44bc5427638387c1591b6b76552c725d2dbbfd
 
 	<!--Space between navigation and ongoing requests-->
 	<div style="height: 10vh;"></div>
 
+<<<<<<< HEAD
 	<!--Container that holds ongoing requests-->
 	<div class="border center-block"
 		style="width: 95%; height: 81vh; overflow: auto;">
@@ -92,6 +127,34 @@
 											data-target="#myModal">Edit</button>
 									</li>
 									</li>
+=======
+  <!--Container that holds ongoing requests-->
+  <div class="border center-block" style="width: 95%; height:81vh; overflow: auto;">	
+  	<c:forEach items="${trainings}" var="training">
+  		<!-- 1 card -->
+    <div class="portfolio-item cardSpacing" style="float:left">
+      <div class="card h-100" id="card">
+        <table>
+          <td>
+            <h3 align="left" style="margin-top: 0px">${training.workflow.executiveWorkflowStatusId}</h3>
+          </td>
+          <td>
+            <!--card Drop down -->
+            <div class="dropdown" align="right" style="margin-top: 0px" id="moreInfo">
+              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+                aria-haspopup="true"><span class="glyphicon glyphicon-th-list"></span>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a href="#"><span class="glyphicon glyphicon-pencil"></span> Scope: ${training.workflow.trainingRequest.requestTrainingModuleScope} </a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-home"></span> Type: ${training.workflow.trainingRequest.requestTrainingType}</a></li>
+                <!--internal or vender -->
+                <li><a href="#"> <span class="glyphicon glyphicon-modal-window"></span> Mode: ${training.workflow.trainingRequest.requestTrainingMode}</a></li>
+                <!--"mode" of training -->
+                <li><a href="#"><span>&#35;</span> ${training.workflow.trainingRequest.approxNumberOfParticipants} Participants </a></li>
+                <!--Edit button 1 popover-->
+                <li> <button type="button" class="center-block" data-toggle="modal" data-target="#myModal">Edit</button></li>
+                </li>
+>>>>>>> 8d44bc5427638387c1591b6b76552c725d2dbbfd
 
 									<li role="separator" class="divider"></li>
 									<li><a href="#"><span
@@ -118,6 +181,7 @@
 										style="color: blue;"><span
 											class="glyphicon glyphicon-list-alt"></span> Log</a></li>
 
+<<<<<<< HEAD
 								</ul>
 							</div> <!--card Drop down end  -->
 						</td>
@@ -151,6 +215,47 @@
 			</div>
 			<!--end card -->
 		</c:forEach>
+=======
+              </ul>
+            </div>
+            <!--card Drop down end  -->
+          </td>
+        </table>
+        <!--card body -->
+        <form class="toExecutiveProgress" action="execdashboard/${training.workflow.executiveWorkflowStatusId}">
+        <div class="card-body pointer">
+          <table id="Info">
+            <tr>
+              <td> <span class="glyphicon glyphicon-pencil"></span>
+                ${training.workflow.trainingRequest.requestTrainingModule} </td>
+            </tr>
+            <tr>
+              <td> <span class="glyphicon glyphicon-calendar"></span>
+                ${training.schedule.training_start_date} </td>
+            </tr>
+            <tr>
+              <td><span class="glyphicon glyphicon-home"></span>
+                ${training.workflow.trainingRequest.requestTrainingType} </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td> <span class="glyphicon glyphicon-asterisk"></span>
+                ${training.workflow.trainingRequest.status} </td>
+              <!--Where the training is in development -->
+            </tr>
+          </table>
+
+        </div>
+        </form>
+        <!--card body end -->
+      </div>
+    </div>
+    <!--end card -->
+  	</c:forEach>
+  	
+  </div>
+  <!--End of fluid-->
+>>>>>>> 8d44bc5427638387c1591b6b76552c725d2dbbfd
 
 	</div>
 	<!--End of fluid-->

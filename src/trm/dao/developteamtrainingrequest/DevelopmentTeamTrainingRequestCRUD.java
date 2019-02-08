@@ -14,13 +14,11 @@ import trm.dao.trainingschedule.TrainingScheduleCRUDService;
 
 public class DevelopmentTeamTrainingRequestCRUD
 {
-    private JdbcTemplate jtemp;
+    private JdbcTemplate jTemp = new DAOJDBCTemplate().getJdbcTemplate();
     
     public int insertDevelopmentTeamTrainingRequest(DevelopmentTeamTrainingRequest dttRequest)
     {
-	
-	jtemp = DAOJDBCTemplate.getJdbcTemplate();
-	int numberOfRowsEffected = jtemp.update("Insert into develop_team_training_request values(dev_team_training_req_seq.nextval,?,?,?,?,?,?,?,?)" , 
+	int numberOfRowsEffected = jTemp.update("Insert into develop_team_training_request values(dev_team_training_req_seq.nextval,?,?,?,?,?,?,?,?)" , 
 												  new Object[] {dttRequest.getTrainingRequest().getTrainingRequestId(),
 													        dttRequest.getConfirmedTrainer().getEmployee_id(),
 													        dttRequest.getTrainerApprovalMail(),
@@ -35,32 +33,28 @@ public class DevelopmentTeamTrainingRequestCRUD
     
     public int deleteDevelopmentTeamTrainingRequest(int dttRequestId)
     {
-	jtemp = DAOJDBCTemplate.getJdbcTemplate();
-	int numOfRowsEffected = jtemp.update("Update develop_team_training_request set status = -10 where dtt_training_id = ?", 
+	int numOfRowsEffected = jTemp.update("Update develop_team_training_request set status = -1 where dtt_training_id = ?", 
 			new Object[] {dttRequestId});
 	return numOfRowsEffected;
     }
     
     public int updateDTTStatusById(int dttRequestId, int newStatus)
     {
-	jtemp = DAOJDBCTemplate.getJdbcTemplate();
-	int numOfRowsEffected = jtemp.update("Update develop_team_training_request set status = ? where dtt_training_id = ?",
+	int numOfRowsEffected = jTemp.update("Update develop_team_training_request set status = ? where dtt_training_id = ?",
 					      new Object[] {newStatus, dttRequestId});
 	return numOfRowsEffected;				      
     }
     
     public DevelopmentTeamTrainingRequest getDevelopmentTeamTrainingRequestById(int dttRequestId)
     {
-	jtemp = DAOJDBCTemplate.getJdbcTemplate();
-	DevelopmentTeamTrainingRequest dttRequest = jtemp.queryForObject("Select * from develop_team_training_request where dtt_training_id = ?",
+	DevelopmentTeamTrainingRequest dttRequest = jTemp.queryForObject("Select * from develop_team_training_request where dtt_training_id = ? AND status >= 0",
 								new Object[] {dttRequestId}, new DevelopmentTeamTrainingRequestMapper());
 	return dttRequest;
     }
     
     public List<DevelopmentTeamTrainingRequest> getAllDTTRequestForExecutive(Employee executive)
     {
-	jtemp = DAOJDBCTemplate.getJdbcTemplate();
-	List<DevelopmentTeamTrainingRequest> dttRequestList = jtemp.query("Select * from develop_team_training_request where esecutive_id = ?",
+	List<DevelopmentTeamTrainingRequest> dttRequestList = jTemp.query("Select * from develop_team_training_request where esecutive_id = ? AND status >= 0",
 								new Object[] {executive.getEmployee_id()}, new DevelopmentTeamTrainingRequestMapper());
 	return dttRequestList;
     }

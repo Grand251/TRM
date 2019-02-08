@@ -5,9 +5,21 @@ import java.util.List;
 import trm.dao.DAOJDBCTemplate;
 import trm.dao.employee.Employee;
 import trm.dao.trainingrequest.TrainingRequest;
+import trm.dao.trainingrequest.TrainingRequestCRUD;
 
 
 public class ExecutiveWorkflowStatusCRUD {
+	
+	public static void main(String[] args) {
+		TrainingRequestCRUD trCRUD = new TrainingRequestCRUD();
+		ExecutiveWorkflowStatus ews = new ExecutiveWorkflowStatus();
+		TrainingRequest trainingRequest = trCRUD.getTrainingRequestById(10000);
+		ews.setTrainingRequest(trainingRequest);
+		
+		ExecutiveWorkflowStatusCRUD ewsCRUD = new ExecutiveWorkflowStatusCRUD();
+		ewsCRUD.insertExecutiveWorkflowStatus(ews);
+		
+	}
 
 	public List<ExecutiveWorkflowStatus> getAllExecutiveWorkflowStatus(){
 		return new DAOJDBCTemplate().getJdbcTemplate().query("SELECT * FROM executive_workflow_status", new ExecutiveWorkflowStatusMapper());
@@ -83,9 +95,14 @@ public class ExecutiveWorkflowStatusCRUD {
 	}
 		
 	
-	public int ExecutiveWorkflowStatus(ExecutiveWorkflowStatus executiveWorkflowStatus) {
-		return new DAOJDBCTemplate().getJdbcTemplate().update("INSERT INTO executive_workflow_status VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
-				new Object[]{"executive_workflow_status_seq.nextval",
+	public int insertExecutiveWorkflowStatus(ExecutiveWorkflowStatus executiveWorkflowStatus) {
+		int executiveId = 0;
+		
+		if(executiveWorkflowStatus.getExecutiveWorkflowStatusExecutive()!=null)
+			executiveId = executiveWorkflowStatus.getExecutiveWorkflowStatusExecutive().getEmployee_id();
+		
+		return new DAOJDBCTemplate().getJdbcTemplate().update("INSERT INTO executive_workflow_status VALUES(executive_workflow_status_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?)",
+				new Object[]{
 						executiveWorkflowStatus.getTrainingRequest().getTrainingRequestId(),
 						executiveWorkflowStatus.getInvitationsSent(),
 						executiveWorkflowStatus.getSkillportEnrollmentsCompleted(),
@@ -93,6 +110,7 @@ public class ExecutiveWorkflowStatusCRUD {
 						executiveWorkflowStatus.getVendorTrainingClearance(),
 						executiveWorkflowStatus.getFeedbackCompleted(),
 						executiveWorkflowStatus.getTrainingCompleted(),
+						((executiveId!=0) ? executiveId : 0)
 		});
 	}
 	
@@ -103,7 +121,8 @@ public class ExecutiveWorkflowStatusCRUD {
 				+ "assessments_recorded=?, "
 				+ "vendor_training_clearance=?, "
 				+ "completed_feedback=?, "
-				+ "training_completed=? "
+				+ "training_completed=?, "
+				+ "executive_id=?"
 				+ " WHERE executive_workflow_status_id= ?",
 				new Object[]{executiveWorkflowStatus.getInvitationsSent(),
 						executiveWorkflowStatus.getSkillportEnrollmentsCompleted(),
@@ -111,6 +130,7 @@ public class ExecutiveWorkflowStatusCRUD {
 						executiveWorkflowStatus.getVendorTrainingClearance(),
 						executiveWorkflowStatus.getFeedbackCompleted(),
 						executiveWorkflowStatus.getTrainingCompleted(),
+						executiveWorkflowStatus.getExecutiveWorkflowStatusExecutive().getEmployee_id(),
 						executiveWorkflowStatus.getExecutiveWorkflowStatusId()});
 	}
 	

@@ -30,7 +30,7 @@ public class DevelopmentTeamTrainingRequestMapper implements RowMapper<Developme
 		request.setTrainerApprovalMail(resultSet.getString(4));
 		request.setTrainerManagerApprovalMail(resultSet.getString(5));
 		
-		TrainingSchedule schedule = new TrainingScheduleCRUDService().getTrainingScheduleById(resultSet.getInt(6)); 
+		TrainingSchedule schedule = new TrainingScheduleCRUDService().getTrainingScheduleById(resultSet.getString(6)); 
 		request.setTrainingSchedule(schedule);
 		
 		Employee executive = new EmployeeCRUDService().getEmployeeById(resultSet.getInt(7));

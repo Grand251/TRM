@@ -11,6 +11,7 @@
 
 <title>Create Request</title>
 
+<<<<<<< HEAD
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -33,6 +34,21 @@
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="../customcss/createrequest.css">
+=======
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+    crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="resources/js/jquery.min.js"></script>
+  <script src="resources/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="resources/stylesheets/createrequest.css">
+>>>>>>> 8d44bc5427638387c1591b6b76552c725d2dbbfd
 
 <style>
 #icon {
@@ -45,6 +61,7 @@
 
 <body>
 
+<<<<<<< HEAD
 	<!-- Navigation -->
 	<div id="topnav"
 		class="navbar navbar-default navbar-fixed-top sticky-top">
@@ -62,6 +79,24 @@
 		</div>
 	</div>
 	<!--End NAV-->
+=======
+  <!-- Navigation -->
+  <div id="topnav" class="navbar navbar-default navbar-fixed-top sticky-top">
+    <div class="header-container">
+      <!-- Left-aligned link -->
+      <div class="left-header">
+        <a class="logo-content" href="#" title="Home">
+          <img class="logoimage1" src="resources/images/as-logo.png" alt="Home">
+        </a>
+      </div>
+      <!-- Right-aligned links -->
+      <div id="right-header">
+        <a href="about.html" class="about">About</a>
+      </div>
+    </div>
+  </div>
+  <!--End NAV-->
+>>>>>>> 8d44bc5427638387c1591b6b76552c725d2dbbfd
 
 	<div class="container">
 		<form action="addnewrequest" class="form" style="margin-left: 20px;">

@@ -1,0 +1,179 @@
+.space{
+  margin-top: 17vh;
+}
+
+#newRequestBox{
+  width: 30%;
+  float: left;
+  overflow: auto;
+}
+
+#ongoingRequestBox{
+  width: 70%;
+  float: left;
+  overflow: auto;
+}
+
+#startButton{
+  width: 100%;
+  font-family: "Arial Black", Gadget, sans-serif;
+  font-size: 40px;
+  /*
+  color: rgb(30, 144, 255);
+  background-color: rgba(240, 255, 255, 1);
+  transition: 1s;
+  */
+}
+
+/*
+#startButton:hover{ 
+  background-color: rgba(30, 144, 255, 1);
+  color: rgb(240, 255, 255);
+}
+*/
+
+/*
+.newRequest{
+  box-shadow: 0px 0px 0px 2pt dodgerblue;
+  transition: box-shadow 0.5s linear;
+  width:310px;
+  margin-top: 30px; 
+}
+*/
+
+/*
+.newRequest:hover{
+  box-shadow: 0px 0px 0px 4pt dodgerblue;
+}
+*/
+
+.pointer{
+  cursor:pointer;
+}
+
+.selectBox {
+    width:35px;
+    height: 35px;
+    position:absolute;
+    bottom:0;
+    right:0;
+    cursor: pointer;
+}
+
+.cardSpacing{
+  margin-top:2vh;
+}
+
+.orangeCardTitle{
+	text-align: left;
+}
+
+.ongoingRequest{
+  /*
+  box-shadow: 0px 0px 0px 2pt lightsalmon;
+  transition: box-shadow 0.5s linear; 
+  */
+  float: left;
+  margin: 5pt;
+  margin-top:14pt;
+  margin-left: 10.5pt;
+}
+
+/*
+.ongoingRequest:hover{
+  box-shadow: 0px 0px 0px 5.5pt lightsalmon;
+}
+*/
+
+@media (min-width: 768px) {
+  .modal .modal-xl {
+   width: 98%;
+   max-width:1900px;
+   overflow-y: auto;
+  }
+}
+
+.requestDetailsBox{
+  width: 60%;
+  float:left;
+  height: 69vh;
+  overflow: auto;
+}
+
+.spaceBetweenModal{
+  width: 5%;
+  float:left;
+}
+
+.requestSummaryBox{
+  width: 35%;
+  float:left;
+  height: 69vh;
+}
+
+
+.detail-container{
+  width: 100%;
+  margin-top: 10px;
+}
+
+.detail-header{
+  font-family: "Arial Black", Gadget, sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+}
+.detailBtn{
+  /*
+  background-color: rgb(240, 255, 255);
+  color: rgb(30, 144, 255);
+  */
+  width: 100%;
+  transition: 1s;
+}
+
+/*
+.detailBtn:hover{
+  background-color: rgb(30, 144, 255);
+  color: rgb(240, 255, 255);
+}
+*/
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: center;
+}
+
+.flex-container > div {
+  width: 100%;
+  margin: 0px 25px;
+  text-align: center;
+}
+
+.vbottom{
+    position: relative;
+    top: 100%;
+    transform: translateY(-100%); 
+}
+
+.summary-text{
+  font-size: 12pt;
+  padding-top: 2vh;
+}
+
+.alignleft {
+	text-align: left;
+}
+.alignright {
+	text-align: right;
+}
+
+.downCenter{
+  position: absolute; 
+  bottom: 0;
+}

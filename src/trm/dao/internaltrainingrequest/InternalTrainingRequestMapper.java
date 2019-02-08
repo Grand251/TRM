@@ -33,21 +33,30 @@ public class InternalTrainingRequestMapper implements RowMapper<InternalTraining
 	@Override
 	public InternalTrainingRequest mapRow(ResultSet rs, int rowNum) throws SQLException 
 	{
+	        InternalTrainingCRUD crud = new InternalTrainingCRUD();
+	        
 		InternalTrainingRequest request = new InternalTrainingRequest();
 		
 		request.setItrId(rs.getInt(1));
 		
+		//
 		TrainingRequest trainingRequest = new TrainingRequestCRUD().getTrainingRequestById(rs.getInt(2));
-
+		//System.out.println(crud.getActiveConnectionCount());
 		request.setItrTrainingRequest(trainingRequest);
 		
+		//System.out.println(crud.getActiveConnectionCount());
 		TrainingSchedule schedule = new TrainingScheduleCRUDService().getTrainingScheduleById(rs.getString(3)); 
+		//System.out.println(crud.getActiveConnectionCount());
 		request.setItrSchedule(schedule);
 		
+		//System.out.println(crud.getActiveConnectionCount());
 		Employee trainer = new EmployeeCRUDService().getEmployeeById(rs.getInt(4));
+		//System.out.println(crud.getActiveConnectionCount());
 		request.setItrTrainer(trainer);
 		
+		//System.out.println(crud.getActiveConnectionCount());
 		Employee executive = new EmployeeCRUDService().getEmployeeById(rs.getInt(5));
+		//System.out.println(crud.getActiveConnectionCount());
 		request.setItrExecutive(executive);
 		
 		request.setItrStatus(rs.getInt(6));
