@@ -32,7 +32,7 @@
 <%@include file="headerbody.jsp" %>
 <%@include file="navbar.jsp" %>
 <div class="container" id="bodycont" style="margin-top:50px">
-        <form class="form" action="trainingmgrcharts" style="margin-left:10px;width:80%">
+        <form class="form" action="charttrainingperformances" style="margin-left:10px;width:80%">
             <div class="row" style="align-items:center;display:flex">
                 <div class="col-xs-6" style="margin-right:5px">
                     <div class="input-group">
