@@ -11,7 +11,7 @@ public class VendorTrainer {
 	private String phone;
 	private String email;
 	private String profile;
-	private String evaulation_status;
+	private String evaluation_status;
 	private String vendor_trainer_log;
 	public int getVendor_trainer_id() {
 		return vendor_trainer_id;
@@ -43,14 +43,15 @@ public class VendorTrainer {
 	public void setProfile(String profile) {
 		this.profile = profile;
 	}
-	public String getEvaulation_status() {
-		return evaulation_status;
-	}
-	public void setEvaulation_status(String evaulation_status) {
-		this.evaulation_status = evaulation_status;
-	}
+
 	public String getVendor_trainer_log() {
 		return vendor_trainer_log;
+	}
+	public String getEvaluation_status() {
+		return evaluation_status;
+	}
+	public void setEvaluation_status(String evaluation_status) {
+		this.evaluation_status = evaluation_status;
 	}
 	public void setVendor_trainer_log(String vendor_trainer_log) {
 		this.vendor_trainer_log = vendor_trainer_log;

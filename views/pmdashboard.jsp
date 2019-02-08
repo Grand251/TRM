@@ -1,18 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 
-    
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <title>Dashboard</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+	crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+	integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+	crossorigin="anonymous"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+	integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+	crossorigin="anonymous"></script>
 <script>
 	$(document).ready(function (){
 		$(".btn-expand").click(function(){
@@ -31,12 +42,12 @@
 </script>
 </head>
 <body>
-	<h1>${name}'s Dashboard</h1>
+	<h1>${name}'sDashboard</h1>
 	<br>
 	<br>
 	<a href="createrequest">Create Request</a>
 	<h3>Requests</h3>
-	<hr size="4" color="red"/>
+	<hr size="4" color="red" />
 	<table class="table table-striped table-dark">
 		<thead>
 			<tr>
@@ -51,10 +62,8 @@
 				<tr>
 					<th scope="row">
 						<button type="button" class="btn btn-info btn-expand">Expand</button>
-						<span style="margin-left: 15px">
-							${request.id}
-						</span>
-						<div style="margin-top: 15px; display: none;" >
+						<span style="margin-left: 15px"> ${request.id} </span>
+						<div style="margin-top: 15px; display: none;">
 							<table class="table" style="background-color: transparent;">
 								<thead>
 									<tr>
@@ -101,21 +110,23 @@
 									</tr>
 									<tr>
 										<td>Requested Start Time</td>
-										<td>${request.requestedTimeZone} ${request.requestedStartTime}</td>
+										<td>${request.requestedTimeZone}
+											${request.requestedStartTime}</td>
 									</tr>
 									<tr>
 										<td>Requested End Time</td>
-										<td>${request.requestedTimeZone} ${request.requestedEndTime}</td>
+										<td>${request.requestedTimeZone}
+											${request.requestedEndTime}</td>
 									</tr>
 									<c:if test="${request.isItr}">
-											<tr>
-												<td>Start Time</td>
-												<td>${request.timeZone} ${request.startTime}</td>
-											</tr>
-											<tr>
-												<td>End Time</td>
-												<td>${request.timeZone} ${endTime}</td>
-											</tr>
+										<tr>
+											<td>Start Time</td>
+											<td>${request.timeZone}${request.startTime}</td>
+										</tr>
+										<tr>
+											<td>End Time</td>
+											<td>${request.timeZone}${endTime}</td>
+										</tr>
 									</c:if>
 									<tr>
 										<td>Location</td>
@@ -126,12 +137,11 @@
 						</div>
 					</th>
 					<td>${request.trainerName}</td>
-					<td>${request.trainerEmail}</td>		
+					<td>${request.trainerEmail}</td>
 					<td>
 						<div class="container">
-							<a href='requests/${request.id}/delete'>Delete</a>
-							|
-							<a href='editrequest/${request.id}'>Edit</a>
+							<a href='requests/${request.id}/delete'>Delete</a> | <a
+								href='editrequest/${request.id}'>Edit</a>
 							<c:if test="${request.status == 4}">
 								|
 								<a href='approve/${request.id}'>Approve</a>

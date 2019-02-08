@@ -80,8 +80,8 @@ public class VendorDetailsCRUDService {
 	
 	public int insertVendorDetails(VendorDetails vendorDetails) {
 		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
-		int ret = jtemp.update("insert into vendor_Details values (?, ?, ?, ?, ?, ?, ?,?,?)",
-								new Object[] {vendorDetails.getVendor_id(),
+		int ret = jtemp.update("insert into vendor_Details values (vendor_id_seq.nextval, ?,?,?,?,?,?,?,?)",
+								new Object[] {
 										vendorDetails.getVendor_name(),
 										vendorDetails.getVendor_phone(),
 										vendorDetails.getVendor_email(),
