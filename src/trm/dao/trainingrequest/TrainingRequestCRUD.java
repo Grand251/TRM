@@ -8,10 +8,16 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import trm.dao.DAOJDBCTemplate;
 import trm.dao.employee.Employee;
 import trm.dao.employee.EmployeeCRUDService;
+import trm.dao.trainingschedule.TrainingSchedule;
 
 
 
@@ -40,17 +46,51 @@ public class TrainingRequestCRUD
 	{
 	    	//ConfigurableApplicationContext context = new DAOJDBCTemplate().getApplicationContext();
 	    	//JdbcTemplate jTemp = (JdbcTemplate)context.getBean("jTemp");
-		int numberOfRowsEffected = jTemp.update("Insert into training_Request values(training_id_request_seq.nextval,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" , 
-												  new Object[] {trainingRequest.getRequesterId(), trainingRequest.getRequestTrainingType(),
-														  		trainingRequest.getRequestTrainingModule(), trainingRequest.getRequestTrainingModuleScope(),
-														  		trainingRequest.getRequestTrainingMode(), trainingRequest.getRequestStartTime(),
-														  		trainingRequest.getRequestEndTime(), trainingRequest.getRequestLocation(),
-														  		trainingRequest.getRequestTimeZone(), trainingRequest.getApproxNumberOfParticipants(),
+		/*int numberOfRowsEffected = jTemp.update("Insert into training_Request values(training_id_request_seq.nextval,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" , 
+												  new Object[] {trainingRequest.getRequesterId(), 
+														  		trainingRequest.getRequestTrainingType(),
+														  		trainingRequest.getRequestTrainingModule(), 
+														  		trainingRequest.getRequestTrainingModuleScope(),
+														  		trainingRequest.getRequestTrainingMode(), 
+														  		trainingRequest.getRequestStartTime(),
+														  		trainingRequest.getRequestEndTime(), 
+														  		trainingRequest.getRequestLocation(),
+														  		trainingRequest.getRequestTimeZone(), 
+														  		trainingRequest.getApproxNumberOfParticipants(),
 														  		trainingRequest.getRequestProjectSpoc().getEmployee_id(),
-														  		trainingRequest.getTimeRequested(), trainingRequest.getStatus(), trainingRequest.getJustificationOfRequest()});
+														  		trainingRequest.getTimeRequested(), 
+														  		trainingRequest.getStatus(), 
+														  		trainingRequest.getJustificationOfRequest()});*/
+		KeyHolder keyHolder = new GeneratedKeyHolder();
 		
+		NamedParameterJdbcTemplate j = new NamedParameterJdbcTemplate(jTemp);
+		
+		SqlParameterSource parameters = new MapSqlParameterSource()
+				.addValue("requester", trainingRequest.getRequesterId())
+    			.addValue("type",trainingRequest.getRequestTrainingType())
+    			.addValue("module",trainingRequest.getRequestTrainingModule())
+    			.addValue("scope",trainingRequest.getRequestTrainingModuleScope())
+    			.addValue("mode",trainingRequest.getRequestTrainingMode())
+    			.addValue("start",trainingRequest.getRequestStartTime())
+    			.addValue("end",trainingRequest.getRequestEndTime())
+    			.addValue("loc",trainingRequest.getRequestLocation())
+    			.addValue("timezone",trainingRequest.getRequestTimeZone())
+    			.addValue("participants",trainingRequest.getApproxNumberOfParticipants())
+    			.addValue("spoc",trainingRequest.getRequestProjectSpoc().getEmployee_id())
+    			.addValue("timereq",trainingRequest.getTimeRequested())
+    			.addValue("status",trainingRequest.getStatus())
+    			.addValue("justification",trainingRequest.getJustificationOfRequest());
+		
+		j.update("Insert into training_Request(TRAINING_REQUEST_ID, REQUESTER_ID, REQUEST_TRAINING_TYPE, REQUEST_TRAINING_MODULE, REQUEST_TRAINING_MODULE_SCOPE, REQUEST_TRAINING_MODE, "  
+		+ "REQUEST_START_DATE, REQUEST_END_DATE, REQUEST_LOCATION, REQUEST_TIME_ZONE, REQUEST_APPROX_PARTICIPANT,REQUEST_PROJECT_SPOC, "    
+		+ "TIME_REQUESTED, STATUS, JUSTIFICATION_OF_REQUEST) VALUES( training_id_request_seq.nextval, :requester, :type, :module, :scope, "
+		+ ":mode, :start, :end, :loc, :timezone, :participants, :spoc, :timereq, :status, :justification)", parameters,
+		  keyHolder, new String[]{"TRAINING_REQUEST_ID"}
+		 );
+		
+		int key = keyHolder.getKey().intValue();
+		return key;	
 		//context.close();
-		return numberOfRowsEffected;
 	}
 	
 	/*
@@ -307,7 +347,7 @@ public class TrainingRequestCRUD
 		*/
 
 		TrainingRequest tr = new TrainingRequest();
-		tr.setRequesterId(1000057);
+		tr.setRequesterId(1000157);
 		tr.setRequestTrainingType("IT");
 		tr.setRequestTrainingModule("Java FSD");
 		tr.setRequestTrainingModuleScope("Spring");
@@ -328,7 +368,7 @@ public class TrainingRequestCRUD
 		tr.setStatus(1);
 		tr.setJustificationOfRequest("Needed");
 		
-		crud.insertTrainingRequest(tr);
+		System.out.println(crud.insertTrainingRequest(tr));
 		
 		/*
 		TrainingRequest tr = new TrainingRequest();
