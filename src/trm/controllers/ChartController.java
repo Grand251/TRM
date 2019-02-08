@@ -18,12 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import trm.dao.employee.Employee;
 import trm.dao.employee.EmployeeCRUDService;
+import trm.dao.trainingparticipant.TrainingParticipantCRUD;
 import trm.dao.trainingrequest.TempTrainingRequestCRUD;
 import trm.dao.trainingrequest.TrainingRequest;
 import trm.dao.trainingrequest.TrainingRequestCRUD;
 
 @Controller
-public class TempRequestController {
+public class ChartController {
 	TrainingRequestCRUD trCRUD = new TrainingRequestCRUD();
 	
 	@RequestMapping(value="daotest")
@@ -50,7 +51,7 @@ public class TempRequestController {
 		return "TempDAO";
 	}
 	
-	@RequestMapping(value="daotest3")
+	@RequestMapping(value="chartspoc")
 	public String chartSpocRequestByLocationandMode(HttpServletRequest req, ModelMap model) {
 		EmployeeCRUDService eCRUD = new EmployeeCRUDService();
 		List<Employee> spocs = eCRUD.getAllEmployeeByTitle("SPOC");
@@ -70,10 +71,37 @@ public class TempRequestController {
 			System.out.println(period);
 			System.out.println(spocId);
 			model.addAttribute("requests", getSpocRequestByModeAndLocation(spocId, period));
+			model.addAttribute("timeRequests", getSpocRequestByRanges(spocId, period));
 			model.addAttribute("period", period);
 			model.addAttribute("spoc", spocId);
 		}		
-		return "TempDAO3";
+		return "ChartSpoc";
+	}
+	
+	@RequestMapping(value="daotest2")
+	public String chartSpocRequestByRange(HttpServletRequest req, ModelMap model) {
+		
+		EmployeeCRUDService eCRUD = new EmployeeCRUDService();
+		List<Employee> spocs = eCRUD.getAllEmployeeByTitle("SPOC");
+		
+		HashMap<Integer, String> spocOptions = new HashMap<Integer, String>();
+		
+		for(Employee spoc : spocs) {
+			spocOptions.put(spoc.getEmployee_id(), spoc.getFirst_name() + " " + spoc.getLast_name());
+		}
+		
+		model.addAttribute("spocOptions", spocOptions);
+		
+		if(req.getParameter("spocChoice")!=null && req.getParameter("period")!=null) {
+			int period = Integer.parseInt(req.getParameter("period"));
+			int spocId = Integer.parseInt(req.getParameter("spocChoice"));
+			
+			model.addAttribute("requests", getSpocRequestByRanges(spocId, period));
+			model.addAttribute("period", period);
+			model.addAttribute("spoc", spocId);
+		}
+		
+		return "TempDAO2";
 	}
 	
 	private LinkedHashMap<String, LinkedHashMap<String, Integer>> getSpocRequestByModeAndLocation(int spocId, int period) {
@@ -131,6 +159,104 @@ public class TempRequestController {
 		
 		return "TempDAO5";
 	}
+	
+	@RequestMapping(value="trainingmgrcharts")
+	public String chartParticipantsByRequestForRequester(HttpServletRequest req, ModelMap model) {
+		
+		EmployeeCRUDService eCRUD = new EmployeeCRUDService();
+		List<Employee> requesters = eCRUD.getAllEmployeeByTitle("senior consultant");
+		List<Employee> managers = eCRUD.getAllEmployeeByTitle("Project Manager");
+		requesters.addAll(managers);
+		
+		HashMap<Integer, String> reqOptions = new HashMap<Integer, String>();
+		
+		for(Employee requester : requesters) {
+			reqOptions.put(requester.getEmployee_id(), requester.getFirst_name() + " " + requester.getLast_name());
+		}
+		
+		model.addAttribute("reqOptions", reqOptions);
+		
+		if(req.getParameter("reqChoice")!=null && req.getParameter("period")!=null) {
+			int period = Integer.parseInt(req.getParameter("period"));
+			int requesterId = Integer.parseInt(req.getParameter("reqChoice"));
+			
+			model.addAttribute("requests", getParticipantsPerTrainingType(requesterId, period));
+			model.addAttribute("period", period);
+			model.addAttribute("req", requesterId);
+		}
+		
+		return "ChartTrainingManager";
+	}
+	
+	private LinkedHashMap<String, Integer> getParticipantsPerTrainingType(int requesterId, int period){
+		TempTrainingRequestCRUD ttrCRUD = new TempTrainingRequestCRUD();
+		TrainingParticipantCRUD tpCRUD = new TrainingParticipantCRUD();
+		LinkedHashMap<String, Integer> results = new LinkedHashMap<String, Integer>();
+		
+		ArrayList<Timestamp> range = getDateRange(period);
+		List<TrainingRequest> trainingRequests = ttrCRUD.getRequestsByRequesterInRange(requesterId, range.get(0), range.get(1));
+		
+		for(TrainingRequest trainingRequest : trainingRequests) {
+			String module = trainingRequest.getRequestTrainingModule();
+			int requestId = trainingRequest.getTrainingRequestId();
+			int participants = tpCRUD.getAllParticipantsByRequest(requestId).size();
+			if(results.keySet().contains(module)) {
+				int result = results.get(module) + participants;
+				results.put(module, result);
+			}
+			else
+				results.put(module, participants);
+		}
+		
+		return results;
+	}
+	
+	@RequestMapping(value="chartRequester")
+	public String chartRequestForRequester(HttpServletRequest req, ModelMap model) {
+		
+		EmployeeCRUDService eCRUD = new EmployeeCRUDService();
+		List<Employee> requesters = eCRUD.getAllEmployeeByTitle("senior consultant");
+		List<Employee> managers = eCRUD.getAllEmployeeByTitle("Project Manager");
+		requesters.addAll(managers);
+		
+		HashMap<Integer, String> reqOptions = new HashMap<Integer, String>();
+		
+		for(Employee requester : requesters) {
+			reqOptions.put(requester.getEmployee_id(), requester.getFirst_name() + " " + requester.getLast_name());
+		}
+		model.addAttribute("reqOptions", reqOptions);
+		
+		if(req.getParameter("reqChoice")!=null && req.getParameter("period")!=null) {
+			int period = Integer.parseInt(req.getParameter("period"));
+			int requesterId = Integer.parseInt(req.getParameter("reqChoice"));
+			
+			model.addAttribute("participants", getParticipantsPerTrainingType(requesterId, period));
+			model.addAttribute("status", getStatusCountInPeriod(requesterId, period));
+			model.addAttribute("period", period);
+			model.addAttribute("req", requesterId);
+		}
+		
+		return "RequesterCharts";
+	}
+	
+	//status values are arbitrary to produce output
+	private ArrayList<Integer> getStatusCountInPeriod(int requesterId, int period){
+		ArrayList<Integer> statusCounts = new ArrayList<Integer>();
+		TempTrainingRequestCRUD ttrCRUD = new TempTrainingRequestCRUD();
+		ArrayList<Timestamp> range = getDateRange(period);
+		
+		int canceled = ttrCRUD.getNumRequestsByRequesterInStatusAndDateRange(requesterId, 1, 1, range.get(0), range.get(1));
+		int inProgress = ttrCRUD.getNumRequestsByRequesterInStatusAndDateRange(requesterId, 2, 2, range.get(0), range.get(1));
+		int complete = ttrCRUD.getNumRequestsByRequesterInStatusAndDateRange(requesterId, 3, 3, range.get(0), range.get(1));
+		statusCounts.add(canceled);
+		statusCounts.add(inProgress);
+		statusCounts.add(complete);
+		
+		return statusCounts;
+		
+	}
+	
+	
 	
 	private LinkedHashMap<String, Integer> getSpocPerformancesInPeriod(int period){
 		LinkedHashMap<String, Integer> performances = new LinkedHashMap<String, Integer>();
@@ -217,35 +343,6 @@ public class TempRequestController {
 		range.add(new Timestamp(calendar.getTimeInMillis()));
 		range.add(new Timestamp(System.currentTimeMillis()));
 		return range;
-	}
-	
-	
-	
-	
-	@RequestMapping(value="daotest2")
-	public String chartSpocRequestByRange(HttpServletRequest req, ModelMap model) {
-		
-		EmployeeCRUDService eCRUD = new EmployeeCRUDService();
-		List<Employee> spocs = eCRUD.getAllEmployeeByTitle("SPOC");
-		
-		HashMap<Integer, String> spocOptions = new HashMap<Integer, String>();
-		
-		for(Employee spoc : spocs) {
-			spocOptions.put(spoc.getEmployee_id(), spoc.getFirst_name() + " " + spoc.getLast_name());
-		}
-		
-		model.addAttribute("spocOptions", spocOptions);
-		
-		if(req.getParameter("spocChoice")!=null && req.getParameter("period")!=null) {
-			int period = Integer.parseInt(req.getParameter("period"));
-			int spocId = Integer.parseInt(req.getParameter("spocChoice"));
-			
-			model.addAttribute("requests", getSpocRequestByRanges(spocId, period));
-			model.addAttribute("period", period);
-			model.addAttribute("spoc", spocId);
-		}
-		
-		return "TempDAO2";
 	}
 	
 	private LinkedHashMap<String, Integer> getSpocRequestByRanges(int spocId, int period){

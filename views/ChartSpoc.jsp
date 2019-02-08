@@ -7,14 +7,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
 <style>
-.topright {
-    margin-top: -4px;
-    margin-right: 16px;
-    margin-bottom: 16px;
-    margin-left: -12px;
-    padding: 16px;
-    border: 1px solid black;
-}
 
 .sectiontext {
     font-size: 1.5em;
@@ -48,12 +40,10 @@
 </form>
 <br>
 <br>
-<div class="topright">
-    <h2 class="sectiontext">Spoc Training Modes by Location</h2>
-    <div class="graph_container">
-        <canvas id="trainingModeLoc" width="800" height="400"></canvas>
-    </div>
-</div>
+  <div class="graph_container">
+      <canvas id="trainingModeLoc" width="800" height="400"></canvas>
+  </div>
+  <canvas id="requestsByTime" width="900px" height="300px" ></canvas>
 <script>
 
 	var numSets = 0;
@@ -116,6 +106,11 @@
 	        datasets: datasetObjs
 	    },
 	    options: {
+	    	title: {
+                display: true,
+                text: "Training Modes by Location",
+                        fontSize: 24
+              },
 	    	scales: {
                 yAxes: [{
                     ticks: {
@@ -158,6 +153,100 @@
 	        responsive: false
 	    }
 	});
+	
+	
+	var timeLabels = [];
+	var timeData = [];
+	<c:forEach items="${timeRequests}" var="entry">
+		var key = "${entry.key}"; var value = "${entry.value}";
+		timeLabels.push(key);
+		timeData.push(value);
+	</c:forEach>
+	
+	var period = "${period}";
+	
+	function getLabel(){
+		if (period==90)
+			return "Quarter";
+		else if (period==180)
+			return "6 Months"
+		else if(period==365)
+			return "Year";
+		else
+			return "Month"
+		
+	}
+
+	var label = getLabel();
+	var timeCtx = document.getElementById("requestsByTime").getContext('2d');
+	var myTimeChart = new Chart(timeCtx, {
+        type: 'bar',
+        data: {
+            labels: timeLabels,
+            datasets: [{
+                data: timeData,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+            }]
+        },
+        options: {
+        	title: {
+                display: true,
+                text: 'Training Requests by ' + label,
+                        fontSize: 24
+              },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true,
+                        callback: function(value, index, values) {
+                            if (Math.floor(value) === value) {
+                                return value;
+                            }
+                        }
+                    },
+                    gridLines: {
+                        display: false,
+                        color: "black",
+                        lineWidth: 1
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Requests',
+	                        fontSize: 20
+                      }	                    
+                }],
+        
+        		xAxes: [{
+            		gridLines: {
+                		display: false,
+                		color: "black"
+            		},
+            		scaleLabel: {
+ 	                        display: true,
+ 	                        labelString: label,
+ 	                        fontSize: 20
+ 	                }	
+        		}],    
+            },
+            legend: {
+            	display:false,
+            },
+            responsive: false
+        }
+    });
 </script>
 </body>
 </html>

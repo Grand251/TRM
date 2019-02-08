@@ -9,7 +9,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
 </head>
 <body>
-<form action="daotest5">
+<form action="trainingmgrcharts">
 	<select name="period">
 		<option value ="30">Month</option>
 		<option value="90">Quarter</option>

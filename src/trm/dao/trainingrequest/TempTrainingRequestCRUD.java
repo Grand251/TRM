@@ -4,12 +4,11 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import trm.dao.DAOJDBCTemplate;
 
 public class TempTrainingRequestCRUD {
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		TempTrainingRequestCRUD ttrCRUD = new TempTrainingRequestCRUD();
 		Calendar c = Calendar.getInstance();   // this takes current date
 	    
@@ -24,7 +23,7 @@ public class TempTrainingRequestCRUD {
 		
 		List<TrainingRequest> list = ttrCRUD.getAllTrainingRequestBySpocStartInRange(1000019, start, end);
 		System.out.println(list);
-	}
+	}*/
 	
 	public int getNumTrainingRequestBySPOCLocationMode(int spocId, String location, String mode, Timestamp start, Timestamp end) { 
 		Integer count = new DAOJDBCTemplate().getJdbcTemplate().queryForObject( 
@@ -35,19 +34,46 @@ public class TempTrainingRequestCRUD {
 		if(count==null)
 			return 0;
 		
-		return count.intValue(); }
+		return count.intValue(); 
+	}
 	
 	
+	public List<TrainingRequest> getRequestsByRequesterInRange(int requesterId, Timestamp start, Timestamp end){		
+		List<TrainingRequest> trainingRequests = new DAOJDBCTemplate().getJdbcTemplate().query(
+				"select * from training_request "
+				+ "WHERE REQUESTER_ID=? AND request_start_date >= ? "
+				+ "AND request_end_date <= ?",new Object[]{requesterId, start, end}, 
+				new TrainingRequestMapper());
+		
+		return trainingRequests;
+	}
+	
+	public int getNumRequestsByRequesterInStatusAndDateRange(int requesterId, int beginStatus, int endStatus,
+									Timestamp start, Timestamp end){
+		Integer count = new DAOJDBCTemplate().getJdbcTemplate().queryForObject( 
+				"Select count(*) from training_request WHERE REQUESTER_ID=? "
+				+ "AND STATUS >= ? AND STATUS<= ? AND request_start_date >= ? AND request_end_date <= ?", 
+					new Object[] {requesterId, beginStatus, endStatus, start, end}, Integer.class); 
+		
+		if(count==null)
+			return 0;
+		
+		return count.intValue(); 
+		
+	}
+	
+	
+	//3 is not the final status to indicate completed, but is used for demonstration
 	public int getSPOCSchedulePerformance(int spocId, Timestamp start, Timestamp end) { 
 		Integer count = new DAOJDBCTemplate().getJdbcTemplate().queryForObject( 
 				"Select sum(diff) from" + 	
-						"(Select trunc(t.training_start_date) - trunc(tr.request_start_time) as diff from " + 	
+						"(Select trunc(t.training_start_date) - trunc(tr.request_start_date) as diff from " + 	
 							"(Select s.training_schedule_id, it.training_request_id, s.training_start_date " + 
 							"from internal_training_request it " +
 						    "join training_schedule s " + 
-							"on it.schedule_id = s.training_schedule_id AND it.training_spoc_id = ? AND it.status > 20) t " + 
+							"on it.schedule_id = s.training_schedule_id AND it.status > 3) t " + 
 							"join training_request tr " +
-						    "on t.training_request_id = tr.training_request_id AND tr.request_start_time >= ? AND tr.request_start_time <= ?)", 
+						    "on t.training_request_id = tr.training_request_id AND request_project_spoc=? AND tr.request_start_date >= ? AND tr.request_start_date <= ?)", 
 							new Object[] {spocId, start, end}, Integer.class);
 		if(count==null)
 			return 0;
@@ -67,7 +93,7 @@ public class TempTrainingRequestCRUD {
 	{
 		List<TrainingRequest> trainingRequests = new DAOJDBCTemplate().getJdbcTemplate().query(
 				"select * FROM training_request WHERE request_project_spoc=? "
-				+ "AND request_start_time >= ? AND request_start_time <= ?",new Object[]{spocId, start, end}, 
+				+ "AND request_start_date >= ? AND request_start_date <= ?",new Object[]{spocId, start, end}, 
 				new TrainingRequestMapper());
 		return trainingRequests;
 	}

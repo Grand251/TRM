@@ -11,7 +11,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
 </head>
 <body>
-	<canvas id="myChart" width="300px" height="300px" ></canvas>
+	<canvas id="myChart" width="600px" height="300px" ></canvas>
 	
 	<script>
 		var labels = [];
@@ -32,15 +32,7 @@
 	                label: 'Number of Training Requests',
 	                data: data,
 	                backgroundColor: [
-	                    'rgba(255, 99, 132, 0.2)',
-	                    'rgba(54, 162, 235, 0.2)',
-	                    'rgba(255, 206, 86, 0.2)',
-	                    'rgba(75, 192, 192, 0.2)',
-	                    'rgba(153, 102, 255, 0.2)',
-	                    'rgba(255, 159, 64, 0.2)'
-	                ],
-	                borderColor: [
-	                    'rgba(255,99,132,1)',
+	                    'rgba(255, 99, 132, 1)',
 	                    'rgba(54, 162, 235, 1)',
 	                    'rgba(255, 206, 86, 1)',
 	                    'rgba(75, 192, 192, 1)',
@@ -60,7 +52,6 @@
 	                yAxes: [{
 	                    ticks: {
 	                        beginAtZero:true,
-	                        stepSize: 1,
 	                    },
 	                    gridLines: {
 	                        display: false,

@@ -21,8 +21,8 @@
 	<select name="period">
 		<option value ="30">Monthly</option>
 		<option value="90">Quarterly</option>
-		<option value="180">Six Months</option>
-		<option value="365">Yearly</option>
+		<!--<option value="180">Six Months</option>
+		<option value="365">Yearly</option>-->
 	</select>
 	<input type="submit" value="Click"/>
 </form>
