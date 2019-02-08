@@ -59,10 +59,51 @@ public class DevelopmentTeamTrainingRequestCRUD
 	return dttRequestList;
     }
     
+    public List<DevelopmentTeamTrainingRequest> getAllDTTRequestForSPOC(int spocId)
+    {
+	List<DevelopmentTeamTrainingRequest> dttRequestList = jTemp.query("Select * " + 
+									  "from develop_team_training_request dr " + 
+									  "join training_request tr " + 
+									  "on tr.training_request_id = dr.training_request_id AND tr.status >= 0 AND tr.request_project_spoc = ?",
+									  new Object[] {spocId}, new DevelopmentTeamTrainingRequestMapper());
+	return dttRequestList;
+	
+    }
+    
+    public List<DevelopmentTeamTrainingRequest> getAllDTTRequestForPM(int projectManagerId)
+    {
+	List<DevelopmentTeamTrainingRequest> dttRequestList = jTemp.query("Select * " + 
+		  							  "from develop_team_training_request dr " + 
+		  							  "join training_request tr " + 
+		  							  "on tr.training_request_id = dr.training_request_id AND tr.status >= 0 AND tr.requester_id = ?",
+		  							  new Object[] {projectManagerId}, new DevelopmentTeamTrainingRequestMapper());
+	return dttRequestList;
+    }
+    
+    public List<DevelopmentTeamTrainingRequest> getAllDTTRequestBySPOCandStatus(int spocId, int status)
+    {
+	List<DevelopmentTeamTrainingRequest> dttRequestList = jTemp.query("Select * " + 
+		  "from develop_team_training_request dr " + 
+		  "join training_request tr " + 
+		  "on tr.training_request_id = dr.training_request_id AND dr.status = ? AND tr.request_project_spoc = ?",
+		  new Object[] {spocId}, new DevelopmentTeamTrainingRequestMapper());
+	return dttRequestList;
+    }
+    
     public static void main(String[] args)
     {
 	
 	DevelopmentTeamTrainingRequestCRUD dttCRUD = new DevelopmentTeamTrainingRequestCRUD();
+	List<DevelopmentTeamTrainingRequest> dttList = dttCRUD.getAllDTTRequestForPM(1000070);
+	
+	for(DevelopmentTeamTrainingRequest dttRequest : dttList)
+	{
+	    System.out.println(dttRequest.getDttTrainingId() + " " + dttRequest.getTrainingRequest().getTrainingRequestId() + " "
+		    		+ dttRequest.getConfirmedTrainer().getEmployee_id() + " " + dttRequest.getTrainerApprovalMail() + " "
+		    		+ dttRequest.getTrainerManagerApprovalMail() + " " + dttRequest.getTrainingSchedule().getTraining_schedule_id() + " "
+		    		+ dttRequest.getExecutive().getEmployee_id() + " " + dttRequest.getStatus() + " " + dttRequest.getDescriptionOfStatus());
+	    
+	}
 	
 	/*
 	DevelopmentTeamTrainingRequest request = new DevelopmentTeamTrainingRequest();
@@ -92,6 +133,6 @@ public class DevelopmentTeamTrainingRequestCRUD
 	
 	//dttCRUD.updateDTTStatusById(10000, 1);
 	
-	System.out.println(dttCRUD.getDevelopmentTeamTrainingRequestById(10000).getConfirmedTrainer().getFirst_name());
+	//System.out.println(dttCRUD.getDevelopmentTeamTrainingRequestById(10000).getConfirmedTrainer().getFirst_name());
     }
 }
