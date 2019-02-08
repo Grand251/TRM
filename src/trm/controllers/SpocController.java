@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -205,10 +206,16 @@ public class SpocController {
 		} catch (Exception e) {System.out.println(e.getMessage()); return "error";}
 		
 		
-		ts.setTraining_start_date(startDate);
-		ts.setTraining_end_date(endDate);
-//		tsCrud.updateTrainingSchedule(ts.getTraining_schedule_id(), "", "", "", "", "", "", "", 
-//				ts.getTraining_start_date(), ts.getTraining_end_date());
+		Timestamp startTimestamp = new Timestamp(startDate.getYear(), startDate.getMonth(), startDate.getDate(), 
+				startTime.getHours(), startTime.getMinutes(), startTime.getSeconds(), 0);
+		
+		Timestamp endTimestamp = new Timestamp(endDate.getYear(), endDate.getMonth(), endDate.getDate(),
+				endTime.getHours(), endTime.getMinutes(), endDate.getSeconds(), 0);
+		
+		ts = itr.getItrSchedule();
+		ts.setTraining_start_date(startTimestamp);
+		ts.setTraining_end_date(endTimestamp);
+		new TrainingScheduleCRUDService().updateTrainingSchedule(ts);
 		return "redirect:/edititr/" + itrId;
 	}
 	
