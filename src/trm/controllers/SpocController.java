@@ -69,8 +69,6 @@ public class SpocController {
 		map.addAttribute("itrList", rightOnes);
 		
 		
-
-		
 		return "spocdashboard";
 	}
 	
@@ -205,8 +203,8 @@ public class SpocController {
 		} catch (Exception e) {System.out.println(e.getMessage()); return "error";}
 		
 		
-		ts.setTraining_start_date(startDate);
-		ts.setTraining_end_date(endDate);
+//		ts.setTraining_start_date(startDate);
+//		ts.setTraining_end_date(endDate);
 //		tsCrud.updateTrainingSchedule(ts.getTraining_schedule_id(), "", "", "", "", "", "", "", 
 //				ts.getTraining_start_date(), ts.getTraining_end_date());
 		return "redirect:/edititr/" + itrId;

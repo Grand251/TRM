@@ -260,7 +260,32 @@
                   <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
                     aria-haspopup="true"><span class="glyphicon glyphicon-th-list"></span>
                   </button>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a href="#"><span class="glyphicon glyphicon-pencil"></span>${tr.requestTrainingModuleScope }</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-home"></span>${tr.requestTrainingType }</a></li>
+                    <!--internal or vender -->
+                    <li><a href="#"> <span class="glyphicon glyphicon-modal-window"></span> Training Mode</a></li>
+                    <!--"mode" of training -->
+                    <li><a href="#"><span>&#35;</span> Number of participants </a></li>
+                    <!--Edit button 1 popover-->
+                    <li> <button type="button" class="center-block" data-toggle="modal" data-target="#myModal">Edit</button></li>
+                    </li>
 
+                    <li role="separator" class="divider"></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-calendar"></span> Start Date and Time</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-calendar"></span> End Date and Time </a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-time"> </span>Time Zone</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-globe"></span> location </a></li>
+                    <!--Where it is taking place if not online (IF ONLINE DONT SHOW)-->
+                    <!--Edit button 1 popover-->
+                    <li> <button type="button" class="center-block" data-toggle="modal" data-target="#myModal1">Edit</button></li>
+                    </li>
+
+                    <li role="separator" class="divider"></li>
+                    <li><a href="#" data-toggle="modal" data-target="#Log" style="color: blue;"><span class="glyphicon glyphicon-list-alt"></span>
+                        Log</a></li>
+
+                  </ul>
                 </div>
                 <!--card Drop down end  -->
               </td>
