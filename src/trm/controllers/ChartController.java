@@ -80,9 +80,6 @@ public class ChartController {
 			int period = Integer.parseInt(req.getParameter("period"));
 			int spocId = Integer.parseInt(req.getParameter("spocChoice"));
 			
-			
-			System.out.println(period);
-			System.out.println(spocId);
 			model.addAttribute("requests", getSpocRequestByModeAndLocation(spocId, period));
 			model.addAttribute("period", period);
 			model.addAttribute("spoc", spocId);
@@ -139,13 +136,6 @@ public class ChartController {
 			for(String mode : modes) {
 				int numTrainings = trCRUD.getNumTrainingRequestBySPOCLocationMode(spocId, location, mode, dateRange.get(0), dateRange.get(1));
 				requestsByModeAndLocation.get(location).put(mode, numTrainings);
-			}
-		}
-		
-		for(String location : requestsByModeAndLocation.keySet()){
-			System.out.println(location);
-			for(String mode : requestsByModeAndLocation.get(location).keySet()) {
-				System.out.println(mode + " " + requestsByModeAndLocation.get(location).get(mode));
 			}
 		}
 		
@@ -316,9 +306,6 @@ public class ChartController {
 		range.add(new Timestamp(begin.getTime()));
 		range.add(new Timestamp(end.getTime()));
 		
-		
-		System.out.println(calendar.getTime());
-		
 		return range;
 	}
 	
@@ -449,9 +436,6 @@ public class ChartController {
 			ranges.add(range);
 		}
 		Collections.reverse(ranges);
-		for(ArrayList<Timestamp> arange : ranges)
-			for(Timestamp ts : arange)
-				System.out.println(ts.toString());
 		
 		return ranges;
 		
@@ -460,8 +444,6 @@ public class ChartController {
 	ArrayList<ArrayList<Timestamp>> getQuarterlyRanges(){
 		ArrayList<ArrayList<Timestamp>> ranges = new ArrayList<ArrayList<Timestamp>>();
 		Calendar calendar = Calendar.getInstance();
-		//calendar.set(Calendar.YEAR, 2019);
-		System.out.println(calendar.get(Calendar.YEAR));
 
 		if(calendar.get(Calendar.MONTH)>=9) { //9, 10, 11
 			ranges.add(getFourthQuarter(calendar));
@@ -493,10 +475,6 @@ public class ChartController {
 			
 		
 		Collections.reverse(ranges);
-		
-		for(ArrayList<Timestamp> arange : ranges)
-			for(Timestamp ts : arange)
-				System.out.println(ts.toString());
 				
 		return ranges;
 	}

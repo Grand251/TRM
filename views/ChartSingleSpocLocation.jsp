@@ -112,7 +112,7 @@
 	var first = true;
 	<c:forEach items="${requests}" var="location">
 		var key = "${location.key}";
-
+		labels.push(key);
 		<c:forEach items="${location.value}" var="mode">
 			var m = "${mode.key}";
 			var data = "${mode.value}";
@@ -135,6 +135,8 @@
 		 resultKey = mapIter.next();
 	}
 	
+	console.log(labels);
+	console.log(datasetObjs);
 
 	var ctxBarChart = document.getElementById("trainingModeLoc").getContext("2d");
 	var priceBarChart = new Chart(ctxBarChart, {
@@ -165,7 +167,7 @@
                     },
                     scaleLabel: {
                         display: true,
-                        labelString: 'Points',
+                        labelString: 'Requests',
 	                        fontSize: 20
                       }	                    
                 }],
@@ -180,7 +182,7 @@
             		stacked: true,
             		scaleLabel: {
  	                    display: true,
- 	                    labelString: "SPOC",
+ 	                    labelString: "Location",
  	                    fontSize: 20
  	                }	
         		}],    
