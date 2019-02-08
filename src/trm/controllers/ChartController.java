@@ -190,9 +190,9 @@ public class ChartController {
 	public String chartRequestForRequester(HttpServletRequest req, ModelMap model) {
 		
 		EmployeeCRUDService eCRUD = new EmployeeCRUDService();
-		List<Employee> requesters = eCRUD.getAllEmployeeByTitle("senior consultant");
-		List<Employee> managers = eCRUD.getAllEmployeeByTitle("Project Manager");
-		requesters.addAll(managers);
+		//List<Employee> requesters = eCRUD.getAllEmployeeByTitle("senior consultant");
+		List<Employee> requesters = eCRUD.getAllEmployeeByTitle("Project Manager");
+		//requesters.addAll(managers);
 		
 		HashMap<Integer, String> reqOptions = new HashMap<Integer, String>();
 		
