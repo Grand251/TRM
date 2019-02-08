@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import trm.dao.DAOJDBCTemplate;
+import trm.dao.MyContext;
 import trm.dao.internaltrainingrequest.InternalTrainingCRUD;
 
 /**
@@ -14,10 +15,10 @@ import trm.dao.internaltrainingrequest.InternalTrainingCRUD;
  * @author Kei Ng
  */
 public class EmployeeCRUDService {
+    
+        //JdbcTemplate object. Initialized here and used in every method.
 	private JdbcTemplate jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 	
-
-
 	/**
 	 * Query: get all employee 
 	 * @return List<Employee>
@@ -54,12 +55,12 @@ public class EmployeeCRUDService {
 	 * @return Employee
 	 */
 	public Employee getEmployeeById(int employee_id) {
-	        InternalTrainingCRUD crud = new InternalTrainingCRUD();
-	        System.out.println(crud.getActiveConnectionCount());
+	        //MyContext context = new MyContext();
+	        //System.out.println(context.getActiveConnectionCount());
 		Employee employee = jtemp.queryForObject("Select * from employee where employee_id = ?",
 									new Object[]{employee_id},
 									new EmployeeMapper());
-		System.out.println(crud.getActiveConnectionCount());
+		//System.out.println(context.getActiveConnectionCount());
 		return employee;
 	}
 	

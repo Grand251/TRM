@@ -11,6 +11,7 @@ import trm.dao.employee.Employee;
 import trm.dao.employee.EmployeeCRUDService;
 import trm.dao.trainingrequest.TrainingRequest;
 import trm.dao.trainingrequest.TrainingRequestCRUD;
+import trm.dao.trainingrequest.TrainingRequestMapper;
 import trm.dao.trainingschedule.TrainingSchedule;
 import trm.dao.trainingschedule.TrainingScheduleCRUDService;
 import trm.dao.vendordetails.VendorDetails;
@@ -20,12 +21,11 @@ import trm.dao.vendortrainer.VendorTrainerCRUDService;
 
 public class VendorTrainingRequestCRUD
 {
-    private JdbcTemplate jtemp;
+    private JdbcTemplate jTemp = new DAOJDBCTemplate().getJdbcTemplate();
     
     public int insertVendorTrainingRequest(VendorTrainingRequest vendorTrainingRequest)
     {
-	jtemp = new DAOJDBCTemplate().getJdbcTemplate();
-	int numberOfRowsEffected = jtemp.update("Insert into vendor_training_request values(vendor_training_request_id_seq.nextval,?,?,?,?,?,?,?,?,?)" , 
+	int numberOfRowsEffected = jTemp.update("Insert into vendor_training_request values(vendor_training_request_id_seq.nextval,?,?,?,?,?,?,?,?,?)" , 
 												  new Object[] {vendorTrainingRequest.getTrainingRequest().getTrainingRequestId(), vendorTrainingRequest.getVendor().getVendor_id(),
 													  	vendorTrainingRequest.getVendorTrainer().getVendor_trainer_id(), vendorTrainingRequest.getSchedule().getTraining_schedule_id(),
 													  	vendorTrainingRequest.getExecutive().getEmployee_id(), vendorTrainingRequest.getPoStatus(),
@@ -35,8 +35,7 @@ public class VendorTrainingRequestCRUD
     
     public int deleteVendorTrainingRequest(int vendorRequestId)
     {
-	jtemp = new DAOJDBCTemplate().getJdbcTemplate();
-	int numOfRowsEffected = jtemp.update("Update vendor_training_request set status = -1 where vendor_training_request_id = ?", 
+	int numOfRowsEffected = jTemp.update("Update vendor_training_request set status = -1 where vendor_training_request_id = ?", 
 			new Object[] {vendorRequestId});
 	
 	return numOfRowsEffected;
@@ -44,8 +43,7 @@ public class VendorTrainingRequestCRUD
     
     public int updateVendorTrainingRequest(VendorTrainingRequest vendorRequest)
     {
-	jtemp = new DAOJDBCTemplate().getJdbcTemplate();
-	int numOfRowsEffected = jtemp.update("Update vendor_training_request set training_request_id = ?, confirmed_vendor_id = ?, "
+	int numOfRowsEffected = jTemp.update("Update vendor_training_request set training_request_id = ?, confirmed_vendor_id = ?, "
 					   + "vendor_trainer_id = ?, schedule_id = ?, executive_id = ?, po_status = ?, vendor_confirmation_email = ?, "
 					   + "status = ?, description_of_status = ? where vendor_training_request_id = ?",
 					   new Object[] {vendorRequest.getTrainingRequest().getTrainingRequestId(), vendorRequest.getVendor().getVendor_id(),
@@ -57,22 +55,52 @@ public class VendorTrainingRequestCRUD
     
     public int updateVendorTrainingRequestStatus(int vendorRequestId, int newStatus)
     {
-	int numOfRowsEffected = jtemp.update("Update vendor_training_request set status = ? where vendor_training_request_id = ?",
+	int numOfRowsEffected = jTemp.update("Update vendor_training_request set status = ? where vendor_training_request_id = ?",
 		      new Object[] {newStatus, vendorRequestId});
         return numOfRowsEffected;
     }
     
     public VendorTrainingRequest getVendorTrainingRequestById(int vendorRequestId)
     {
-	VendorTrainingRequest vendorRequest = jtemp.queryForObject("Select * from vendor_training_request where vendor_training_request_id = ? AND status >= 0",
+	VendorTrainingRequest vendorRequest = jTemp.queryForObject("Select * from vendor_training_request where vendor_training_request_id = ? AND status >= 0",
 		      new Object[] {vendorRequestId}, new VendorTrainingRequestMapper());
         return vendorRequest;
     }
     
-    public List<VendorTrainingRequest> getAllVendorTrainingRequestForExecutive(Employee executive)
+    public List<VendorTrainingRequest> getAllVendorTrainingRequestForExecutive(int executiveId)
     {
-	List<VendorTrainingRequest> vendorRequestList = jtemp.query("Select * from vendor_training_request where esecutive_id = ? AND status >= 0",
-		      new Object[] {executive.getEmployee_id()}, new VendorTrainingRequestMapper());
+	List<VendorTrainingRequest> vendorRequestList = jTemp.query("Select * from vendor_training_request where executive_id = ? AND status >= 0",
+		      new Object[] {executiveId}, new VendorTrainingRequestMapper());
+        return vendorRequestList;
+    }
+    
+    public List<VendorTrainingRequest> getAllVendorTrainingRequestForSPOC(int spocId)
+    {
+	List<VendorTrainingRequest> vendorRequestList = jTemp.query("Select * " + 
+		  "from vendor_training_request vt " + 
+		  "join training_request tr " + 
+		  "on tr.training_request_id = vt.training_request_id AND vt.status >= 0 AND tr.request_project_spoc = ?",
+		  new Object[] {spocId}, new VendorTrainingRequestMapper());
+        return vendorRequestList;
+    }
+    
+    public List<VendorTrainingRequest> getAllVendorTrainingRequestForPM(int projectManagerId)
+    {
+	List<VendorTrainingRequest> vendorRequestList = jTemp.query("Select * " + 
+		  "from vendor_training_request vt " + 
+		  "join training_request tr " + 
+		  "on tr.training_request_id = vt.training_request_id AND vt.status >= 0 AND tr.requester_id = ?",
+		  new Object[] {projectManagerId}, new VendorTrainingRequestMapper());
+        return vendorRequestList;
+    }
+    
+    public List<VendorTrainingRequest> getAllVendorTrainingRequestBySPOCandStatus(int spocId, int status)
+    {
+	List<VendorTrainingRequest> vendorRequestList = jTemp.query("Select * " + 
+		  "from vendor_training_request vt " + 
+		  "join training_request tr " + 
+		  "on tr.training_request_id = vt.training_request_id AND vt.status = ? AND tr.request_project_spoc = ?",
+		  new Object[] {status, spocId}, new VendorTrainingRequestMapper());
         return vendorRequestList;
     }
     
@@ -80,6 +108,17 @@ public class VendorTrainingRequestCRUD
     {
 	
 	VendorTrainingRequestCRUD vendorCRUD = new VendorTrainingRequestCRUD();
+	
+        List<VendorTrainingRequest> vendorRequestList = vendorCRUD.getAllVendorTrainingRequestForPM(1000072);
+	
+	for(VendorTrainingRequest vendorRequest : vendorRequestList)
+	{
+	    System.out.println(vendorRequest.getVendorTrainingRequestId() + " " + vendorRequest.getTrainingRequest().getTrainingRequestId() + " "
+		    		+ vendorRequest.getVendor().getVendor_id() + " " + vendorRequest.getVendorTrainer().getVendor_trainer_id() + " "
+		    		+ vendorRequest.getSchedule().getTraining_schedule_id() + " " + vendorRequest.getExecutive().getEmployee_id() + " "
+		    		+ vendorRequest.getPoStatus() + " " + vendorRequest.getVendorConfirmationEmail() + " " + vendorRequest.getStatus() + " " + vendorRequest.getDescriptionOfStatus());
+	    
+	}
 	
 	/*
 	VendorTrainingRequest vendorRequest = new VendorTrainingRequest();

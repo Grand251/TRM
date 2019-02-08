@@ -12,9 +12,8 @@ import trm.dao.DAOJDBCTemplate;
 
 public class TrainingRequestLogCRUD 
 {
-        //JdbcTemplate object. Will be initialized in every method using the static method
-  	//getJdbcTemplate in the new DAOJDBCTemplate() class.
-	private JdbcTemplate jTemp;
+       //JdbcTemplate object. Initialized here and used in every method.
+       private JdbcTemplate jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 	
 	/*
 	 * Inserts a new training request log into training_request_log table using 
@@ -29,7 +28,6 @@ public class TrainingRequestLogCRUD
 	 */
 	public int insertTrainingRequestLog(TrainingRequestLog trainingRequestLog)
 	{
-		jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jTemp.update("Insert into training_request_log values(training_request_log_id_seq.nextval,?,?,?,?)" , 
 												  new Object[] {trainingRequestLog.getTrainingRequestId(), trainingRequestLog.getStatus(),
 														  		trainingRequestLog.getStatusChangeTime(), trainingRequestLog.getDescription(),
@@ -47,7 +45,6 @@ public class TrainingRequestLogCRUD
 	 */
 	public int deleteTrainingRequestLog(int trainingRequestLogId)
 	{
-		jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jTemp.update("delete from training_request_log where request_log_id = ?", 
 												  new Object[] {trainingRequestLogId});
 		return ret;
@@ -64,17 +61,23 @@ public class TrainingRequestLogCRUD
 	 * @return Training request Log object which contains the attributes of the training 
 	 *         request needed.
 	 */
-	public TrainingRequestLog getTrainingRequestLogById(int trainingRequestLogId)
+	public List<TrainingRequestLog> getTrainingRequestLogById(int trainingRequestLogId)
 	{
-		jTemp = new DAOJDBCTemplate().getJdbcTemplate();
-		TrainingRequestLog trainingRequestLog = jTemp.queryForObject("Select * from training_request_log where request_log_id = ?",
+		List<TrainingRequestLog> trainingRequestLogList = jTemp.query("Select * from training_request_log where request_log_id = ?",
 												   				new Object[]{trainingRequestLogId}, new TrainingRequestLogMapper());
-		return trainingRequestLog;
+		return trainingRequestLogList;
 	}
 	
+	/*
+	 * Gets all of the logs for a particular training request. The query uses that
+	 * ID to select all of the request logs with that same training request id as
+	 * a foreign key.
+	 *
+	 * @param  Training Request ID that represents the training request.
+	 * @return List of training request logs. This list is the list of all logs for the training request.
+	 */
 	public TrainingRequestLog getTrainingRequestLogByRequestId(int trainingRequestId)
 	{
-	        jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 		TrainingRequestLog trainingRequestLog = jTemp.queryForObject("Select * from training_request_log where training_request_id = ?",
 												   				new Object[]{trainingRequestId}, new TrainingRequestLogMapper());
 		return trainingRequestLog;
@@ -90,12 +93,7 @@ public class TrainingRequestLogCRUD
 	 */
 	public List<TrainingRequestLog> getAllTrainingRequestLog()
 	{
-		jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 		List<TrainingRequestLog> custList = jTemp.query("Select * from training_request_log" , new TrainingRequestLogMapper());
 		return custList;
-	}
-	
-	public static void main(String[] args)
-	{
 	}
 }

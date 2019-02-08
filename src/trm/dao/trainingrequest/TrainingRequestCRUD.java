@@ -27,8 +27,7 @@ import trm.dao.trainingschedule.TrainingSchedule;
  */
 public class TrainingRequestCRUD 
 {
-	//JdbcTemplate object. Will be initialized in every method using the static method
-	//getJdbcTemplate in the new DAOJDBCTemplate() class.
+	//JdbcTemplate object. Initialized here and used in every method.
         private JdbcTemplate jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 	
 	/*
@@ -236,6 +235,24 @@ public class TrainingRequestCRUD
 		return numberOfRowsEffected;
 	}
 	
+	/*
+	 * Updates a specific attribute of a training request. The training request to
+	 * be updated is specified by the trainingRequestId parameter. The specific
+	 * attribute name to be changed is passed as the trainingRequestAttribute.
+	 * The new value of the attribute is passed as the attributeNewValue, which in
+	 * this case is a double. The method creates a SQL prepared statement by 
+	 * concatenating an update statement with the attribute to be changed, as well 
+	 * as the new value. The purpose of this is to limit the amount of update methods 
+	 * in this class. This allows us to implement only three methods instead of 
+	 * fourteen, one for each attribute. Hence, this overloaded method is only for 
+	 * attributes that are doubles.
+	 *
+	 * @param  Training Request ID of the training request to be updated.
+	 * @param  The attribute of the training_request table to be updated.
+	 * @param  The new value of the attribute as a double, hence this method is 
+	 * 		   specifically for attributes that are doubles.
+	 * @return Number of rows effected as an integer. Should be 1.
+	 */
 	public int updateTrainingRequestByAttribute(int trainingRequestId, String trainingRequestAttribute, double attributeNewValue)
 	{
 		String sqlPreparedStatement = "Update training_request set ";
