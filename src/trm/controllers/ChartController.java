@@ -143,7 +143,7 @@ public class ChartController {
 	
 	
 	
-	@RequestMapping(value="daotest5")
+	@RequestMapping(value="trainingmgrcharts")
 	public String chartSpocPerformanceByRange(HttpServletRequest req, ModelMap model) {
 		
 		if(req.getParameter("period")!=null) {
@@ -157,10 +157,10 @@ public class ChartController {
 			model.addAttribute("period", 30);
 		}
 		
-		return "TempDAO5";
+		return "ChartTrainingManager";
 	}
 	
-	@RequestMapping(value="trainingmgrcharts")
+	/*@RequestMapping(value="trainingmgrcharts")
 	public String chartParticipantsByRequestForRequester(HttpServletRequest req, ModelMap model) {
 		
 		EmployeeCRUDService eCRUD = new EmployeeCRUDService();
@@ -186,7 +186,7 @@ public class ChartController {
 		}
 		
 		return "ChartTrainingManager";
-	}
+	}*/
 	
 	private LinkedHashMap<String, Integer> getParticipantsPerTrainingType(int requesterId, int period){
 		TempTrainingRequestCRUD ttrCRUD = new TempTrainingRequestCRUD();

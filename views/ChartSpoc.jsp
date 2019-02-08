@@ -20,7 +20,7 @@
 </head>
 <body>
 
-<form action="daotest3">
+<form action="chartspoc">
 
 	<select name="spocChoice">
 		<c:forEach items="${spocOptions}" var="spoc">
@@ -43,6 +43,8 @@
   <div class="graph_container">
       <canvas id="trainingModeLoc" width="800" height="400"></canvas>
   </div>
+  <br>
+  <br>
   <canvas id="requestsByTime" width="900px" height="300px" ></canvas>
 <script>
 
