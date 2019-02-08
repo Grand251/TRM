@@ -23,7 +23,7 @@ public class TrainingRequestCRUD
 {
 	//JdbcTemplate object. Will be initialized in every method using the static method
 	//getJdbcTemplate in the new DAOJDBCTemplate() class.
-        private JdbcTemplate jtemp = new DAOJDBCTemplate().getJdbcTemplate();
+        private JdbcTemplate jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 	
 	/*
 	 * Inserts a new training request into training_request table using 
