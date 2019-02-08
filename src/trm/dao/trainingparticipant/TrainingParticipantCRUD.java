@@ -1,13 +1,8 @@
 package trm.dao.trainingparticipant;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -19,7 +14,6 @@ import trm.dao.employee.Employee;
 import trm.dao.employee.EmployeeCRUDService;
 import trm.dao.trainingrequest.TrainingRequest;
 import trm.dao.trainingrequest.TrainingRequestCRUD;
-import trm.dao.trainingrequest.TrainingRequestMapper;
 
 public class TrainingParticipantCRUD
 {
@@ -45,7 +39,6 @@ public class TrainingParticipantCRUD
 				 );
 		
 		int key = keyHolder.getKey().intValue();
-		System.out.println(key);
 		
 		return key;
     }

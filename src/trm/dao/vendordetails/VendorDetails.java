@@ -1,6 +1,7 @@
 package trm.dao.vendordetails;
 
 public class VendorDetails {
+
 	  private int vendor_id;
 	  private String vendor_name;
 	  private String vendor_phone;
@@ -10,6 +11,7 @@ public class VendorDetails {
 	  private String vendor_country;
 	  private String vendor_zipcode;
 	  private String vendor_time_zone;
+	
 	public int getVendor_id() {
 		return vendor_id;
 	}

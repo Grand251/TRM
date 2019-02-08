@@ -36,7 +36,7 @@ public class SendEmail {
     
     public static void main(String[] args) {
     	ArrayList<String> to = new ArrayList<String>();
-    	to.add("kei_ng@syntelinc.com");
+    	to.add("austin_ream@syntelinc.com");
         new SendEmail().sendToRecipient( to, "Josh", EmailType.RequestSubmitedConfirmation);
     }
     

@@ -16,21 +16,19 @@ import trm.dao.employee.EmployeeMapper;
 public class VendorTrainerCRUDService {
 	private JdbcTemplate jtemp;
 	
-	public static void main(String[] args) {
-		//int i = new VendorTrainerCRUDService().updateVendorTrainer(54321, "aa","1234", "mail", "pro", "evaulation", "log");
-		VendorTrainer vendorTrainer = new VendorTrainer();
-		vendorTrainer.setVendor_trainer_id(54322) ;
-		vendorTrainer.setVendor_trainer_name("aa") ;
-		vendorTrainer.setPhone("aa") ;
-		vendorTrainer.setEmail("aa") ;
-		vendorTrainer.setProfile("aa") ;
-		vendorTrainer.setEvaulation_status("aa") ;
-		vendorTrainer.setVendor_trainer_log("aa") ;
-		int i = new VendorTrainerCRUDService().insertVendorTrainer(vendorTrainer);
-
-		//List<VendorTrainer> v = new VendorTrainerCRUDService().getAllVendorTrainer();
-		//VendorTrainer vt = new VendorTrainerCRUDService().getVendorTrainerById(54321);
-		//System.out.println(vt);
+	public static void main(String s[])
+	{
+		System.out.println("----------------");
+		VendorTrainer vt = new VendorTrainer();
+		vt.setVendor_trainer_name("Q1");
+		vt.setPhone("1235");
+		vt.setEmail("Q1");
+		
+		vt.setProfile("pro");
+		vt.setEvaluation_status("true");
+		vt.setVendor_trainer_log("log");
+		int i = new VendorTrainerCRUDService().insertVendorTrainer(vt);
+		System.out.println(i);
 	}
 	
 	
@@ -71,7 +69,7 @@ public class VendorTrainerCRUDService {
 			 String phone,
 			 String email,
 			 String profile,
-			 String evaulation_status,
+			 String evaluation_status,
 			 String vendor_trainer_log) {
 		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
 		int ret = jtemp.update("UPDATE vendor_trainer SET vendor_trainer_name= ?, phone= ?, email= ?, profile= ?, evaulation_status= ?, vendor_trainer_log= ? where vendor_trainer_id= ?",
@@ -79,24 +77,27 @@ public class VendorTrainerCRUDService {
 										  phone,
 										  email,
 										  profile,
-										  evaulation_status,
+										  evaluation_status,
 										  vendor_trainer_log,
 										  vendor_trainer_id});
 		return ret;
 	}
 	
 	public int insertVendorTrainer(VendorTrainer vendorTrainer) {
+		System.out.println(vendorTrainer.getVendor_trainer_id()+"------------------------");
 		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
-		int ret = jtemp.update("insert into vendor_trainer values (?, ?, ?, ?, ?, ?, ?)",
-								new Object[] {vendorTrainer.getVendor_trainer_id(),
+		int ret = jtemp.update("insert into vendor_trainer values (vendor_trainer_id_seq.nextval, ?, ?, ?, ?, ?, ?)",
+								new Object[] {
 										vendorTrainer.getVendor_trainer_name(),
 										vendorTrainer.getPhone(),
 										vendorTrainer.getEmail(),
 										vendorTrainer.getProfile(),
-										vendorTrainer.getEvaulation_status(),
+										vendorTrainer.getEvaluation_status(),
 										vendorTrainer.getVendor_trainer_log()
 										});
 		return ret;
 	}
+	
+	
 	
 }
