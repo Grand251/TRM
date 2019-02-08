@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -175,6 +176,11 @@ public class SpocController {
 		TrainingScheduleCRUDService tsCrud = new TrainingScheduleCRUDService();
 		//TrainingSchedule ts = tsCrud.getTrainingScheduleById(itr.get);
 		TrainingSchedule ts = itr.getItrSchedule();
+		ts.setTraining_room_number(request.getParameter("room"));
+		ts.setTraining_location(request.getParameter("location"));
+		ts.setTraining_city(request.getParameter("city"));
+		ts.setTraining_state(request.getParameter("state"));
+		ts.setTraining_zipcode(request.getParameter("zip"));
 		
 		itr.getItrTrainingRequest().setRequestTrainingMode(request.getParameter("mode"));
 		new TrainingRequestCRUD().updateTrainingRequest(itr.getItrTrainingRequest());
@@ -186,13 +192,18 @@ public class SpocController {
 		itrCrud.updateItr(itr);
 		
 		Date startDate = null;
+		Time startTime = null;
 		Date endDate = null;
+		Time endTime = null;
 		try {
 			System.out.println(request.getParameter("startDate"));
 			String temp;
 			startDate = new Date(new SimpleDateFormat("yyyy-MM-dd").parse((String)request.getParameter("startDate")).getTime());
+			startTime = Time.valueOf(request.getParameter("startTime"));
+			endTime = Time.valueOf(request.getParameter("endTime"));
 			endDate = new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse((String)request.getParameter("endDate")).getTime());
 		} catch (Exception e) {System.out.println(e.getMessage()); return "error";}
+		
 		
 		ts.setTraining_start_date(startDate);
 		ts.setTraining_end_date(endDate);

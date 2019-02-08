@@ -1,6 +1,7 @@
 package trm.dao.trainingschedule;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 /**
  * This is TrainingSchedule class
  * @author Kei Ng
@@ -15,8 +16,8 @@ public class TrainingSchedule {
 	private String training_time_zone;
 	private String training_location;
 	private String training_room_number;
-	private Date training_start_date;
-	private Date training_end_date;
+	private Timestamp training_start_date;
+	private Timestamp training_end_date;
 	private String training_url;
 	private String training_audio;
 
@@ -101,22 +102,22 @@ public class TrainingSchedule {
 		this.training_room_number = training_room_number;
 	}
 	
-	public Date getTraining_start_date() 
+	public Timestamp getTraining_start_date() 
 	{
 		return training_start_date;
 	}
 	
-	public void setTraining_start_date(Date training_start_date) 
+	public void setTraining_start_date(Timestamp training_start_date) 
 	{
 		this.training_start_date = training_start_date;
 	}
 	
-	public Date getTraining_end_date() 
+	public Timestamp getTraining_end_date() 
 	{
 		return training_end_date;
 	}
 	
-	public void setTraining_end_date(Date training_end_date) 
+	public void setTraining_end_date(Timestamp training_end_date) 
 	{
 		this.training_end_date = training_end_date;
 	}
@@ -135,4 +136,3 @@ public class TrainingSchedule {
 	}
 
 }
-

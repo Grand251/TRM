@@ -102,7 +102,7 @@
                     <input id="training_start" type="date" class="form-control" name="startDate" placeholder="Start date">
                   </div>
                   <div>
-                    <input id="training_startTime" type="time" class="form-control" name="training_startTime"
+                    <input id="training_startTime" type="time" class="form-control" name="startTime"
                       placeholder="Start time" required>
                   </div>
                 </div>
@@ -117,7 +117,7 @@
                     <input id="training_end" type="date" class="form-control" name="endDate" placeholder="End date">
                   </div>
                   <div>
-                    <input id="training_endTime" type="time" class="form-control" name="training_endTime" placeholder="Start time"
+                    <input id="training_endTime" type="time" class="form-control" name="endTime" placeholder="Start time"
                       required>
                   </div>
                 </div>
@@ -134,6 +134,19 @@
                     <input class="radio-inline" type="radio" id="rad" name="mode" value="class room">
                     <label class="form-check-label" for="rad" name="onlinetr">Class Room</label>
                   </div>
+                  <div class="col-xs-12">
+                  	Room
+                  <input name="room" type="text" /><br>
+                  	location
+                    <input name="location" type="text" /> 
+                    City
+                    <input name="city" type="text" /> <br>
+                    State
+                    <input name="state" type="text" />
+                    Zip Code
+                    <input name="zip" type="text" /> <br>
+                  </div>
+                  
                 </div>
                 <br>
 
@@ -270,7 +283,7 @@
         <!--Field and output row-->
         <div class="row summary-text">
           <div class="col-sm-6">
-            <p class="alignleft">Apporved Status: ${approvalStatus}</p>
+            <p class="alignleft">Approved Status: ${approvalStatus}</p>
           </div>
         </div>
 

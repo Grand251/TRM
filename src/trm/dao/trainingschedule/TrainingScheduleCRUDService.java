@@ -69,6 +69,9 @@ public class TrainingScheduleCRUDService {
 	 * @return int(bollean)
 	 */
 	public int deleteTrainingSchedule(String training_schedule_id) {
+
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
+
 		int ret = jtemp.update("delete from TRAINING_SCHEDULE where training_schedule_id = ?", 
 				new Object[] {training_schedule_id});
 		return ret;
@@ -81,6 +84,8 @@ public class TrainingScheduleCRUDService {
 	 */
 
 	public TrainingSchedule getTrainingScheduleById(String scheduleId) {
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
+
 		TrainingSchedule schedule = jtemp.queryForObject("Select * from TRAINING_SCHEDULE where training_schedule_id = ?",
 									new Object[]{scheduleId},
 									new TrainingScheduleMapper());
