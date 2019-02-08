@@ -17,7 +17,7 @@ $(document).ready(function(){
   })
 
   $(".toExecutiveProgress").click(function(){
-    window.location="executive_progress.html";
+    $(this).submit();
   });
 
   $(".toExecutiveDashboard").click(function(){

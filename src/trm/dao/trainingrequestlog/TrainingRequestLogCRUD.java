@@ -72,6 +72,14 @@ public class TrainingRequestLogCRUD
 		return trainingRequestLog;
 	}
 	
+	public TrainingRequestLog getTrainingRequestLogByRequestId(int trainingRequestId)
+	{
+	        jTemp = new DAOJDBCTemplate().getJdbcTemplate();
+		TrainingRequestLog trainingRequestLog = jTemp.queryForObject("Select * from training_request_log where training_request_id = ?",
+												   				new Object[]{trainingRequestId}, new TrainingRequestLogMapper());
+		return trainingRequestLog;
+	}
+	
 	/*
 	 * Gets all of the training request logs from the training_request_log table and inserts 
 	 * them into a list, thanks to the mapper. Returns the list of training request logs.
@@ -85,5 +93,9 @@ public class TrainingRequestLogCRUD
 		jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 		List<TrainingRequestLog> custList = jTemp.query("Select * from training_request_log" , new TrainingRequestLogMapper());
 		return custList;
+	}
+	
+	public static void main(String[] args)
+	{
 	}
 }

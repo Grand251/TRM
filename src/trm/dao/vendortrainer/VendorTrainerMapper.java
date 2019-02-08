@@ -20,7 +20,7 @@ public class VendorTrainerMapper implements RowMapper<VendorTrainer> {
 		vendorTrainer.setPhone(result.getString(3));
 		vendorTrainer.setEmail(result.getString(4));
 		vendorTrainer.setProfile(result.getString(5));
-		vendorTrainer.setEvaulation_status(result.getString(6));
+		vendorTrainer.setEvaluation_status(result.getString(6));
 		vendorTrainer.setVendor_trainer_log(result.getString(7));
 		return vendorTrainer;
 	}

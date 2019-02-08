@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import trm.dao.DAOJDBCTemplate;
+import trm.dao.internaltrainingrequest.InternalTrainingCRUD;
 
 /**
  * CRUD Service for employee
@@ -53,9 +54,12 @@ public class EmployeeCRUDService {
 	 * @return Employee
 	 */
 	public Employee getEmployeeById(int employee_id) {
+	        InternalTrainingCRUD crud = new InternalTrainingCRUD();
+	        System.out.println(crud.getActiveConnectionCount());
 		Employee employee = jtemp.queryForObject("Select * from employee where employee_id = ?",
 									new Object[]{employee_id},
 									new EmployeeMapper());
+		System.out.println(crud.getActiveConnectionCount());
 		return employee;
 	}
 	
