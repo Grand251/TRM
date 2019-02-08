@@ -87,7 +87,7 @@ public class ChartController {
 		return "ChartSingleSpocLocation";
 	}
 	
-	@RequestMapping(value="chartsinglespocrequests")
+	@RequestMapping(value="chartspocrequests")
 	public String chartSpocRequestByRange(HttpServletRequest req, ModelMap model) {
 		
 		EmployeeCRUDService eCRUD = new EmployeeCRUDService();
@@ -105,12 +105,12 @@ public class ChartController {
 			int period = Integer.parseInt(req.getParameter("period"));
 			int spocId = Integer.parseInt(req.getParameter("spocChoice"));
 			
-			model.addAttribute("requests", getSpocRequestByRanges(spocId, period));
+			model.addAttribute("timeRequests", getSpocRequestByRanges(spocId, period));
 			model.addAttribute("period", period);
 			model.addAttribute("spoc", spocId);
 		}
 		
-		return "ChartSingleSpocRequests";
+		return "ChartSpocRequests";
 	}
 	
 	private LinkedHashMap<String, LinkedHashMap<String, Integer>> getSpocRequestByModeAndLocation(int spocId, int period) {
@@ -162,33 +162,6 @@ public class ChartController {
 		return "ChartTrainingPerformance";
 	}
 	
-	/*@RequestMapping(value="trainingmgrcharts")
-	public String chartParticipantsByRequestForRequester(HttpServletRequest req, ModelMap model) {
-		
-		EmployeeCRUDService eCRUD = new EmployeeCRUDService();
-		List<Employee> requesters = eCRUD.getAllEmployeeByTitle("senior consultant");
-		List<Employee> managers = eCRUD.getAllEmployeeByTitle("Project Manager");
-		requesters.addAll(managers);
-		
-		HashMap<Integer, String> reqOptions = new HashMap<Integer, String>();
-		
-		for(Employee requester : requesters) {
-			reqOptions.put(requester.getEmployee_id(), requester.getFirst_name() + " " + requester.getLast_name());
-		}
-		
-		model.addAttribute("reqOptions", reqOptions);
-		
-		if(req.getParameter("reqChoice")!=null && req.getParameter("period")!=null) {
-			int period = Integer.parseInt(req.getParameter("period"));
-			int requesterId = Integer.parseInt(req.getParameter("reqChoice"));
-			
-			model.addAttribute("requests", getParticipantsPerTrainingType(requesterId, period));
-			model.addAttribute("period", period);
-			model.addAttribute("req", requesterId);
-		}
-		
-		return "ChartTrainingManager";
-	}*/
 	
 	private LinkedHashMap<String, Integer> getParticipantsPerTrainingType(int requesterId, int period){
 		TrainingRequestCRUD trCRUD = new TrainingRequestCRUD();

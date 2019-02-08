@@ -32,7 +32,7 @@
 <%@include file="headerbody.jsp" %>
 <%@include file="navbar.jsp" %>
 <div class="container" id="bodycont" style="margin-top:50px">
-        <form class="form" action="chartsinglespocrequests" style="margin-left:10px;width:80%">
+        <form class="form" action="chartspocrequests" style="margin-left:10px;width:80%">
             <div class="row" style="align-items:center;display:flex">
                 <div class="col-xs-4" style="margin-right:5px">
                     <div class="input-group">
@@ -60,8 +60,6 @@
                         <select name="period" class="form-control">
                             <option value="30">Monthly</option>
                             <option value="90">Quarterly</option>
-                            <option value="180">Six months</option>
-                            <option value="365">Yearly</option>
                         </select>
                     </div>
                 </div>
@@ -118,6 +116,12 @@
                 data: timeData,
                 backgroundColor: [
                 	'rgba(25, 25, 112, 1)',
+                    'rgba(108, 117, 125, 1)',
+                    'rgba(23, 162, 184, 1)',
+                    'rgba(25, 25, 112, 1)',
+                    'rgba(108, 117, 125, 1)',
+                    'rgba(23, 162, 184, 1)',
+                    'rgba(25, 25, 112, 1)',
                     'rgba(108, 117, 125, 1)',
                     'rgba(23, 162, 184, 1)',
                     'rgba(25, 25, 112, 1)',
