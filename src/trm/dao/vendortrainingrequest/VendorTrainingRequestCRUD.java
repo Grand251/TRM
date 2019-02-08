@@ -107,7 +107,7 @@ public class VendorTrainingRequestCRUD
 	vendorCRUD.insertVendorTrainingRequest(vendorRequest);
 	*/
 	
-	vendorCRUD.deleteDevelopmentTeamTrainingRequest(10000);
+	//vendorCRUD.deleteDevelopmentTeamTrainingRequest(10000);
 	
     }
 }
