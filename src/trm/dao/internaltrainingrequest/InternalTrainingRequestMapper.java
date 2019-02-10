@@ -9,6 +9,7 @@ import trm.dao.trainingrequest.TrainingRequest;
 import trm.dao.trainingrequest.TrainingRequestCRUD;
 import trm.dao.trainingschedule.TrainingSchedule;
 import trm.dao.trainingschedule.TrainingScheduleCRUDService;
+import trm.dao.MyContext;
 import trm.dao.employee.Employee;
 import trm.dao.employee.EmployeeCRUDService;
 import trm.dao.trainingrequest.TrainingRequest;
@@ -33,29 +34,29 @@ public class InternalTrainingRequestMapper implements RowMapper<InternalTraining
 	@Override
 	public InternalTrainingRequest mapRow(ResultSet rs, int rowNum) throws SQLException 
 	{
-	        InternalTrainingCRUD crud = new InternalTrainingCRUD();
+	        //MyContext context = new MyContext();
 	        
 		InternalTrainingRequest request = new InternalTrainingRequest();
 		
 		request.setItrId(rs.getInt(1));
 		
 		TrainingRequest trainingRequest = new TrainingRequestCRUD().getTrainingRequestById(rs.getInt(2));
-		//System.out.println(crud.getActiveConnectionCount());
+		//System.out.println(context.getActiveConnectionCount());
 		request.setItrTrainingRequest(trainingRequest);
 		
-		//System.out.println(crud.getActiveConnectionCount());
+		//System.out.println(context.getActiveConnectionCount());
 		TrainingSchedule schedule = new TrainingScheduleCRUDService().getTrainingScheduleById(rs.getString(3)); 
-		//System.out.println(crud.getActiveConnectionCount());
+		//System.out.println(context.getActiveConnectionCount());
 		request.setItrSchedule(schedule);
 		
-		//System.out.println(crud.getActiveConnectionCount());
+		//System.out.println(context.getActiveConnectionCount());
 		Employee trainer = new EmployeeCRUDService().getEmployeeById(rs.getInt(4));
-		//System.out.println(crud.getActiveConnectionCount());
+		//System.out.println(context.getActiveConnectionCount());
 		request.setItrTrainer(trainer);
 		
-		//System.out.println(crud.getActiveConnectionCount());
+		//System.out.println(context.getActiveConnectionCount());
 		Employee executive = new EmployeeCRUDService().getEmployeeById(rs.getInt(5));
-		//System.out.println(crud.getActiveConnectionCount());
+		//System.out.println(context.getActiveConnectionCount());
 		request.setItrExecutive(executive);
 		
 		request.setItrStatus(rs.getInt(6));

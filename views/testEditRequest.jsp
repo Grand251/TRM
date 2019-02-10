@@ -13,37 +13,37 @@
 	<br>
 	<f:form action="../saveUpdateData">
 	Request ID:
-		<f:input path="trainingRequestId"/>
+		<f:input path="trainingRequestId" />
 		<br>
 		Training Type:
-		<f:input path="requestTrainingType"/>
+		<f:input path="requestTrainingType" />
 		<br>
 		Training Module:
-		<f:input path="requestTrainingModule"/>
+		<f:input path="requestTrainingModule" />
 		<br> 
 		Module Scope:
-		<f:input path="requestTrainingModuleScope" /> 
+		<f:input path="requestTrainingModuleScope" />
 		<br>
 		Training Mode:
-		<f:input path="requestTrainingMode"/> 
+		<f:input path="requestTrainingMode" />
 		<br>
 		Start Date:
-		<input type = "date" name="requestStartDate" value = "${startdate}"/>
+		<input type="date" name="requestStartDate" value="${startdate}" />
 		<br>
 		End Date:
-		<input type = "date" name="requestEndDate" value = "${enddate}"/>
+		<input type="date" name="requestEndDate" value="${enddate}" />
 		<br>
 		Start Time:
-		<input type = "time" name="requestStartTime" value = "${starttime}"/>
+		<input type="time" name="requestStartTime" value="${starttime}" />
 		<br>
 		End Time:
-		<input type = "time" name="requestEndTime" value = "${endtime}"/>
+		<input type="time" name="requestEndTime" value="${endtime}" />
 		<br>
 		Location:
-		<f:input path="requestLocation" /> 
+		<f:input path="requestLocation" />
 		<br>
 		Time Zone:
-		<f:input path="requestTimeZone" /> 
+		<f:input path="requestTimeZone" />
 		<br>
 		Number of Participants:
 		<f:input path="approxNumberOfParticipants" />

@@ -422,20 +422,24 @@ public class InternalTrainingCRUD {
 				
 	}
 	
+	/*
 	public int getActiveConnectionCount()
 	{
-	    Integer numberOfConnections = jTemp.queryForObject("select num from v$parameter where name in ('transactions')", Integer.class);
+	    Integer numberOfConnections = jTemp.queryForObject("select count(*) from v$session where osuser = 'syntel' group by username, osuser order by count(*) desc", Integer.class);
 	    return numberOfConnections.intValue();
 	}
+	*/
 	
 	public static void main(String[] args) 
 	{
 	 
 		InternalTrainingCRUD itCRUD = new InternalTrainingCRUD();
 		
-		for(InternalTrainingRequest itr: itCRUD.getAllItr())
+		for(InternalTrainingRequest itr: itCRUD.getAllItrBySPOC(1000032))
 		{
-		    System.out.println(itr.getItrId());
+		    System.out.println(itr.getItrId() + " " + itr.getItrTrainingRequest().getTrainingRequestId() + " " + itr.getItrSchedule().getTraining_schedule_id() + " " 
+		    		+ itr.getItrTrainer().getEmployee_id() + " " + itr.getItrExecutive().getEmployee_id() + " " + itr.getItrStatus() + " " + itr.getItrStatusDescription());
+
 		}
 		
 		/*

@@ -16,7 +16,6 @@ public class DevelopmentTeamTrainingRequestMapper implements RowMapper<Developme
 {
     	public DevelopmentTeamTrainingRequest mapRow(ResultSet resultSet, int rowNum) throws SQLException 
 	{
-    	        
     	    	DevelopmentTeamTrainingRequest request = new DevelopmentTeamTrainingRequest();
 		
 		request.setDttTrainingId(resultSet.getInt(1));

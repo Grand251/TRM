@@ -44,7 +44,7 @@ public class VendorTrainerController {
 					vendorTrainer.getPhone(),
 					vendorTrainer.getEmail(),
 					vendorTrainer.getProfile(),
-					vendorTrainer.getEvaulation_status(),
+					vendorTrainer.getEvaluation_status(),
 					vendorTrainer.getVendor_trainer_log());
 			if(ret > 0) return "redirect:/showallVendorTrainers";
 			else return "error";
@@ -60,6 +60,7 @@ public class VendorTrainerController {
 		
 		@RequestMapping(value = "insertVendorTrainer")
 		public String insertVendorTrainer(@ModelAttribute("vendorTrainer") VendorTrainer vendorTrainer) {
+			System.out.println(vendorTrainer.getVendor_trainer_id() + "-------------------------*");
 			int ret = new VendorTrainerCRUDService().insertVendorTrainer(vendorTrainer);
 			if(ret > 0) return "redirect:/showallVendorTrainers";
 			else return "error";
