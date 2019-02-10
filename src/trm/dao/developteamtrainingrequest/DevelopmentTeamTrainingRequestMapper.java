@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.RowMapper;
 
 import trm.dao.employee.Employee;
 import trm.dao.employee.EmployeeCRUDService;
+import trm.dao.trainerrequest.TrainerRequest;
+import trm.dao.trainerrequest.TrainerRequestCRUD;
 import trm.dao.trainingrequest.TrainingRequest;
 import trm.dao.trainingrequest.TrainingRequestCRUD;
 import trm.dao.trainingschedule.TrainingSchedule;
@@ -23,8 +25,8 @@ public class DevelopmentTeamTrainingRequestMapper implements RowMapper<Developme
 		TrainingRequest trainingRequest = new TrainingRequestCRUD().getTrainingRequestById(resultSet.getInt(2));
 		request.setTrainingRequest(trainingRequest);
 		
-		Employee trainer = new EmployeeCRUDService().getEmployeeById(resultSet.getInt(3));
-		request.setConfirmedTrainer(trainer);
+		TrainerRequest trainerRequest = new TrainerRequestCRUD().getTrainerRequestById(resultSet.getInt(3));
+		request.setTrainerRequest(trainerRequest);
 		
 		request.setTrainerApprovalMail(resultSet.getString(4));
 		request.setTrainerManagerApprovalMail(resultSet.getString(5));

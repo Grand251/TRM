@@ -1,6 +1,5 @@
 package trm.dao.employee;
 
-import org.springframework.validation.*;
 /**
  * This is Employee class
  * @author Kei Ng

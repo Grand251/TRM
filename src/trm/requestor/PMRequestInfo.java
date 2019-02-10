@@ -1,8 +1,6 @@
 package trm.requestor;
 
-import java.sql.Date;
 import java.sql.Timestamp;
-
 import trm.dao.employee.Employee;
 import trm.dao.internaltrainingrequest.InternalTrainingRequest;
 import trm.dao.trainingrequest.TrainingRequest;

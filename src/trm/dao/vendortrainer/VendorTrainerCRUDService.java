@@ -1,12 +1,9 @@
 package trm.dao.vendortrainer;
 
 import java.util.List;
-
 import org.springframework.jdbc.core.JdbcTemplate;
-
 import trm.dao.DAOJDBCTemplate;
-import trm.dao.employee.Employee;
-import trm.dao.employee.EmployeeMapper;
+
 
 /**
  * CRUD Service for vendor trainer

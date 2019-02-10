@@ -6,11 +6,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import trm.dao.DAOJDBCTemplate;
 import trm.dao.employee.Employee;
-import trm.dao.employee.EmployeeCRUDService;
-import trm.dao.trainingrequest.TrainingRequest;
-import trm.dao.trainingrequest.TrainingRequestCRUD;
-import trm.dao.trainingschedule.TrainingSchedule;
-import trm.dao.trainingschedule.TrainingScheduleCRUDService;
 
 public class DevelopmentTeamTrainingRequestCRUD
 {
@@ -20,7 +15,7 @@ public class DevelopmentTeamTrainingRequestCRUD
     {
 	int numberOfRowsEffected = jTemp.update("Insert into develop_team_training_request values(dev_team_training_req_seq.nextval,?,?,?,?,?,?,?,?)" , 
 												  new Object[] {dttRequest.getTrainingRequest().getTrainingRequestId(),
-													        dttRequest.getConfirmedTrainer().getEmployee_id(),
+													        dttRequest.getTrainerRequest().getTrainerRequestId(),
 													        dttRequest.getTrainerApprovalMail(),
 													        dttRequest.getTrainerManagerApprovalMail(),
 													        dttRequest.getTrainingSchedule().getTraining_schedule_id(),
@@ -99,7 +94,7 @@ public class DevelopmentTeamTrainingRequestCRUD
 	for(DevelopmentTeamTrainingRequest dttRequest : dttList)
 	{
 	    System.out.println(dttRequest.getDttTrainingId() + " " + dttRequest.getTrainingRequest().getTrainingRequestId() + " "
-		    		+ dttRequest.getConfirmedTrainer().getEmployee_id() + " " + dttRequest.getTrainerApprovalMail() + " "
+		    		+ dttRequest.getTrainerRequest().getTrainerRequestId() + " " + dttRequest.getTrainerApprovalMail() + " "
 		    		+ dttRequest.getTrainerManagerApprovalMail() + " " + dttRequest.getTrainingSchedule().getTraining_schedule_id() + " "
 		    		+ dttRequest.getExecutive().getEmployee_id() + " " + dttRequest.getStatus() + " " + dttRequest.getDescriptionOfStatus());
 	    

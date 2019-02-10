@@ -1,6 +1,7 @@
 package trm.dao.developteamtrainingrequest;
 
 import trm.dao.employee.Employee;
+import trm.dao.trainerrequest.TrainerRequest;
 import trm.dao.trainingrequest.TrainingRequest;
 import trm.dao.trainingschedule.TrainingSchedule;
 
@@ -8,7 +9,7 @@ public class DevelopmentTeamTrainingRequest
 {
     private int dttTrainingId;
     private TrainingRequest trainingRequest;
-    private Employee confirmedTrainer;
+    private TrainerRequest trainerRequest;
     private String trainerApprovalMail;
     private String trainerManagerApprovalMail;
     private TrainingSchedule trainingSchedule;
@@ -34,16 +35,6 @@ public class DevelopmentTeamTrainingRequest
     public void setTrainingRequest(TrainingRequest trainingRequest)
     {
         this.trainingRequest = trainingRequest;
-    }
-    
-    public Employee getConfirmedTrainer()
-    {
-        return confirmedTrainer;
-    }
-    
-    public void setConfirmedTrainer(Employee confirmedTrainer)
-    {
-        this.confirmedTrainer = confirmedTrainer;
     }
     
     public String getTrainerApprovalMail()
@@ -104,5 +95,15 @@ public class DevelopmentTeamTrainingRequest
     public void setDescriptionOfStatus(String descriptionOfStatus)
     {
         this.descriptionOfStatus = descriptionOfStatus;
+    }
+
+    public TrainerRequest getTrainerRequest()
+    {
+        return trainerRequest;
+    }
+
+    public void setTrainerRequest(TrainerRequest trainerRequest)
+    {
+        this.trainerRequest = trainerRequest;
     }
 }

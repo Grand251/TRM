@@ -1,11 +1,9 @@
 package trm.dao;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import trm.dao.internaltrainingrequest.InternalTrainingCRUD;
 
 public class DAOJDBCTemplate 
 {

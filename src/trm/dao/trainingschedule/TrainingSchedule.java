@@ -1,6 +1,5 @@
 package trm.dao.trainingschedule;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 /**
  * This is TrainingSchedule class

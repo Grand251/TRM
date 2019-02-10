@@ -1,14 +1,9 @@
 package trm.dao.employee;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
 import org.springframework.jdbc.core.JdbcTemplate;
-
 import trm.dao.DAOJDBCTemplate;
-import trm.dao.MyContext;
-import trm.dao.internaltrainingrequest.InternalTrainingCRUD;
+
 
 /**
  * CRUD Service for employee

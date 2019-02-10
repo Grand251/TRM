@@ -3,21 +3,15 @@ package trm.dao.trainingrequest;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-
 import trm.dao.DAOJDBCTemplate;
 import trm.dao.employee.Employee;
 import trm.dao.employee.EmployeeCRUDService;
-import trm.dao.trainingschedule.TrainingSchedule;
 
 
 

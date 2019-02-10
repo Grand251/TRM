@@ -1,9 +1,6 @@
 package trm.editors;
 
 import java.beans.PropertyEditorSupport;
-
-import trm.dao.employee.Employee;
-import trm.dao.employee.EmployeeCRUDService;
 import trm.dao.internaltrainingrequest.InternalTrainingCRUD;
 import trm.dao.internaltrainingrequest.InternalTrainingRequest;
 

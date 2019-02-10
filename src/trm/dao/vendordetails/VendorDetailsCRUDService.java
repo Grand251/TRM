@@ -1,12 +1,8 @@
 package trm.dao.vendordetails;
 
 import java.util.List;
-
 import org.springframework.jdbc.core.JdbcTemplate;
-
 import trm.dao.DAOJDBCTemplate;
-import trm.dao.vendortrainer.VendorTrainer;
-import trm.dao.vendortrainer.VendorTrainerCRUDService;
 
 public class VendorDetailsCRUDService {
 	private JdbcTemplate jtemp;

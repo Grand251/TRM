@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.RowMapper;
 
 import trm.dao.employee.Employee;
 import trm.dao.employee.EmployeeCRUDService;
-import trm.dao.internaltrainingrequest.InternalTrainingRequest;
 import trm.dao.trainingrequest.TrainingRequest;
 import trm.dao.trainingrequest.TrainingRequestCRUD;
 import trm.dao.trainingschedule.TrainingSchedule;
