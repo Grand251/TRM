@@ -39,7 +39,6 @@ public class InternalTrainingRequestMapper implements RowMapper<InternalTraining
 		
 		request.setItrId(rs.getInt(1));
 		
-		//
 		TrainingRequest trainingRequest = new TrainingRequestCRUD().getTrainingRequestById(rs.getInt(2));
 		//System.out.println(crud.getActiveConnectionCount());
 		request.setItrTrainingRequest(trainingRequest);
