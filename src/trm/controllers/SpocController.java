@@ -1,12 +1,8 @@
 package trm.controllers;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import org.springframework.stereotype.Controller;
@@ -193,17 +189,20 @@ public class SpocController {
 		System.out.println(startStamp);
 		System.out.println(endStamp);
 		
-		new TrainingScheduleCRUDService().updateTrainingSchedule(ts.getTraining_schedule_id(), ts.getTraining_city(), 
+		int schedule = new TrainingScheduleCRUDService().updateTrainingSchedule(ts.getTraining_schedule_id(), ts.getTraining_city(), 
 				ts.getTraining_state(), ts.getTraining_state(), ts.getTraining_zipcode(), 
 				ts.getTraining_time_zone(), ts.getTraining_location(), ts.getTraining_room_number(), 
 				new java.sql.Timestamp(startStamp.getTime()), new java.sql.Timestamp(endStamp.getTime()), ts.getTraining_url(), ts.getTraining_audio());
-	
-		int ret = new InternalTrainingCRUD().updateItr(itr);
-		if(ret > 0)
-			return "redirect:/edititr/" + itrId;
+		
+		if(schedule > 0) {
+			int ret = new InternalTrainingCRUD().updateItr(itr);
+			if(ret > 0)
+				return "redirect:/edititr/" + itrId;
+			else
+				return "error";
+		}
 		else
 			return "error";
-
 	}
 	
 	//Function that inserts an ExecutiveWorkFlowStatus and updates the statuses of the InternalTrainingRequest and the TrainingRequest that corresponds with it
@@ -235,6 +234,8 @@ public class SpocController {
 			
 			execWorkflowStatus.setTrainingRequest(itr.getItrTrainingRequest());
 			execWorkflowStatus.setExecutiveWorkflowStatusExecutive(executive);
+			
+			//update not working; debug
 			int ret2 = ewfsCrud.updateExecutiveWorkflowStatus(execWorkflowStatus);
 			
 			map.addAttribute("executiveWorkflowStatus", execWorkflowStatus);
@@ -345,23 +346,7 @@ public class SpocController {
 		
 		return "edititrform";
 	}
-	@RequestMapping(value="saveUpdatedData")
-	public String saveUpdatedDetails(@ModelAttribute("itr") InternalTrainingRequest itr)
-	{
-		itr.setItrStatus(3);
-		itr.getItrTrainingRequest().setStatus(4);
-		
-		/*
-		int ret = new InternalTrainingTableCRUD.insert();
-		
-		if(ret > 0)
-			return "redirect:/showall";
-		else
-			return "error";
-		*/
-		return "redirect:/edititrform/1000000";
-		
-	}
+
 	@RequestMapping(value="newitr")
 	public String insertITRequest(@ModelAttribute("internalTrainingRequest") InternalTrainingRequest internalTrainingRequest)
 	{
