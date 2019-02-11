@@ -1,10 +1,13 @@
 package trm.controllers;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -102,15 +105,18 @@ public class SpocController {
         	return "error";
     }
 	
-	@RequestMapping(value="selectTrainingType/{trainingRequestId}")
-	public String selectTrainingType(@PathVariable("trainingRequestId") int trId, ModelMap map)
-	{
-		System.out.println(trId);
-		
-		TrainingRequest treq = new TrainingRequestCRUD().getTrainingRequestById(trId);
-		map.addAttribute("command", treq);
-		
-		return "spocrequesttype";
+	@RequestMapping(value="selectTrainingType")
+	public String selectTrainingType(HttpServletRequest request, ModelMap map)
+	{		
+		int trId = Integer.parseInt(request.getParameter("trainingRequestId"));
+		String trType = request.getParameter("trainingRequestType");
+
+		int ret = new TrainingRequestCRUD().updateTrainingRequestByAttribute(trId, 
+				"request_training_type", trType);
+		if(ret > 0)
+			return "redirect:/createItr/" + trId;
+		else
+			return "error";
 	}
 	
 	@RequestMapping(value="createItr/{trId}")
@@ -120,7 +126,6 @@ public class SpocController {
 		TrainingRequest tr = new TrainingRequestCRUD().getTrainingRequestById(trId);
 		tr.setStatus(2);
 		new TrainingRequestCRUD().updateTrainingRequest(tr);
-			
 			
 		InternalTrainingRequest itr = new InternalTrainingRequest();
 		itr.setItrTrainingRequest(tr);
@@ -138,24 +143,6 @@ public class SpocController {
 		
 		return "redirect:/viewspocdashboard";
 	}
-	
-	@RequestMapping(value="saveTrainingType")
-	public String saveTrainingType(@ModelAttribute("treq") TrainingRequest treq, ModelMap map)
-	{
-
-		int type = new TrainingRequestCRUD().updateTrainingRequestByAttribute(treq.getTrainingRequestId(), 
-				"request_training_type", treq.getRequestTrainingType());
-		if(type > 0)
-		{
-			int status = new TrainingRequestCRUD().updateTrainingRequestByAttribute(treq.getTrainingRequestId(), "status", 2);
-			if(status > 0)
-				return "redirect:/createItr/" + treq.getTrainingRequestId();
-			else
-				return "error";
-		}
-		else
-			return "error";
-	}
 
 	@RequestMapping(value="steponeform/{itrId}")
 	public String stepOneForm(@PathVariable("itrId") int itrId, ModelMap map) {
@@ -167,47 +154,56 @@ public class SpocController {
 	}
 	
 	@RequestMapping(value="submitstepone/{itrId}")
-	public String submitStepOne(@PathVariable("itrId") int itrId, HttpServletRequest request, ModelMap map) {
-		map.addAttribute("itrId", itrId);
+	public String submitStepOne(@PathVariable("itrId") int itrId, HttpServletRequest request, ModelMap map) throws ParseException {
 		InternalTrainingCRUD itrCrud = new InternalTrainingCRUD();
 		InternalTrainingRequest itr = itrCrud.getItrById(itrId);
-		TrainingScheduleCRUDService tsCrud = new TrainingScheduleCRUDService();
-		//TrainingSchedule ts = tsCrud.getTrainingScheduleById(itr.get);
-		TrainingSchedule ts = itr.getItrSchedule();
-		ts.setTraining_room_number(request.getParameter("room"));
-		ts.setTraining_location(request.getParameter("location"));
-		ts.setTraining_city(request.getParameter("city"));
-		ts.setTraining_state(request.getParameter("state"));
-		ts.setTraining_zipcode(request.getParameter("zip"));
 		
-		itr.getItrTrainingRequest().setRequestTrainingMode(request.getParameter("mode"));
-		new TrainingRequestCRUD().updateTrainingRequest(itr.getItrTrainingRequest());
-
+		TrainingSchedule ts = itr.getItrSchedule();
+		ts.setTraining_city(request.getParameter("trainingCity"));
+		ts.setTraining_state(request.getParameter("trainingState"));
+		ts.setTraining_zipcode(request.getParameter("trainingZipcode"));
+		itr.getItrTrainingRequest().setRequestTrainingMode(request.getParameter("trainingMode"));
+		
+		new TrainingRequestCRUD().updateTrainingRequestByAttribute(itr.getItrTrainingRequest().getTrainingRequestId(), 
+				"request_training_mode", request.getParameter("trainingMode"));
+		
+		if(request.getParameter("trainingMode").equals("Classroom Based")) {
+			ts.setTraining_location(request.getParameter("trainingLocation"));
+			ts.setTraining_room_number(request.getParameter("trainingRoom"));
+		} else {
+			ts.setTraining_url(request.getParameter("trainingUrl"));
+			ts.setTraining_audio(request.getParameter("trainingAudio"));			
+		}
+		
 		int trainerId = Integer.parseInt(request.getParameter("trainerId"));
 		Employee trainer = new EmployeeCRUDService().getEmployeeById(trainerId);
 		itr.setItrTrainer(trainer);
-		//Selected Trainer
-		itrCrud.updateItr(itr);
+
+		String startDate = request.getParameter("startDate");
+		String startTime = request.getParameter("startTime");
+		String endDate = request.getParameter("endDate");
+		String endTime = request.getParameter("endTime");
 		
-		Date startDate = null;
-		Time startTime = null;
-		Date endDate = null;
-		Time endTime = null;
-		try {
-			System.out.println(request.getParameter("startDate"));
-			String temp;
-			startDate = new Date(new SimpleDateFormat("yyyy-MM-dd").parse((String)request.getParameter("startDate")).getTime());
-			startTime = Time.valueOf(request.getParameter("startTime"));
-			endTime = Time.valueOf(request.getParameter("endTime"));
-			endDate = new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse((String)request.getParameter("endDate")).getTime());
-		} catch (Exception e) {System.out.println(e.getMessage()); return "error";}
+		java.util.Date startStamp = null;
+		java.util.Date endStamp = null;
 		
+		startStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(startDate+" "+startTime+":00");
+		endStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endDate+" "+endTime+":00");
+
+		System.out.println(startStamp);
+		System.out.println(endStamp);
 		
-//		ts.setTraining_start_date(startDate);
-//		ts.setTraining_end_date(endDate);
-//		tsCrud.updateTrainingSchedule(ts.getTraining_schedule_id(), "", "", "", "", "", "", "", 
-//				ts.getTraining_start_date(), ts.getTraining_end_date());
-		return "redirect:/edititr/" + itrId;
+		new TrainingScheduleCRUDService().updateTrainingSchedule(ts.getTraining_schedule_id(), ts.getTraining_city(), 
+				ts.getTraining_state(), ts.getTraining_state(), ts.getTraining_zipcode(), 
+				ts.getTraining_time_zone(), ts.getTraining_location(), ts.getTraining_room_number(), 
+				new java.sql.Timestamp(startStamp.getTime()), new java.sql.Timestamp(endStamp.getTime()), ts.getTraining_url(), ts.getTraining_audio());
+	
+		int ret = new InternalTrainingCRUD().updateItr(itr);
+		if(ret > 0)
+			return "redirect:/edititr/" + itrId;
+		else
+			return "error";
+
 	}
 	
 	//Function that inserts an ExecutiveWorkFlowStatus and updates the statuses of the InternalTrainingRequest and the TrainingRequest that corresponds with it
@@ -222,7 +218,6 @@ public class SpocController {
 			
 			System.out.println(itr.getItrId());
 			
-			
 			itr.setItrStatus(5);
 			itrCrud.updateItr(itr);
 			itr.getItrTrainingRequest().setStatus(5);
@@ -234,22 +229,17 @@ public class SpocController {
 			//update corresponding ITR with correct statuses and executives
 			int ret = new InternalTrainingCRUD().updateItr(itr);
 			
-			Employee executive = itr.getItrExecutive();
-			
-			
+			Employee executive = itr.getItrExecutive();	
 			
 			//insert ExecutiveWorkflowStatus into database for executive to see on their end once the SPOC is finished
 			
 			execWorkflowStatus.setTrainingRequest(itr.getItrTrainingRequest());
 			execWorkflowStatus.setExecutiveWorkflowStatusExecutive(executive);
-			int ret2 = ewfsCrud.insertExecutiveWorkflowStatus(execWorkflowStatus);
-			
-			
-			
+			int ret2 = ewfsCrud.updateExecutiveWorkflowStatus(execWorkflowStatus);
 			
 			map.addAttribute("executiveWorkflowStatus", execWorkflowStatus);
 
-			if(ret > 0 && ret2 > 0)
+			if(ret > 0)
 				return "redirect:/viewspocdashboard";
 			else
 				return "error";
@@ -312,13 +302,10 @@ public class SpocController {
 		List<TrainingRequest> trainingRequests = new TrainingRequestCRUD().getAllTrainingRequest();
 		List<TrainingSchedule> schedules = new TrainingScheduleCRUDService().getAllTrainingSchedule();
 		
-
 		map.addAttribute("employees", employees);
 		map.addAttribute("trainingRequests", trainingRequests);
 		map.addAttribute("schedules", schedules);
 
-		
-		
 		return "insertitr";
 	}
 	@RequestMapping(value="edititr/{itrId}")
