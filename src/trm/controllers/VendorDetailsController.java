@@ -94,12 +94,12 @@ public class VendorDetailsController {
 				}
 				
 				if(!result.equals(null)) {
-					ArrayList<LinkedHashMap<String, String>> errorReport = new ArrayList<LinkedHashMap<String, String>>();
+					ArrayList<ArrayList<String>> errorReport = new ArrayList<ArrayList<String>>();
 					for(FieldError error : result.getFieldErrors()) {
-						LinkedHashMap<String, String> errorValues = new LinkedHashMap<String, String>();
-						errorValues.put("Field: ", error.getField());
-						errorValues.put("Rejected Value: ", error.getRejectedValue().toString());
-						errorValues.put("Error: ", error.getDefaultMessage());
+						ArrayList<String> errorValues = new ArrayList<String>();
+						errorValues.add(error.getField());
+						errorValues.add(error.getRejectedValue().toString());
+						errorValues.add(error.getDefaultMessage());
 						errorReport.add(errorValues);
 					}
 					model.addAttribute("command", vendorDetails);

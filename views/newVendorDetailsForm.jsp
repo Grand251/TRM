@@ -11,8 +11,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 <style>
-.error{
-	border: 5px solid #ffdddd;
+.input-validation-error
+{
+    background: #FEF1EC;
+    border: 1px solid #CD0A0A;
 }
 
 </style>
@@ -37,14 +39,35 @@
 </f:form>
 <br>
 <hr size = "4" color = "blue"/>
+<script>
+
+var errorReport = [];
 
 <c:forEach items="${errorReport}" var="error">
-		<p>
+		var errorValues = [];
 		<c:forEach items="${error}" var="errval">
-			<span style="color:red">${errval.key}&nbsp;&nbsp;${errval.value}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+		var errorValue = "${errval}";	
+		errorValues.push(errorValue);
 		</c:forEach>
-		</p>
+		errorReport.push(errorValues);
 </c:forEach>
+
+console.log(errorReport);
+
+
+
+errorReport.forEach(function(error){
+	console.log(error);
+	console.log(error[0]);
+	var errorElement = document.getElementsByName(error[0])[0];
+	console.log(errorElement);
+	errorElement.classList.add("input-validation-error");
+});
+
+
+
+
+</script>
 
 </body>
 </html>

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -136,7 +138,7 @@ public class SpocController {
 	}
 	
 	@RequestMapping(value="newitr")
-	public String insertITRequest(@ModelAttribute("internalTrainingRequest") InternalTrainingRequest internalTrainingRequest)
+	public String insertITRequest(@Valid @ModelAttribute("internalTrainingRequest") InternalTrainingRequest internalTrainingRequest)
 	{
 		
 		System.out.println(internalTrainingRequest.getItrTrainer());
