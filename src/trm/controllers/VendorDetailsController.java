@@ -98,7 +98,8 @@ public class VendorDetailsController {
 					for(FieldError error : result.getFieldErrors()) {
 						ArrayList<String> errorValues = new ArrayList<String>();
 						errorValues.add(error.getField());
-						errorValues.add(error.getRejectedValue().toString());
+						if(error.getRejectedValue()!=null)
+							errorValues.add(error.getRejectedValue().toString());
 						errorValues.add(error.getDefaultMessage());
 						errorReport.add(errorValues);
 					}
@@ -108,7 +109,9 @@ public class VendorDetailsController {
 				}
 				
 				int ret = new VendorDetailsCRUDService().insertVendorDetails(vendorDetails);
-				if(ret > 0) return "redirect:/showallVendorDetails";
-				else return "error";
+				if(ret > 0) 
+					return "redirect:/showallVendorDetails";
+				else 
+					return "error";
 			}
 }

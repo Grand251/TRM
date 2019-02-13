@@ -26,15 +26,24 @@
 <br>
 <f:form action = "insertVendorDetails">
 	<f:input cssErrorClass="form-field-error" path = "vendor_id"/>
+	<f:errors path="vendor_id" cssClass="form-field-error"/>
 	<f:input cssErrorClass="form-field-error" path = "vendor_name"/>
+	<f:errors path="vendor_id" cssClass="form-field-error"/>
 	<f:input cssErrorClass="form-field-error" path = "vendor_phone"/>
+	<f:errors path="vendor_id" cssClass="form-field-error"/>
 	<f:input cssErrorClass="form-field-error" path = "vendor_email"/>
+	<f:errors path="vendor_id" cssClass="form-field-error"/>
 	<f:input cssErrorClass="form-field-error" path = "vendor_city"/>
+	<f:errors path="vendor_id" cssClass="form-field-error"/>
 	
 	<f:input cssErrorClass="form-field-error" path = "vendor_state"/>
+	<f:errors path="vendor_id" cssClass="form-field-error"/>
 	<f:input cssErrorClass="form-field-error" path = "vendor_country"/>
+	<f:errors path="vendor_id" cssClass="form-field-error"/>
 	<f:input cssErrorClass="form-field-error" path = "vendor_zipcode"/>
+	<f:errors path="vendor_id" cssClass="form-field-error"/>
 	<f:input cssErrorClass="form-field-error" path = "vendor_time_zone"/>
+	<f:errors path="vendor_id" cssClass="form-field-error"/>
 	<f:button>create</f:button>
 </f:form>
 <br>
