@@ -127,6 +127,7 @@ public class SpocController {
 		itr.setItrTrainingRequest(tr);
 		itr.setItrStatus(2);
 		itr.setItrTrainer(new EmployeeCRUDService().getEmployeeById(1000000));
+		// check line for possible changes
 		itr.setItrExecutive(new EmployeeCRUDService().getEmployeeById(1000038));
 		itr.setItrStatusDescription("ONE");
 			
@@ -347,45 +348,4 @@ public class SpocController {
 		return "edititrform";
 	}
 
-	@RequestMapping(value="newitr")
-	public String insertITRequest(@ModelAttribute("internalTrainingRequest") InternalTrainingRequest internalTrainingRequest)
-	{
-		
-		System.out.println(internalTrainingRequest.getItrTrainer());
-		//internalTrainingRequest.setItrId(99999);
-		int ret = new InternalTrainingCRUD().insertItr(internalTrainingRequest);
-		
-		if(ret > 0)
-			return "redirect:/showallitr";
-		else
-			return "error";
-	}
-	@RequestMapping(value="DT")
-	public String showDTRequests(ModelMap model) {
-		
-		return "dtform";
-	}
-	@RequestMapping(value="VT")
-	public String showVTRequests(ModelMap model) {
-		
-		return "vtform";
-	}
-	@RequestMapping(value="pmastatus")
-	public String showPMAStatus(ModelMap model) {
-		
-		return "pmastatus";
-	}
-	
-	@RequestMapping(value="confirmtrainingform")
-	public String confirmTraining(ModelMap model) {
-		
-		return "confirmtrainingform";
-	}
-	
-	@RequestMapping(value="requestoverview")
-	public String editRequest(ModelMap model) {
-		
-		return "spocrequestoverview";
-	}
-	
 }
