@@ -8,13 +8,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="stylesheet" href="resources/stylesheets/bootstrap.min.css">
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
+ <%@include  file="headerfile.jsp"%>
   <link rel="stylesheet" href="resources/stylesheets/spoc.css">
   <link rel="stylesheet" href="resources/stylesheets/trm.css">
   <link rel="stylesheet" href="resources/stylesheets/custom.css">
@@ -23,26 +17,7 @@
 </head>
 
 <body>
-  <!--Top navigation -->
-  <div id="topnav" class="navbar navbar-default navbar-fixed-top">
-    <div class="header-container">
-      <!-- Left-aligned link -->
-      <div class="left-header">
-        <a class="logo-content" href="#" title="Home">
-          <img class="logoimage1" src="resources/images/as-logo.png" alt="Home">
-        </a>
-      </div>
-      <!-- Right-aligned links -->
-      <div id="right-header">
-        <a href="about.html" class="about">About</a>
-        <a href="#" class="logolink" title="Home">
-          <img class="logoimage2" src="resources/images/as-logo.png" alt="Home">
-        </a>
-      </div>
-    </div>
-  </div>
-  <!--End of navigation bar-->
-
+  <%@include file="headerbody.jsp" %>
   <!--Space between navigation and ongoing requests-->
   <div style="height:10vh;"></div>
 
@@ -128,16 +103,7 @@
   <!--End of fluid-->
 
   <!--Footer-->
-  <footer id="footer">
-    <div class="row*">
-      <div class="col-xs-12">
-        <p class="m-0" style="text-align:center;margin-top:15px;">&copy;Copyright 2017 Syntel INC. All
-          rights
-          reserved.
-        </p>
-      </div>
-    </div>
-  </footer>
+  <%@include file="trmfooterfile.jsp"%>
   <!--End of footer-->
 </body>
 

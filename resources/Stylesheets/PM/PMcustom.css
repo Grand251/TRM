@@ -50,6 +50,12 @@
     color: black;
     
 }
+.modal fade{
+    width: 300px;
+}
+.modal-header{
+    background-color: #31708f;
+}
   
 /* .my-first-div{
     margin-top: 60px;
@@ -71,49 +77,47 @@
     margin-top:40px;
     margin-left:5px;
 }
-
-#tabledata{
-    padding:10px;
+.modal-dialog{
+    width: 200px;
 }
-/* .login {
-      background-color:lightskyblue;
-      margin:100px auto;
-      width:30%;
-      align-content: center;
-} */
-/* .input-group{
-    padding-bottom:30px;
-} 
- /* modal css 
+ modal css 
   .fade{
-    width:100%;
-    position:absolute;
+    -position:absolute;
     top:0;
     color:black; 
     display:flex;
-    /* justify-content:center;
-    align-items:center;  
+    -justify-content:center;
+    -align-items:center;  
     display:none;
 
-} */
-/* 
+} 
+.para{
+    margin-top: calc(27.5px - 0.5em);
+    height: auto;
+}
+
 .modaldialog{
-    width:600px; 
     border-radius:4px;
     text-align:center;
     position:relative;
 
-} */
+} 
 #footer{
     background-color:#31708f;
     color:white;
     height:55px;
-    margin-bottom:0;
+    bottom:0;
+    position:absolute;
     clear:both;
-    position: relative;
-    overflow: hidden;
+    width:100%;
+    text-align:center;
 }
 
+
+input[type=text]:focus(){
+    border-color:dodgerblue;
+    box-shadow:0 0 8px dodgerblue;
+}
 @media (max-width: 768px) {
     .logoimage2{
         display: none;
@@ -124,11 +128,15 @@
         top: 15px;
     }
  }
- 
+ body 
+{
+
+ margin-left:0px;
+}
 .portfolio-item {
 	margin-bottom: 30px;
 	margin-right: 20px;
-    height:170px;
+    height:300px;
   
   }
 #card{
@@ -139,41 +147,55 @@
 
 	
 }
-#CreateButton{
+ #CreateButton{
 	right: 40px;
     -height: 35px;
    
-}	
+}	 
 #searchBar{ 
-    margin-left: 43px;
+    margin-left: 44px;
     height: 40px; 
-    padding-right: 55px;
+    padding-right: 118px;
    
 }
 #searchButton{ 
-	
-    height: 40px; 
-    margin-right: 650px; 
+	margin-left: 20px;
+    height: 40px;  
 } 
 .divider{
     color:red;
 }
 
-label {
-    display:inline-block;
-    padding-top: 5px;
-    margin-left:10px;
-    width: 140px;
-    font-weight:700;
-}
-#requestinput{
-    position:relative;
+#Changes{
+position: absolute;
+right: 0px;
+bottom: 0px;
 }
 
-input[type=radio] {
-    width: 30px;
-    height: 30px;
-    margin-top: -1px;
-    vertical-align: middle;
-    margin-left:5px;
+.popover{
+    width: 370px;
+}
+
+#Info tr:hover{ 
+        background-color : yellow;
+}
+#popover-content{
+    position: absolute; 
+    width:50%;
+    top: 35%;
+    margin-left: 50%; 
+    left:53%;
+}
+
+.center-block {
+	align: center;
+}
+
+.fas {
+	padding: 0px 5px;
+}
+
+.editBtn {
+	margin-top: 5px;
+	margin-bottom: 5px;
 }

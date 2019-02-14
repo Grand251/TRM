@@ -1,6 +1,7 @@
 package trm.dao.trainingschedule;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -69,6 +70,9 @@ public class TrainingScheduleCRUDService {
 	 * @return int(bollean)
 	 */
 	public int deleteTrainingSchedule(String training_schedule_id) {
+
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
+
 		int ret = jtemp.update("delete from TRAINING_SCHEDULE where training_schedule_id = ?", 
 				new Object[] {training_schedule_id});
 		return ret;
@@ -81,6 +85,8 @@ public class TrainingScheduleCRUDService {
 	 */
 
 	public TrainingSchedule getTrainingScheduleById(String scheduleId) {
+		jtemp = new DAOJDBCTemplate().getJdbcTemplate();
+
 		TrainingSchedule schedule = jtemp.queryForObject("Select * from TRAINING_SCHEDULE where training_schedule_id = ?",
 									new Object[]{scheduleId},
 									new TrainingScheduleMapper());
@@ -104,7 +110,7 @@ public class TrainingScheduleCRUDService {
 	public int updateTrainingSchedule(String training_schedule_id, String training_city, String training_state,
 			String training_country, String training_zipcode, String training_time_zone, String training_location,
 
-			String training_room_number, Date training_start_date, Date training_end_date, String training_url, String training_audio) {
+			String training_room_number, Timestamp training_start_date, Timestamp training_end_date, String training_url, String training_audio) {
 
 		int ret = jtemp.update("UPDATE TRAINING_SCHEDULE SET training_city = ?, training_state = ?, training_country = ?, training_zipcode = ?, training_time_zone = ?, training_location = ?, training_room_number = ?, training_start_date = ?, training_end_date = ?, training_url = ?, training_audio = ? where training_schedule_id = ?",
 							new Object[] {

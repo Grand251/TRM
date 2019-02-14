@@ -18,8 +18,9 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value="loginform")
-	public String loginForm(ModelMap model) {
-		
+	public String loginForm(HttpServletRequest request, ModelMap model) {
+		request.getSession().invalidate();
+		request.getSession().setAttribute("user", null);
 		return "loginform";
 	}
 	
@@ -43,11 +44,12 @@ public class LoginController {
 		String role = emp.getJob_title();
 		
 		request.getSession().setAttribute("user", emp);
+		request.getSession().setAttribute("username", emp.getFirst_name() + " " + emp.getLast_name());
 		switch (role) {
 			case "Project Manager":
 				return "redirect:/pmdashboard";
 			case "SPOC":
-				return "redirect:/spocdashboard";
+				return "redirect:/viewspocdashboard";
 			case "Executive":
 				return "redirect:/execdashboard";
 
@@ -57,6 +59,26 @@ public class LoginController {
 		}
 	}
 
+	@RequestMapping(value="backtodashboard")
+	public String backToDashboard(HttpServletRequest request)
+	{
+		if (request.getSession(false) == null || request.getSession().getAttribute("user") == null)
+			return "redirect:/loginform";
+		
+		Employee emp = (Employee)request.getSession().getAttribute("user");
+		
+		switch (emp.getJob_title()) {
+		case "Project Manager":
+			return "redirect:/pmdashboard";
+		case "SPOC":
+			return "redirect:/viewspocdashboard";
+		case "Executive":
+			return "redirect:/execdashboard";
+		}
+		
+		return "error";
+	}
+	
 	@RequestMapping(value="logout")
 	public String logout(HttpServletRequest request, ModelMap model) {
 		
@@ -64,6 +86,4 @@ public class LoginController {
 		
 		return "redirect:/loginform";
 	}
-					
-	
 }

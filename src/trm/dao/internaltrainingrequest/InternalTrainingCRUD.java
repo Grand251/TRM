@@ -27,7 +27,7 @@ import trm.dao.trainingschedule.TrainingSchedule;
 public class InternalTrainingCRUD {
 	
 	
-	private JdbcTemplate jTemp = new DAOJDBCTemplate().getJdbcTemplate();
+		private JdbcTemplate jTemp = new DAOJDBCTemplate().getJdbcTemplate();
 	
     	public List<InternalTrainingRequest> getAllItrBySPOC(int spocId)
     	{
@@ -36,7 +36,7 @@ public class InternalTrainingCRUD {
     	    								+" join training_request tr" 
     	    								+ " on it.training_request_id = tr.training_request_id"
     	    								+ " AND tr.request_project_spoc = ?", new Object[]{spocId},
-    	    								new InternalTrainingRequestMapper());
+    	    		new InternalTrainingRequestMapper());
     	}
 	/**
 		Get all InternalTrainingRequest objects in database
@@ -417,22 +417,15 @@ public class InternalTrainingCRUD {
 	 * @param requestId ITR ID which can be no greater than 7 digits.
 	 */
 	public int deleteItr(int requestId) {
-		return jTemp.update("Update internal_training_request set status = -1 where internal_training_id = ?",
+		return jTemp.update("DELETE FROM internal_training_request"
+				+ " WHERE internal_training_id=?",
 				new Object[] {requestId});
 				
 	}
 	
-	public static void main(String[] args) 
-	{
+	public static void main(String[] args) {
 	 
 		InternalTrainingCRUD itCRUD = new InternalTrainingCRUD();
-		
-		for(InternalTrainingRequest itr: itCRUD.getAllItr())
-		{
-		    System.out.println(itr.getItrId());
-		}
-		
-		/*
 		
 		List<InternalTrainingRequest> itList = itCRUD.getAllItrBySPOC(1000019);
 		

@@ -1,3 +1,6 @@
+<!--  status as 3 is enabled. everything else disabled -->
+<!--  -1 status is denied by project requester -->
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -12,69 +15,26 @@
   <meta name="author" content="">
 
   <title>ProjectManagerView</title>
-
-<!-- Custom styles for this template -->
-<link rel="stylesheet" href="resources/custom.css">
-
-<!-- Bootstrap core CSS -->
-<link rel="stylesheet" href="resources/bootstrap.min.css">
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> <!--needed for the glyphs  -->
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-
-
+	
+	<%@include file="headerfile.jsp" %>
+	<!-- Custom styles for this template -->
+	<link rel="stylesheet" href="resources/stylesheets/PM/PMcustom.css">
 </head>
 
-<body style="margin-top: 100px;">
+<body style="background-color: #87cefa;">
 
-  <!-- Navigation -->
-  <div id="topnav" class="navbar navbar-default navbar-fixed-top">
-    <div class="header-container">
-      <!-- Left-aligned link -->
-      <div class="left-header">
-        <a class="logo-content" href="#" title="Home">
-          <img class="logoimage1" src="resources/as-logo.png" alt="Home">
-        </a>
-      </div>
-    </div>
-  </div>
-  <!--End NAV-->
+  <%@include file="headerbody.jsp" %>
+  <%@include file="navbar.jsp" %>
 
-  <div><!-- Top table with search and create-->
-    <table>
-      <tr>
-        <td >
-             <!--search bar-->
-          <input name="Search Training" id="searchBar" font-size="20" placeholder="Search">
-          <!--search bar-->
-          <!-- search  button-->
-          <a href="#" id="searchButton" class="btn btn-info btn-sm" style="background-color: #31708F;">
-            <span class="glyphicon glyphicon-search"></span> Search
-          </a>
-        </td>
-        <td >
-             <!-- create training button-->
-          <!--  <a href="createrequest" id="CreateButton" data-toggle="modal" data-target="#create" style="background-color: #31708F;" class="btn btn-info btn-lg">
+	<div style="margin-left:15%; margin-top:100px;"><!-- Top table with search and create-->
+       <!-- create training button-->
+          <a href="createrequest" id="CreateButton" class="btn btn-danger btn-lg">
             <span class="glyphicon glyphicon-list-alt"></span> New Training Request
-          </a>-->
-          <form action="createrequest">
-          <button type="submit" class = "btn btn-info" style="background-color: #31708F;">
-			New Training Request
-			<i class = "fa fa-list" aria-hidden = "true"></i>
-			</button>
-			</form>
-        </td>
-      </tr>
-    </table>
+          </a>
   </div>
 
   <!-- Page Content -->
-  <div class="container-fluid" style="margin-left:25px; ">
+  <div class="container-fluid" style="margin-left:15%; margin-top:50px; padding:0px; max-width:1300px;">
 <!--row start-->
 	<div class="row" style="margin-right: 10px;">
       	<c:forEach items="${requests}" var="request">
@@ -85,30 +45,30 @@
         <div class="card h-100" id="card">
           <table>
             <td>
-              <h3 align="left" style="margin-top: 0px">Training ID </h3>
+              <h3 align="left" style="margin-top: 0px">ID: ${request.id}</h3>
             </td>
             <td>
               <div class="dropdown" align="right" style="margin-top: 0px" id="moreInfo">
                 <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
-                  aria-haspopup="true"><span class="glyphicon glyphicon-th-list"></span>
+                  aria-haspopup="true" style="background-color:#007bff; color:white;"><span class="fas fa-list"></span>
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                  <li><a href="#"><span class="glyphicon glyphicon-pencil"></span> Training Scope ${request.scope} </a></li>
-                  <li><a href="#"><span class="glyphicon glyphicon-home"></span> Training type ${request.type}</a></li>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="width: 250%;">
+                  <li><span class="fas fa-pencil-alt"></span><strong>Scope:</strong> ${request.scope}</li>
+                  <li><span class="fas fa-home"></span><strong>Type:</strong> ${request.type}</li>
                   <!--internal or vender -->
-                  <li><a href="#"> <span class="glyphicon glyphicon-modal-window"></span> Training Mode ${request.mode}</a></li>
+                  <li><span class="fas fa-calendar"></span><strong>Mode:</strong> ${request.mode}</li>
                   <!--"mode" of training -->
-                  <li><a href="#"><span>&#35;</span> Number of participants ${request.participants} </a></li>
+                  <li><i class="fas fa-hashtag"></i><strong>Participants:</strong> ${request.participants}</li>
  
-                      <li> <button type="button" class="center-block" data-toggle="modal" data-target="#myModal${request.id}">Edit</button></li>
+                      <li align="center"> <button type="button" class="btn btn-primary editBtn" data-toggle="modal" data-target="#myModal${request.id}">Edit</button></li>
                   
                   
                   
                   <li role="separator" class="divider"></li>
-                  <li><a href="#"><span class="glyphicon glyphicon-calendar"></span> Start Date and Time ${request.requestedStartTime}</a></li>
-                  <li><a href="#"><span	 class="glyphicon glyphicon-calendar"></span> End Date and Time ${request.requestedEndTime}</a></li>
-                  <li><a href="#"><span class="glyphicon glyphicon-time"> </span>Time Zone ${request.timeZone}</a></li>
-                  <li><a href="#"><span class="glyphicon glyphicon-globe"></span> location ${request.location} </a></li>
+                  <li><span class="fas fa-calendar"></span><strong>S Date:</strong> ${request.requestedStartDate}</li>
+                  <li><span	 class="fas fa-calendar"></span><strong>E Date:</strong> ${request.requestedEndDate}</li>
+                  <li><span class="fas fa-clock"> </span><strong>Time Zone:</strong> ${request.timeZone}</li>
+                  <li><span class="fas fa-globe-americas"></span><strong>Location:</strong> ${request.location}</li>
                   <!--Where it is taking place if not online (IF ONLINE DONT SHOW)
 					WORKING BUTTON                  
                   <li> <button type="button" id="editbuttontwo" class="center-block" data-toggle="modal" data-target="#myModal1">Edit</button></li>
@@ -121,21 +81,21 @@
                   -->
                   
                   
-                  <li> <button type="button" 
-                 	 class="center-block"
+                  <li align="center"> <button type="button" 
                  	 data-toggle="modal"
                  	 data-target="#myModal1${request.id}"
-                 	 onclick=
+                 	 class="btn btn-primary editBtn"
                   	 >Edit</button></li>
                 
                 
                   <li role="separator" class="divider"></li>  
                   
-<li><a href="#" class="center-block" id ="log" title="Log of changes" 
-                        data-toggle="popover" style="color:blue" data-trigger="hover"
-                        data-placement="bottom" data-content="all of the info here ">
-                         <span class="glyphicon glyphicon-list-alt" >  </span>Log</a>
-                      </li>             
+<li style="
+    text-align: -webkit-right;
+    margin-right: 10px;
+"><a href="#" class="center-block" id="log" title="Log of changes" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="all of the info here ">
+                         <span class="fas fa-clipboard-list">  </span>Process Request Log</a>
+                      </li>       
                       
                            
                   
@@ -148,27 +108,28 @@
             <table id="Info">
               <tr></tr>
               <tr>
-                <td> <span class="glyphicon glyphicon-pencil"></span>
-                  Training Module: ${request.id}</td>
+                <td> <span class="fas fa-pencil-alt"></span>
+                  <strong>Module:</strong> ${request.module}</td>
               </tr>
               <tr>
-                <td> <span class="glyphicon glyphicon-calendar"></span>
-                  Start Date: ${request.requestedStartTime}</td>
+                <td> <span class="fas fa-calendar"></span>
+                  <strong>S Date:</strong> ${request.requestedStartDate}</td>
               </tr>
               <tr>
-                <td><span class="glyphicon glyphicon-home"></span>
-                  Training Type: ${request.type}</td>
-              </tr>
-              <tr>
-                <td> <span class="glyphicon glyphicon-check"></span>
-                  Approvals</td>
+                <td><span class="fas fa-user-alt"></span>
+                  <strong>Type:</strong> ${request.type}</td>
               </tr>
               <tr></tr>
               <tr>
-                <td> <span class="glyphicon glyphicon-asterisk"></span>
-                  Status:
-																				
-										    <c:choose>
+                <td> 
+                <table>
+                	<tr>
+                		<td style="width: 40%">
+                			<span class="fas fa-asterisk"></span>
+                			<strong>Status:</strong>
+                		</td>
+                		<td style="width: 60%">
+                			<c:choose>
 										        <c:when test="${request.status == 0}">Not ready for SPOC to workon</c:when>
 										        <c:when test="${request.status == 1}">Ready to be edited by SPOC</c:when>
 										        <c:when test="${request.status == 2}">SPOC has begun to process request (Haven't selected whether it will be IT or Vendor)</c:when>
@@ -183,32 +144,40 @@
 										        <c:when test="${request.status  == 4}">Sent to executive</c:when>
 										        
 										        <c:otherwise>${request.status }</c:otherwise>
-										    </c:choose></td>
+										</c:choose>	
+                		</td>
+                	</tr>
+                </table>
+                
                 <!--Where the training is in development -->
               </tr>
+              <tr> <td> 
+              <c:choose>     
+              <c:when test="${request.status == 3}">               
+                        <a data-placement="right" data-toggle="popover"  
+                        data-container="body" style="color:red"
+                         data-html="true" href="#" id="login" class="approval">
+                        <span class="fas fa-check-square"></span>Approvals</a>
+              </c:when>
+                        
+              </c:choose>
+                    </td>
+              </tr>
+              
             </table>
             	<!--hovern button status start-->
 					 <div>
-						<button type="button" id="Changes" data-trigger="hover" class="btn btn-danger" data-toggle="popover" 
-                    data-placement="right"data-original-title="" 
+						<button type="button" id="Changes" data-container="body" class="btn btn-danger" data-toggle="popover" 
+                    data-placement="right" data-original-title=""  data-html="true" data-trigger="hover"
                     data-content="
-							Spoc Name: ${request.spocName}
+							Spoc Name: ${request.spocName} <br>
 							Spoc Email: ${request.spocEmail }
-							Training Time Zone: ${request.timeZone}
-							
-							Training Participants: ${request.participants }
 							Trainer Name: ${request.trainerName}
 							Trainer Email: ${request.trainerEmail}
-							Schedule ID: ${request.scheduleID}
 							Training Module: ${request.module}
-							Start Time: ${request.startTime}
-							End Time: ${request.endTime}
-							Requested Start Time: ${request.requestedStartTime}
-							Requested End Time: ${request.requestedEndTime}
-														
-						
-						<br>
-														
+							Training Time Zone: ${request.timeZone}
+							Start Time: ${request.actualStartDate} 
+							End Time: ${request.actualEndDate}					
 						"> SPOC </button>
 					  </div>
 						<!-- hovern button status end -->
@@ -224,8 +193,8 @@
 
  <!-- Training Edit popover script --> 
  <div class="modal fade" id="myModal${request.id}" role="dialog">
-        <div class="modal-dialog modal-md">
-          <div class="modal-content">
+        <div class="modal-dialog modal-md" style="height: 100%; margin-top: 10%;">
+          <div class="modal-content" style="width: 220%">
             <div class="modal-header">
              <h4 class="modal-title"style="color:white;">Training Edit</h4>
               <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -341,7 +310,7 @@
 									<br>
 									<div class="row">
 										<div>
-											<label class="control-label"> Participants </label>
+											<label class="control-label" style="padding: 0px 5px;">Participants </label>
 										</div>
 										<div>
 											<input id="participants" type="number" cols="32"
@@ -379,8 +348,8 @@
 
        <!-- Training Time Edit popover code -->
        <div class="modal fade" id="myModal1${request.id}" role="dialog">
-            <div class="modal-dialog modal-md">
-              <div class="modal-content">
+            <div class="modal-dialog modal-md" style="height: 100%; margin-top: 10%;">
+              <div class="modal-content" style="width: 300%">
                   <!--Header for Training Time Edit -->
                 <div class="modal-header"> <h4 class="modal-title" style="color:white;">Training Time Edit </h4>
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -404,12 +373,12 @@
 								<div class="col-xs-5">
 									<input id="training_start" type="date" class="form-control"
 										name="startDate" placeholder="Start date"
-										value="${request.startTime}" required>
+										value="${request.requestedStartDate}" required>
 								</div>
 								<div>
 									<input id="training_startTime" type="time" class="form-control"
 										name="startTime" placeholder="Start time"
-										value="${request.startHour}" required>
+										value="${request.requestedStartTime}" required>
 								</div>
 							</div>
 
@@ -421,18 +390,18 @@
 								<div class="col-xs-5">
 									<input id="training_end" type="date" class="form-control"
 										name="endDate" placeholder="End date"
-										value="${request.endTime}" required>
+										value="${request.requestedEndDate}" required>
 								</div>
 								<div>
 									<input id="training_endTime" type="time" class="form-control"
 										name="endTime" placeholder="End time"
-										value="${request.endHour}" required>
+										value="${request.requestedEndTime}" required>
 								</div>
 							</div>
 							<br>
 							<div class="row">
 								<div class="col-xs-2">
-									<label class="control-label"> Time Zone </label>
+									<label class="control-label"> Time Zone: </label>
 								</div>
 								<div class="col-xs-10">
 								<c:choose>
@@ -530,7 +499,49 @@
               </div>
             </div>
           </div>
-      <!--popover script  end-->
+    <!--Training Time Edit popup script  end-->
+        <!--Aproval popover form End --> 
+       <div id="popover-content" style="display:none"> 
+        <div>
+                    <form action="approve/${request.id}">
+                    <div class="row">
+                            <div class="col-xs-2">
+                                    <label class="control-label">
+                                    </label>
+                            </div>
+                          
+                            <div class="container">
+                                <input class="radio-inline" type="radio" id="DD" name="approvalRB" value="Deny" style="width: 30px; height: 30px;" checked>
+                                <label class="form-check-label" for="data-dismiss" name="Deny" style="font-size: x-large; vertical-align: super;">Deny</label>
+                                <input class="radio-inline" type="radio" id="AA" name="approvalRB" value="Accept" style="width: 30px; height: 30px; margin-left: 10px;">
+                                <label class="form-check-label" for="AA" name="Accept" style="font-size: x-large; vertical-align: super;">Accept</label>
+                                <br>
+                            </div>
+                        </div>
+                        <div class="row" style="padding: 10px;">
+                                <div class="col-2">
+                                </div>
+                                <div>
+                                    <textarea class="form-control" cols="32" id="comment" name="textarea" placeholder="Comments" required></textarea>
+                                </div>
+                            </div>
+                        <div class="popover-footer">
+                                <div class="row" style="margin-top: 10px; float: right;">
+                                        <div class="col">
+                                            <div class="center-block">
+                                              <button type="submit" class="btn btn-default" style="background-color: #31708F; color: white;">
+                                                    Save
+                                                    <i class="fa fa-save" aria-hidden="true"></i>
+                                                </button><!-- Save changes button needs to close the popup-->
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button><!-- Close buttomn -->
+                                            </div>
+                                        </div>
+                                    </div>
+                        </div>
+                            </form>
+                            </div>
+            </div>
+      
 </c:forEach>
       <!--row div end-->
     </div>
@@ -539,41 +550,22 @@
   </div>
 
   <!-- Footer -->
-  <footer id="footer">
-    <p class="para">&copy;Copyright 2017 Syntel INC. All
-        rights
-        reserved.
-    </p>
-</footer>
+<%--   <%@include file="trmfooterfile.jsp" %> --%>
 
-<!--Script for the popover    -->
+<!--Script for the popover -->
 <script>
-	$(function () {
-  $('#log').popover({
-    container: "#card"
-  })
-  $('[data-toggle="popover"]').popover();
-    $('#log').hover(function()
-    {
-    	$('.popover').eq(0).css({'margin-left': '-50%', 'top': '102%', 'border-color': 'red'});
-    });
-
-    $('#Approval').click(function()
-    {
-    	$('.popover').eq(0).css({'margin-left': '102%', 'top': '102%', 'border-color': 'red'});
-    });  
-});
+$(function () {
+	  $('#Changes').popover({
+	    container: 'body'
+	  });
+	  $('.approval').popover({
+		  container: 'body',
+		  content: function() {
+			  return $('#popover-content').html();
+		  }
+	  });
+	});
 </script> 
-  <!--  Script for the popover end  -->
-
-<!-- Bootstrap core JavaScript -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
- <!--Font awesome social media icons links -->
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" />
-
-
 </body>
 
 </html>

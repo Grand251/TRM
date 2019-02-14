@@ -1,19 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
     
 <!DOCTYPE html>
 <html>
 	<meta charset="utf-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  	<link rel="stylesheet" href="/SpringMVCApp/resources/stylesheets/bootstrap.min.css">
-
-  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
+  	<%@include  file="headerfile.jsp"%>
 	<link rel="stylesheet" href="/SpringMVCApp/resources/stylesheets/exec.css">
  	<link rel="stylesheet" href="/SpringMVCApp/resources/stylesheets/trm.css">
  	<link rel="stylesheet" href="/SpringMVCApp/resources/stylesheets/custom.css">
@@ -21,28 +16,13 @@
 
   	<script src="/SpringMVCApp/resources/js/executiveJquery.js"></script>
 <body>
-	<!-- Top navigation -->
-  <div id="topnav" class="navbar navbar-default navbar-fixed-top">
-    <div class="header-container">
-      <!-- Left-aligned link -->
-      <div class="left-header">
-        <a class="logo-content" href="#" title="Home">
-          <img class="logoimage1" src="/SpringMVCApp/resources/images/as-logo.png" alt="Home">
-        </a>
-      </div>
-      <!-- Right-aligned links -->
-      <div id="right-header">
-        <a href="about.html" class="about">About</a>
-        <a href="#" class="logolink" title="Home">
-          <img class="logoimage2" src="/SpringMVCApp/resources/images/as-logo.png" alt="Home">
-        </a>
-      </div>
-    </div>
-  </div>
-  <!--End of navigation bar-->
-  
+  <%@include file="headerbody.jsp" %>
   <!--Some space between navigation bar and actual content-->
   <div style="margin-top:9vh;"></div>
+
+	<script>
+		$(".logoimage1").attr('src', '../resources/images/as-logo.png');
+	</script>
 
   <!--Title of the trainer request progress-->
   <h2 class="text-center border-bottom">${dto.workflow.executiveWorkflowStatusId} Progress</h2>
@@ -140,16 +120,8 @@
                     <label>Start Date:</label>
                   </div>
                   <div class="col-sm-3">
-                    <label>${dto.schedule.training_start_date}</label>
+                    <label><fmt:formatDate value="${dto.schedule.training_start_date}" pattern="MM/dd/yyyy"/> </label>
                   </div>
-
-                  <div class="col-sm-2">
-                    <label>Start Time: </label>
-                  </div>
-                  <div class="col-sm-3">
-                    <label>Some time</label>
-                  </div>
-
                 </div>
                 <br>
 
@@ -160,16 +132,8 @@
                     <label>End Date: </label>
                   </div>
                   <div class="col-sm-3">
-                    <label>${dto.schedule.training_end_date}</label>
+                    <label><fmt:formatDate value="${dto.schedule.training_end_date}" pattern="MM/dd/yyyy"/></label>
                   </div>
-
-                  <div class="col-sm-2">
-                    <label>End Time: </label>
-                  </div>
-                  <div class="col-sm-3">
-                    <label>Some time</label>
-                  </div>
-
                 </div>
                 <br>
 
@@ -335,20 +299,9 @@
             <p class="alignleft">Training Start Date:</p>
           </div>
           <div class="col-sm-6">
-            <p class="alignright">${dto.schedule.training_start_date}</p>
+            <p class="alignright"><fmt:formatDate value="${dto.schedule.training_start_date}" pattern="MM/dd/yyyy"/></p>
           </div>
         </div>
-
-        <!--Field and output row-->
-        <div class="row summary-text">
-          <div class="col-sm-6">
-            <p class="alignleft">Training Start Time:</p>
-          </div>
-          <div class="col-sm-6">
-            <p class="alignright">____________________</p>
-          </div>
-        </div>
-
         <!--Field and output row-->
         <div class="row summary-text">
           <div class="col-sm-6">

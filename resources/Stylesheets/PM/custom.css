@@ -1,4 +1,180 @@
-
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
 #topnav {
     overflow: hidden;
     background-color:#e7e7e7;
@@ -25,7 +201,7 @@
     height:50px !important;
     width:150px !important;
 }
-
+ 
 #right-header{
     width:70%;
     vertical-align:middle;
@@ -35,28 +211,28 @@
     padding-left: 12px;
     padding-right:12px;
 }
-
+ 
 .about{
     vertical-align: middle;
     font-size:x-large;
 }
-
+ 
 .link{
     padding-left:15px;
 }
-
-
+ 
+ 
 #topnav a:hover {
     color: black;
-    
+     
 }
-.modal-content{
-    width: 40%;;
+.modal fade{
+    width: 300px;
 }
 .modal-header{
     background-color: #31708f;
 }
-  
+   
 /* .my-first-div{
     margin-top: 60px;
     border: 1px solid red;
@@ -82,31 +258,38 @@
 }
  modal css 
   .fade{
-    position:absolute;
+    -position:absolute;
     top:0;
     color:black; 
     display:flex;
-  justify-content:center;
-    align-items:center;  
+    -justify-content:center;
+    -align-items:center;  
     display:none;
-
+ 
 } 
-
+.para{
+    margin-top: calc(27.5px - 0.5em);
+    height: auto;
+}
+ 
 .modaldialog{
     border-radius:4px;
     text-align:center;
     position:relative;
-
+ 
 } 
 #footer{
     background-color:#31708f;
     color:white;
     height:55px;
+    bottom:0;
+    position:absolute;
     clear:both;
-    position: relative;
+    width:100%;
+    text-align:center;
 }
-
-
+ 
+ 
 input[type=text]:focus(){
     border-color:dodgerblue;
     box-shadow:0 0 8px dodgerblue;
@@ -115,7 +298,7 @@ input[type=text]:focus(){
     .logoimage2{
         display: none;
     }
-
+ 
     .about{
         position: relative;
         top: 15px;
@@ -123,41 +306,49 @@ input[type=text]:focus(){
  }
  body 
 {
-
+ 
  margin-left:0px;
 }
 .portfolio-item {
-	margin-bottom: 30px;
-	margin-right: 20px;
-    height:200px;
-  
+    margin-bottom: 30px;
+    margin-right: 20px;
+    height:215px;
+   
   }
 #card{
-	width: 370px;
-	
+    width: 370px;
+     
     font-size: 20px;
     margin-left: 20px;
-
-	
+ 
+     
 }
  #CreateButton{
-	right: 40px;
+    right: 40px;
     -height: 35px;
-   
-}	 
+    
+}    
 #searchBar{ 
     margin-left: 44px;
     height: 40px; 
     padding-right: 118px;
-   
+    
 }
 #searchButton{ 
-	
+     
     height: 40px; 
     margin-right: 587px; 
 } 
 .divider{
     color:red;
 }
-
-
+ 
+#Changes{
+position: absolute;
+right:0px;
+bottom: 0px;
+}
+ 
+.popover{
+    width: 370px;
+}

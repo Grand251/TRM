@@ -20,25 +20,24 @@ public class PMRequestInfo {
 	private String mode;
 	private String location;
 	private String timeZone;
-	private String requestedTimeZone;
 	private String spocName;
 	private String spocEmail;
 	private String trainerName;
 	private String trainerEmail;
-	private InternalTrainingRequest internalTrainingRequest;
-	private String scheduleID;
+	private String requestedTimeZone;
+	private String requestedStartDate;
+	private String requestedEndDate;
+	private String requestedStartTime;
+	private String requestedEndTime;
+	
+	private String actualStartDate;
+	private String actualEndDate;
 	private InternalTrainingRequest itr;
-	private TrainingSchedule schedule;
 	private Employee trainer;
 	private Employee spoc;
-
-	private String startTime;
-	private String endTime;
-	private String startHour;
-	private String endHour;
-	private int confirmedTrainerID;
-	private Timestamp requestedStartTime;
-	private Timestamp requestedEndTime;
+	
+	private String actualStartTime;
+	private String actualEndTime;
 
 	public PMRequestInfo(TrainingRequest request, InternalTrainingRequest itr, TrainingSchedule schedule,
 			Employee trainer, Employee spoc) {
@@ -49,27 +48,37 @@ public class PMRequestInfo {
 		scope = request.getRequestTrainingModuleScope();
 		mode = request.getRequestTrainingMode();
 		location = request.getRequestLocation();
-		timeZone = request.getRequestTimeZone();
-		requestedStartTime = request.getRequestStartTime();
-		requestedEndTime = request.getRequestEndTime();
-		setInternalTrainingRequest(itr);
-		startTime = getDateString(requestedStartTime.toString());
-		startHour = getTimeString(requestedStartTime.toString());
-		endTime = getDateString(requestedEndTime.toString());
-		endHour = getTimeString(requestedEndTime.toString());
+		requestedTimeZone = request.getRequestTimeZone();
+		requestedStartTime = getTimeString(request.getRequestStartTime().toString());
+		requestedEndTime = getTimeString(request.getRequestEndTime().toString());
+		this.itr = itr;
+		requestedStartDate = getDateString(request.getRequestStartTime().toString());
+		requestedEndDate = getDateString(request.getRequestEndTime().toString());
 
 		if (itr != null && itr.getItrStatus() > 0) {
 			isItr = true;
 			status = itr.getItrStatus();
-			requestedTimeZone = schedule.getTraining_time_zone();
+			timeZone = schedule.getTraining_time_zone();
+			schedule.getTraining_start_date();
 			spocName = spoc.getFirst_name() + " " + spoc.getLast_name();
 			spocEmail = spoc.getEmail();
 			trainerName = trainer.getFirst_name() + " " + trainer.getLast_name();
 			trainerEmail = trainer.getEmail();
-//			startTime = schedule.getTraining_start_date();
-//			endTime = schedule.getTraining_end_date();
-
+			actualStartTime = getTimeString(schedule.getTraining_start_date().toString());
+			actualEndTime = getTimeString(schedule.getTraining_end_date().toString());
+			actualStartDate = getDateString(schedule.getTraining_start_date().toString());
+			actualEndDate = getDateString(schedule.getTraining_end_date().toString());
 		}
+	}
+
+	private String getDateString(String datetime) {
+		String date = datetime.substring(0, 10);
+		return date;
+	}
+
+	private String getTimeString(String datetime) {
+		String time = datetime.substring(11, 16);
+		return time;
 	}
 
 	public int getId() {
@@ -94,6 +103,14 @@ public class PMRequestInfo {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public boolean isItr() {
+		return isItr;
+	}
+
+	public void setItr(boolean isItr) {
+		this.isItr = isItr;
 	}
 
 	public String getType() {
@@ -144,14 +161,6 @@ public class PMRequestInfo {
 		this.timeZone = timeZone;
 	}
 
-	public String getRequestedTimeZone() {
-		return requestedTimeZone;
-	}
-
-	public void setRequestedTimeZone(String requestedTimeZone) {
-		this.requestedTimeZone = requestedTimeZone;
-	}
-
 	public String getSpocName() {
 		return spocName;
 	}
@@ -184,92 +193,44 @@ public class PMRequestInfo {
 		this.trainerEmail = trainerEmail;
 	}
 
-	public String getStartTime() {
-		return startTime;
+	public String getRequestedTimeZone() {
+		return requestedTimeZone;
 	}
 
-	public void setStartTime(String startTime) {
-		this.startTime = startTime;
+	public void setRequestedTimeZone(String requestedTimeZone) {
+		this.requestedTimeZone = requestedTimeZone;
 	}
 
-	public String getEndTime() {
-		return endTime;
+	public String getRequestedStartDate() {
+		return requestedStartDate;
 	}
 
-	public void setEndTime(String endTime) {
-		this.endTime = endTime;
+	public void setRequestedStartDate(String requestedStartDate) {
+		this.requestedStartDate = requestedStartDate;
 	}
 
-	public Timestamp getRequestedStartTime() {
-		return requestedStartTime;
+	public String getRequestedEndDate() {
+		return requestedEndDate;
 	}
 
-	public void setRequestedStartTime(Timestamp requestedStartTime) {
-		this.requestedStartTime = requestedStartTime;
+	public void setRequestedEndDate(String requestedEndDate) {
+		this.requestedEndDate = requestedEndDate;
 	}
 
-	public Timestamp getRequestedEndTime() {
-		return requestedEndTime;
+	public String getActualStartDate() {
+		return actualStartDate;
 	}
 
-	public void setRequestedEndTime(Timestamp requestedEndTime) {
-		this.requestedEndTime = requestedEndTime;
+	public void setActualStartDate(String actualStartDate) {
+		this.actualStartDate = actualStartDate;
 	}
 
-	public boolean getIsItr() {
-		return isItr;
+	public String getActualEndDate() {
+		return actualEndDate;
 	}
 
-	public void setIsItr(boolean isItr) {
-		this.isItr = isItr;
-	}
-
-	public int getConfirmedTrainerID() {
-		return confirmedTrainerID;
-	}
-
-	public void setConfirmedTrainerID(int confirmedTrainerID) {
-		this.confirmedTrainerID = confirmedTrainerID;
-	}
-
-	public InternalTrainingRequest getInternalTrainingRequest() {
-		return internalTrainingRequest;
-	}
-
-	public void setInternalTrainingRequest(InternalTrainingRequest internalTrainingRequest) {
-		this.internalTrainingRequest = internalTrainingRequest;
-	}
-
-	public String getScheduleID() {
-		return scheduleID;
-	}
-
-	public void setScheduleID(String scheduleID) {
-		this.scheduleID = scheduleID;
-	}
-
-	public TrainingSchedule getSchedule() {
-		return schedule;
-	}
-
-	public void setSchedule(TrainingSchedule schedule) {
-		this.schedule = schedule;
-	}
-
-	public Employee getSpoc() {
-		return spoc;
-	}
-
-	public void setSpoc(Employee spoc) {
-		this.spoc = spoc;
-	}
-
-	public Employee getTrainer() {
-		return trainer;
-	}
-
-	public void setTrainer(Employee trainer) {
-		this.trainer = trainer;
+	public void setActualEndDate(String actualEndDate) {
+		this.actualEndDate = actualEndDate;
 	}
 
 	public InternalTrainingRequest getItr() {
@@ -280,29 +241,51 @@ public class PMRequestInfo {
 		this.itr = itr;
 	}
 
-	public String getStartHour() {
-		return startHour;
+	public Employee getTrainer() {
+		return trainer;
 	}
 
-	public void setStartHour(String startHour) {
-		this.startHour = startHour;
+	public void setTrainer(Employee trainer) {
+		this.trainer = trainer;
 	}
 
-	public String getEndHour() {
-		return endHour;
+	public Employee getSpoc() {
+		return spoc;
 	}
 
-	public void setEndHour(String endHour) {
-		this.endHour = endHour;
+	public void setSpoc(Employee spoc) {
+		this.spoc = spoc;
 	}
 
-	private String getDateString(String datetime) {
-		String date = datetime.substring(0, 10);
-		return date;
+	public void setActualEndTime(String actualEndTime) {
+		this.actualEndTime = actualEndTime;
 	}
 
-	private String getTimeString(String datetime) {
-		String time = datetime.substring(11, 16);
-		return time;
+	public String getRequestedStartTime() {
+		return requestedStartTime;
+	}
+
+	public void setRequestedStartTime(String requestedStartTime) {
+		this.requestedStartTime = requestedStartTime;
+	}
+
+	public String getRequestedEndTime() {
+		return requestedEndTime;
+	}
+
+	public void setRequestedEndTime(String requestedEndTime) {
+		this.requestedEndTime = requestedEndTime;
+	}
+
+	public String getActualStartTime() {
+		return actualStartTime;
+	}
+
+	public void setActualStartTime(String actualStartTime) {
+		this.actualStartTime = actualStartTime;
+	}
+
+	public String getActualEndTime() {
+		return actualEndTime;
 	}
 }

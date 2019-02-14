@@ -1,5 +1,6 @@
 package trm.controllers;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,7 +13,6 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +34,7 @@ public class RequesterController
 	
 
 	@RequestMapping(value = "/pmdashboard")
-	public String openMainView(HttpServletRequest request, ModelMap map) 
+	public String openMainView(HttpServletRequest request, ModelMap map) throws SQLException 
 	{
 		if (request.getSession(false) == null || request.getSession().getAttribute("user") == null)
 			return "redirect:/loginform";
@@ -52,7 +52,7 @@ public class RequesterController
 				{
 					InternalTrainingRequest itr = trainingSvc.getItrByTrainingRequest(req.getTrainingRequestId());
 					
-					requests.add(new PMRequestInfo(req, itr, itr.getItrSchedule(), itr.getItrTrainer(), itr.getItrSpoc()));
+					requests.add(new PMRequestInfo(req, itr, itr.getItrSchedule(), itr.getItrTrainer(), req.getRequestProjectSpoc()));
 				}
 				catch (Exception e)
 				{
@@ -332,11 +332,18 @@ requestTrainingType, requestTrainingMode, approxNumberOfParticipants);
 		if (request.getSession(false) == null || request.getSession().getAttribute("user") == null)
 			return "redirect:/loginform";
 		
+		boolean hasApproved = request.getParameter("approvalRB").toString().equalsIgnoreCase("Accept");
+		
 		try
 		{
 			InternalTrainingCRUD svc = new InternalTrainingCRUD();
 			InternalTrainingRequest itr = svc.getItrByTrainingRequest(reqId);
-			itr.setItrStatus(itr.getItrStatus() + 1);
+			
+			if (hasApproved)
+				itr.setItrStatus(itr.getItrStatus() + 1);
+			else
+				itr.setItrStatus(-1);
+			
 			svc.updateItr(itr);
 		}
 		catch (Exception e)
